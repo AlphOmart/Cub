@@ -6,14 +6,14 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 18:59:14 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/17 12:21:56 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:08:21 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static size_t	get_split_size(char **temp);
-bool			only_digit(char *str);
+static bool			only_digit(char *str);
 
 /**
  * @brief "This function splits `to_get`, checks that it returns a
@@ -52,7 +52,7 @@ void	get_colors(int colors[3], char *to_get)
 	free(temp);
 }
 
-bool			only_digit(char *str)
+static bool			only_digit(char *str)
 {
 	size_t	i;
 

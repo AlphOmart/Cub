@@ -3,13 +3,9 @@ NO ./path_to_the_north_texture
 WE ./path_to_the\ _west_texture
 EA ./path_to_the_east_texture
 
-F c220, 100, 0
+F 220, 100, 0
 C 225, 30, 0
 
-11111
-10001
-11111
-
-1111
+1111dadasd
 1001
 1111
