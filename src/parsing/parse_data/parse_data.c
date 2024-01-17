@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2023/11/21 14:10:28 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/17 12:12:28 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	is_close(char **cpy)
 		{
 			if (ft_strlen(cpy[i]) == 1 && ft_isspace(cpy[i][0]))
 				break ;
-			cpy[i][j] = x
+			cpy[i][j] = 'x';
 			j++;
 		}
 		printf("%s\n", cpy[i]);
@@ -190,7 +190,7 @@ static void	check_data(char ***file, t_data *data)
  */
 void	get_info(char *str, t_data *data, char ***file, int n)
 {
-	const char	*info[7] = {"NO ", "SO ", "WE ", "EA ", "F", "C", NULL};
+	const char	*info[7] = {"NO ", "SO ", "WE ", "EA ", "F ", "C ", NULL};
 	size_t		i;
 
 	i = -1;
@@ -199,7 +199,7 @@ void	get_info(char *str, t_data *data, char ***file, int n)
 		if (i < 4 && !ft_strncmp(str, info[i], 2))
 			return (parse_textures(data->element[i], &str[2]),
 				is_valid_path(data->element[i]), data->map = &(*file)[n], (void)NULL);
-		else if (4 <= i && !ft_strncmp(str, info[i], 1))
-			return (get_colors(data->element[i], trim_end(&str[1])), data->map = &(*file)[n], (void)NULL);
+		else if (4 <= i && !ft_strncmp(str, info[i], 2))
+			return (get_colors(data->element[i], trim_end(&str[2])), data->map = &(*file)[n], (void)NULL);
 	}
 }
