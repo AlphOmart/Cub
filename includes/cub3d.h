@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:34:13 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/17 17:56:11 by edboutil         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:46:55 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@
 # include <string.h>
 # include <math.h>
 # include "../minilibx-linux/mlx.h"
+# include "../minilibx-linux/mlx_int.h"
 
-enum e_keycode
+typedef struct s_player
 {
-	ESQ = 65307,
-};
-
+	float	pos_x;
+	float	pos_y;
+}					t_player;
 
 typedef struct s_data
 {
@@ -39,6 +40,7 @@ typedef struct s_data
 	int				line_length;
 	int				bits_per_pixel;
 	int				endian;
+	t_player		player;
 }					t_data;
 
 typedef struct s_mlx

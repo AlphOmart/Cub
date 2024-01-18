@@ -19,7 +19,7 @@ DEP				=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.d))
 
 NAME			=	cub3d
 CC				=	cc
-FLAGS			=	-Wall -Wextra -Werror -MMD -MP
+FLAGS			=	-Wall -Wextra -Werror -g3 -MMD -MP
 RF				=	rm -rf
 MLX_NAME		=	libmlx.a
 

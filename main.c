@@ -6,94 +6,73 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:33:36 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/18 14:59:55 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/18 18:10:42 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
  #include "includes/cub3d.h"
+# include <X11/keysym.h>
 
-int close_window(void *param)
+void	draw_player(t_data *data)
 {
-	t_mlx *mlx;
+	int	i;
+	int j;
 
-	mlx = (t_mlx *)param;
+	i = 0;
+	//printf("%f\n", data->player.pos_x);
+	while (i < 5)
+	{
+		j = 0;
+		while (j < 5)
+		{
+			data->addr[(/*(int)data.player.pos_x + i*/4) * WIN_WIDTH + (/*(int)data.player.pos_y + j*/4)] = 0xFFD50000; // Rouge
+			++j;
+		}
+		++i;
+	}
+}
+
+void close_window(t_mlx *mlx)
+{
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
 	exit(0);
-	return (0);
 }
 
-int handle_key_press(int keycode, void *param)
+int handle_key_press(int keycode, t_mlx *mlx)
 {
-	if (keycode == ESQ)
-		close_window(param);
+
+	if (keycode == XK_Escape)
+		close_window(mlx);
+	// if (keycode == XK_w)
+	// 	mlx->data.player.pos_y -= 20;
+	// else if (keycode == XK_s)
+	// 	mlx->data.player.pos_y += 20;
+	// else if (keycode == XK_a)
+	// 	mlx->data.player.pos_x += 20;
+	// else if (keycode == XK_d)
+	// 	mlx->data.player.pos_x -= 20;
 	return (0);
 }
-
 /*
 **@brief Each int of data.data represents a pixels of the map
 ** with each index represents a complete color of a pixel.
 */
-void color_pixels(int *addr, int width, int height)
+void color_pixels(t_mlx mlx, int width, int height)
 {
 	int count_height;
 	int count_width;
 
 	count_height = 0;
+	//printf("%f\n", mlx.data.player.pos_x);
 	while (count_height < height)
 	{
 		count_width = 0;
 		while (count_width < width)
-		{
-			if (count_height >= height / 2)
-				addr[count_height * width + count_width] = 0x00FF0000; // Couleur rouge (format ARGB)
-			else
-				addr[count_height * width + count_width] = 0x00000000; // Couleur transparente
+			{
+			mlx.data.addr[count_height * width + count_width] = 0xFFB3E5FC; // Couleur transparente
 			count_width++;
 		}
 		count_height++;
-	}
-}
-
-void	color_img(t_data data, char c, int x, int y)
-{
-	int	color;
-	int count_height;
-	int count_width;
-	if (c == 1)
-		color = 0x00FF0000;
-	else
-		color = 0x00000000;
-	(void)x;
-	(void)y;
-	count_height = 0;
-	while (count_height < 10)
-	{
-		count_width = 0;
-		while (count_width < 10)
-		{
-			data.addr[count_height * 10 + count_width] = color; // Couleur transparente
-			count_width++;
-		}
-		count_height++;
-	}
-}
-void	img_gen(t_mlx mlx, char map[10][10], int width, int height)
-{
-	size_t	x;
-	size_t	y;
-
-	x = 0;
-	(void)width;
-	(void)height;
-	while (map[x])
-	{
-		y = 0;
-		while (map[x][y])
-		{
-			color_img(mlx.data, map[x][y], x, y);
-			y++;
-		}
-		x++;
 	}
 }
 
@@ -108,59 +87,20 @@ t_mlx	init_window()
 		&mlx.data.endian);
 	return (mlx);
 }
-/*
-@brief this fonction print a background with a blue zone for a minimap
-*/
-void	zone_minimap(t_data data, int count_height, int count_width, int width)
-{
-	if (count_height >= 890 && count_height <= 900  && count_width >= 1630)
-		data.addr[count_height * width + count_width] = 0x000000FF; // Couleur rouge (format ARGB)
-	else if (count_height >= 1070 && count_width >= 1630)
-		data.addr[count_height * width + count_width] = 0x000000FF; // Couleur rouge (format ARGB)
-	else if (count_width >= 1630 && count_width <= 1640 && count_height >=890)
-		data.addr[count_height * width + count_width] = 0x000000FF; // Couleur rouge (format ARGB)
-	else if (count_width >= width || (count_width >=1910 && count_height >= 890))
-		data.addr[count_height * width + count_width] = 0x000000FF; // Couleur rouge (format ARGB)
-}
-
-void	minimap_window(t_mlx mlx, int width, int height)
-{
-	int count_height;
-	int count_width;
-
-	count_height = 0;
-	while (count_height < height)
-	{
-		count_width = 0;
-		while (count_width < width)
-		{
-			zone_minimap(mlx.data, count_height, count_width, width);
-			count_width++;
-		}
-		count_height++;
-	}
-}
 
 int	main(void)
 {
-	t_mlx	mlx;
-	char	map[10][10] = {"1111111111",
-						   "1000010001",
-						   "1000000001",
-						   "1000000001",
-						   "1000000001",
-						   "1000000001",
-						   "1000000001",
-						   "1000000001",
-						   "1000000001",
-						   "1111111111"};
-	(void)map;
-	mlx = init_window();
-	color_pixels(mlx.data.addr, WIN_WIDTH, WIN_HEIGHT);
-	minimap_window(mlx, WIN_WIDTH, WIN_HEIGHT);
+	t_mlx		mlx;
 
+	mlx.data.player.pos_x = 300;
+	mlx.data.player.pos_y = 300;
+
+	printf("%f\n", mlx.data.player.pos_x);
+	mlx = init_window();
+	color_pixels(mlx, WIN_WIDTH, WIN_HEIGHT);
+	draw_player(&mlx.data);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.data.img_ptr, 0, 0);
-	mlx_hook(mlx.win, 2, 1L << 0, handle_key_press, &mlx);
+	mlx_hook(mlx.win, KeyRelease, KeyReleaseMask, handle_key_press, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 	return (0);
 }
