@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/17 14:32:06 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/17 15:38:07 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,107 +15,9 @@
 static void	check_data(char ***file, t_data *data);
 static void	get_info(char *str, t_data *data, char ***file, int n);
 
-//TODO gestion erreur
-void	map_cpy(char **map, char ***cpy)
+void	get_map(char **map)
 {
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	while (map[j] != NULL && ft_strncmp(map[j], "\n", 1))
-		j++;
-	while (map[i + j] != NULL)
-		++i;
-	*cpy = malloc(sizeof(char *) * (i + 1));
-	if (!(*cpy))
-		exit(-1);
-	j = 0;
-	while (j < i)
-	{
-		(*cpy)[j] = ft_strdup(map[j]);
-		i++;
-	}
-	(*cpy)[i] = NULL;
-}
-
-bool	is_close(char **cpy)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 1;
-	while (cpy[i] && ft_strlen(cpy[i]) == 1 && ft_isspace(cpy[i][0]))
-		i++;
-	while (cpy[i])
-	{
-		j = 0;
-		while (cpy[i][j])
-		{
-			if (ft_strlen(cpy[i]) == 1 && ft_isspace(cpy[i][0]))
-				break ;
-			cpy[i][j] = 'x';
-			j++;
-		}
-		printf("%s\n", cpy[i]);
-		i++;
-	}
-	return (true);
-}
-
-bool	is_valid(char *cpy)
-{
-	static	int pos_nbr = 0;
-	size_t	j;
-
-	j = 0;
-	while (cpy[j] && j < ft_strlen(cpy) - 1)
-	{
-		if (cpy[j] != '0' && cpy[j] != '1')
-		{
-			if (cpy[j] == 'N' || cpy[j] == 'S' || cpy[j] == 'W' || cpy[j] == 'E')
-				pos_nbr += 1;
-			else
-			{
-				printf("%s\n", cpy);
-				errno = 4;
-				return (false);
-			}
-		}
-		j++;
-	}
-	if (pos_nbr > 1)
-	{
-		printf("%s\n", cpy);
-		errno = 4;
-	}
-	return (true);
-}
-
-void	check_elements(char **cpy)
-{
-	size_t	i;
-
-	i = 0;
-	while (cpy[i])
-	{
-		is_valid(cpy[i]);
-		i++;
-	}
-}
-
-void	check_map(char **map)
-{
-	size_t	i;
-	char	**cpy;
-
-	map_cpy(&map[1], &cpy);
-	check_elements(cpy);
-	if (!is_close(cpy))
-		exit(-15);
-	i = 0;
-	while (cpy[i])
-		free(cpy[i++]);
-	free(cpy);
+	printf("%s");
 }
 
 /**
@@ -151,7 +53,8 @@ void	parse_data(char ***file, t_data *data)
 		}
 		i++;
 	}
-	check_map(data->map);
+	get_map(data);
+//	check_map(data->map);
 	check_data(file, data);
 }
 
