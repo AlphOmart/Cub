@@ -158,7 +158,7 @@ int	main(void)
 	mlx = init_window();
 	color_pixels(mlx.data.addr, WIN_WIDTH, WIN_HEIGHT);
 	minimap_window(mlx, WIN_WIDTH, WIN_HEIGHT);
-	//img_gen(mlx, map, 1920, 1080);
+
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.data.img_ptr, 0, 0);
 	mlx_hook(mlx.win, 2, 1L << 0, handle_key_press, &mlx);
 	mlx_loop(mlx.mlx_ptr);
