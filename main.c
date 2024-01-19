@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:33:36 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/19 19:15:15 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/19 19:16:13 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ int handle_key_press(int keycode, t_mlx *mlx)
 	if (keycode == XK_Escape)
 		close_window(mlx);
 	if (keycode == XK_w)
-		mlx->data.player.pos_x -= 5;
+		mlx->data.player.pos_x -= 10;
 	else if (keycode == XK_s)
-		mlx->data.player.pos_x += 5;
+		mlx->data.player.pos_x += 10;
 	else if (keycode == XK_a)
-		mlx->data.player.pos_y -= 5;
+		mlx->data.player.pos_y -= 10;
 	else if (keycode == XK_d)
-		mlx->data.player.pos_y += 5;
+		mlx->data.player.pos_y += 10;
 	print(mlx);
 	return (0);
 }
