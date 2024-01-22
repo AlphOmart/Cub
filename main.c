@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:33:36 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/22 12:34:16 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/22 12:49:21 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	draw_player(t_data data)
 	int j;
 
 	i = 0;
-	printf("coucou : %f\n", data.player.pos_x);
 	while (i < 5)
 	{
 		j = 0;
@@ -44,7 +43,11 @@ void	draw_player(t_data data)
 
 void close_window(t_mlx *mlx)
 {
+	mlx_destroy_image(mlx->mlx_ptr, mlx->data.img_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
+	mlx_destroy_display(mlx->mlx_ptr);
+	free(mlx->mlx_ptr);
+	free(mlx);
 	exit(0);
 }
 
@@ -109,8 +112,13 @@ int	main(void)
 	init_window(mlx);
 	printf("%f\n", mlx->data.player.pos_x);
 	print(mlx);
-	mlx_hook(mlx->win, KeyRelease, KeyRelease, handle_key_press, mlx);
 	mlx_do_key_autorepeaton(mlx->mlx_ptr);
+	mlx_hook(mlx->win, KeyRelease, KeyRelease, handle_key_press, mlx);
 	mlx_loop(mlx->mlx_ptr);
+	mlx_destroy_image(mlx->mlx_ptr, mlx->data.img_ptr);
+	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
+	mlx_destroy_display(mlx->mlx_ptr);
+	free(mlx->mlx_ptr);
+	free(mlx);
 	return (0);
 }
