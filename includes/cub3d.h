@@ -17,6 +17,7 @@
 # define WIN_HEIGHT 1080
 
 # include <stdlib.h>
+# include <X11/keysym.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/types.h>
@@ -31,6 +32,9 @@ typedef struct s_player
 {
 	float	pos_x;
 	float	pos_y;
+	float	pdx;
+	float	pdy;
+	float	pa;
 }					t_player;
 
 typedef struct s_data
