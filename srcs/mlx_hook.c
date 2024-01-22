@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:15:48 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/22 16:41:13 by edboutil         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:12:26 by edboutil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	draw_player(t_data data)
 	while (z <= 10)
 	{
 		data.addr[((int)data.player.pos_x + i / 2 + (int)data.player.pdx * z) * WIN_WIDTH + ((int)data.player.pos_y + j / 2 + (int)data.player.pdy * z)] = 0xFFD50000; // Rouge
-		z++;
+		++z;
 	}
 }
 

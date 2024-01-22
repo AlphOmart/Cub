@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:35:40 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/22 16:53:05 by edboutil         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:23:18 by edboutil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	init_window(t_mlx	*mlx)
 	mlx->data.img_ptr = mlx_new_image(mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	mlx->data.addr = (int *)mlx_get_data_addr(mlx->data.img_ptr, &mlx->data.bits_per_pixel, &mlx->data.line_length,
 		&mlx->data.endian);
-	mlx->data.player.pos_x = 300;
-	mlx->data.player.pos_y = 300;
-	mlx->data.player.pa = 0;
-	mlx->data.player.pdx = 0;
-	mlx->data.player.pdy = 0;
+	mlx->data.player.pos_x = 45;
+	mlx->data.player.pos_y = 45;
+	mlx->data.player.pa = 3.14 ;
+	mlx->data.player.pdx = cos(mlx->data.player.pa) * 5;
+	mlx->data.player.pdy = sin(mlx->data.player.pa) * 5;
 }
