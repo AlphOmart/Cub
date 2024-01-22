@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:34:13 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/18 17:46:55 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:18:10 by edboutil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,19 @@ typedef struct s_mlx
 	t_data			data;
 }					t_mlx;
 
+//window
+void				close_window(t_mlx *mlx);
+void				color_pixels(t_mlx *mlx, int width, int height);
+void				init_mlx_data(t_mlx *mlx);
+void				init_window(t_mlx	*mlx);
+
+//player
+void				draw_player(t_data data);
+int					handle_key_press(int keycode, t_mlx *mlx);
+
+
+void				print(t_mlx *mlx);
+void				draw_map(t_mlx* mlx, int cell_size);
 // void	ft_free(t_data *data, int n);
 // void	ft_error(char *str, t_data *data, int n);
 
