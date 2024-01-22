@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:34:13 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/22 16:18:10 by edboutil         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:41:31 by edboutil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
+# define PI 3.14159265359
+
 
 # include <stdlib.h>
 # include <X11/keysym.h>
@@ -55,7 +57,7 @@ typedef struct s_mlx
 }					t_mlx;
 
 //window
-void				close_window(t_mlx *mlx);
+int				close_window(t_mlx *mlx);
 void				color_pixels(t_mlx *mlx, int width, int height);
 void				init_mlx_data(t_mlx *mlx);
 void				init_window(t_mlx	*mlx);
