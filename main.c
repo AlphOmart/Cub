@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:33:36 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/22 12:49:21 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/22 14:07:50 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	draw_player(t_data data)
 	}
 }
 
-void close_window(t_mlx *mlx)
+int	close_window(t_mlx *mlx)
 {
 	mlx_destroy_image(mlx->mlx_ptr, mlx->data.img_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
@@ -77,7 +77,6 @@ void color_pixels(t_mlx *mlx, int width, int height)
 	int count_width;
 
 	count_height = 0;
-	//printf("%f\n", mlx.data.player.pos_x);
 	while (count_height < height)
 	{
 		count_width = 0;
@@ -97,7 +96,7 @@ void	init_window(t_mlx	*mlx)
 	mlx->data.img_ptr = mlx_new_image(mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	mlx->data.addr = (int *)mlx_get_data_addr(mlx->data.img_ptr, &mlx->data.bits_per_pixel, &mlx->data.line_length,
 		&mlx->data.endian);
-    mlx->data.player.pos_x = 300;
+	mlx->data.player.pos_x = 300;
 	mlx->data.player.pos_y = 300;
 
 }
@@ -114,11 +113,8 @@ int	main(void)
 	print(mlx);
 	mlx_do_key_autorepeaton(mlx->mlx_ptr);
 	mlx_hook(mlx->win, KeyRelease, KeyRelease, handle_key_press, mlx);
+	mlx_hook(mlx->win, 17, 0, &close_window, mlx);
 	mlx_loop(mlx->mlx_ptr);
-	mlx_destroy_image(mlx->mlx_ptr, mlx->data.img_ptr);
-	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
-	mlx_destroy_display(mlx->mlx_ptr);
-	free(mlx->mlx_ptr);
-	free(mlx);
+//	close_window(mlx);
 	return (0);
 }
