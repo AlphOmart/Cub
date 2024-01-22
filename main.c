@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:33:36 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/19 19:16:13 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/22 12:34:16 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ int	main(void)
 	init_window(mlx);
 	printf("%f\n", mlx->data.player.pos_x);
 	print(mlx);
-	mlx_hook(mlx->win, KeyRelease, KeyReleaseMask, handle_key_press, mlx);
+	mlx_hook(mlx->win, KeyRelease, KeyRelease, handle_key_press, mlx);
+	mlx_do_key_autorepeaton(mlx->mlx_ptr);
 	mlx_loop(mlx->mlx_ptr);
 	return (0);
 }
