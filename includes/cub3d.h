@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:34:13 by edboutil          #+#    #+#             */
-/*   Updated: 2024/01/18 17:46:55 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/22 17:23:21 by edboutil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
+# define PI 3.14159265359
+
 
 # include <stdlib.h>
+# include <X11/keysym.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/types.h>
@@ -31,6 +34,9 @@ typedef struct s_player
 {
 	float	pos_x;
 	float	pos_y;
+	float	pdx;
+	float	pdy;
+	float	pa;
 }					t_player;
 
 typedef struct s_data
@@ -50,6 +56,19 @@ typedef struct s_mlx
 	t_data			data;
 }					t_mlx;
 
+//window
+int				close_window(t_mlx *mlx);
+void				color_pixels(t_mlx *mlx, int width, int height);
+void				init_mlx_data(t_mlx *mlx);
+void				init_window(t_mlx	*mlx);
+
+//player
+void				draw_player(t_data data);
+int					handle_key_press(int keycode, t_mlx *mlx);
+
+
+void				print(t_mlx *mlx);
+void				draw_map(t_mlx* mlx, int cell_size);
 // void	ft_free(t_data *data, int n);
 // void	ft_error(char *str, t_data *data, int n);
 

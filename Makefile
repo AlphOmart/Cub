@@ -6,14 +6,17 @@
 #    By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 17:32:42 by edboutil          #+#    #+#              #
-#    Updated: 2024/01/17 17:58:15 by edboutil         ###   ########.fr        #
+#    Updated: 2024/01/22 16:38:20 by edboutil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #VAR ---------------------------------------------------------------
 OBJS_DIR		=	.objs/
 SRCS			=	main.c \
-					srcs/mlx_init.c srcs/utils.c
+					srcs/mlx_init.c \
+					srcs/mlx_hook.c \
+					srcs/init_map.c
+
 OBJS			=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 DEP				=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.d))
 
