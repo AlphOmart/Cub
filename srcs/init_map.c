@@ -49,14 +49,14 @@ void mlx_fill_square(t_mlx *mlx, int x, int y, int size, int color)
 void draw_map(t_mlx* mlx, int cell_size)
 {
 
-	int window_height;
+	//int window_height;
 	int y;
 	int x;
 	int color;
 
 	x = 0;
 	y = 0;
-	window_height = 10 * cell_size;
+	//window_height = 10 * cell_size;
 	while (y < 10)
 	{
 		x = 0;
