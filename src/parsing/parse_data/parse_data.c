@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/17 14:32:06 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:38:53 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,28 @@
 
 static void	check_data(char ***file, t_data *data);
 static void	get_info(char *str, t_data *data, char ***file, int n);
+void	check_map(t_data* data);
 
-//TODO gestion erreur
+//ToDo gestion Error
 void	map_cpy(char **map, char ***cpy)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
-	while (map[j] != NULL && ft_strncmp(map[j], "\n", 1))
+	j = 0;
+
+	while (map[j] && !ft_strncmp(map[j], "\n", 2))
 		j++;
-	while (map[i + j] != NULL)
+	while (map[i + j])
 		++i;
 	*cpy = malloc(sizeof(char *) * (i + 1));
 	if (!(*cpy))
 		exit(-1);
-	j = 0;
-	while (j < i)
+	i = 0;
+	while (map[i + j])
 	{
-		(*cpy)[j] = ft_strdup(map[j]);
+		(*cpy)[i] = ft_strdup(map[i + j]);
 		i++;
 	}
 	(*cpy)[i] = NULL;
@@ -41,24 +44,12 @@ void	map_cpy(char **map, char ***cpy)
 bool	is_close(char **cpy)
 {
 	size_t	i;
-	size_t	j;
 
 	i = 1;
 	while (cpy[i] && ft_strlen(cpy[i]) == 1 && ft_isspace(cpy[i][0]))
 		i++;
 	while (cpy[i])
-	{
-		j = 0;
-		while (cpy[i][j])
-		{
-			if (ft_strlen(cpy[i]) == 1 && ft_isspace(cpy[i][0]))
-				break ;
-			cpy[i][j] = 'x';
-			j++;
-		}
-		printf("%s\n", cpy[i]);
 		i++;
-	}
 	return (true);
 }
 
@@ -72,21 +63,15 @@ bool	is_valid(char *cpy)
 	{
 		if (cpy[j] != '0' && cpy[j] != '1')
 		{
-			if (cpy[j] == 'N' || cpy[j] == 'S' || cpy[j] == 'W' || cpy[j] == 'E')
+			if ((cpy[j] == 'N' || cpy[j] == 'S' || cpy[j] == 'W' || cpy[j] == 'E') && pos_nbr == 0)
 				pos_nbr += 1;
 			else
 			{
-				printf("%s\n", cpy);
 				errno = 4;
 				return (false);
 			}
 		}
 		j++;
-	}
-	if (pos_nbr > 1)
-	{
-		printf("%s\n", cpy);
-		errno = 4;
 	}
 	return (true);
 }
@@ -101,21 +86,6 @@ void	check_elements(char **cpy)
 		is_valid(cpy[i]);
 		i++;
 	}
-}
-
-void	check_map(char **map)
-{
-	size_t	i;
-	char	**cpy;
-
-	map_cpy(&map[1], &cpy);
-	check_elements(cpy);
-	if (!is_close(cpy))
-		exit(-15);
-	i = 0;
-	while (cpy[i])
-		free(cpy[i++]);
-	free(cpy);
 }
 
 /**
@@ -151,8 +121,24 @@ void	parse_data(char ***file, t_data *data)
 		}
 		i++;
 	}
-	check_map(data->map);
+	check_map(data);
 	check_data(file, data);
+}
+
+void	check_map(t_data* data)
+{
+	size_t	i;
+	char	**cpy;
+
+	map_cpy(&data->map[1], &cpy);
+	map_cpy(cpy, &(data->map));
+	check_elements(cpy);
+	if (!is_close(cpy))
+		exit(-15);
+	i = 0;
+	while (cpy[i])
+		free(cpy[i++]);
+	free(cpy);
 }
 
 /**
@@ -224,6 +210,10 @@ static void	check_data(char ***file, t_data *data)
 			free((*file)[i]);
 		}
 		free(*file);
+		i = -1;
+		while (data->map[++i])
+			free(data->map[i]);
+		free(data->map);
 		ft_error(RED ERROR YELLOW INV_ELEMENT NC, errno);
 	}
 }
