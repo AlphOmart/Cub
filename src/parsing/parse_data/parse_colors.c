@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 18:59:14 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/17 13:08:21 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 16:24:56 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 static size_t	get_split_size(char **temp);
 static bool			only_digit(char *str);
+
+void	free_split(char **str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		free(str[i++]);
+	free(str);
+}
 
 /**
  * @brief "This function splits `to_get`, checks that it returns a
@@ -36,7 +46,7 @@ void	get_colors(int colors[3], char *to_get)
 	if (get_split_size(temp) != 3)
 	{
 		errno = 4;
-		return ;
+		return (free_split(temp));
 	}
 	i = 0;
 	while (temp[i])

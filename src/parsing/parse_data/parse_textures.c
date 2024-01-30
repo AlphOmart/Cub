@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 09:08:51 by mwubneh           #+#    #+#             */
-/*   Updated: 2023/11/13 16:56:53 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 16:29:15 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	is_valid_path(char **path)
 	size_t	i;
 
 	i = 0;
-	while ((*path)[i] && ft_isspace((*path)[i]))
+	while ((*path) && (*path)[i] && ft_isspace((*path)[i]))
 		i++;
 	if (!ft_strncmp(path[i], "./", 2))
 		i += 2;
