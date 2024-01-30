@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:35:29 by mwubneh           #+#    #+#             */
-/*   Updated: 2023/11/13 16:24:09 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:41:46 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,16 @@ int	main(int argc, char **argv)
 	free(data.ea);
 	i = -1;
 	while (data.map[++i] != NULL)
+	{
 		printf("%s", data.map[i]);
+		free(data.map[i]);
+	}
+	free(data.map);
 	i = -1;
 	while (file[++i] != NULL)
+	{
 		free(file[i]);
+	}
 	free(file);
 	return (0);
 }

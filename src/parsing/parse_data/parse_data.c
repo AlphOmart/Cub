@@ -6,7 +6,11 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/01/17 15:38:07 by mwubneh          ###   ########.fr       */
+=======
+/*   Updated: 2024/01/26 15:38:53 by mwubneh          ###   ########.fr       */
+>>>>>>> 80442af295b92d000cbd42337769b591f26259e0
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +18,84 @@
 
 static void	check_data(char ***file, t_data *data);
 static void	get_info(char *str, t_data *data, char ***file, int n);
+void	check_map(t_data* data);
 
+<<<<<<< HEAD
 void	get_map(char **map)
 {
 	printf("%s");
+=======
+//ToDo gestion Error
+void	map_cpy(char **map, char ***cpy)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+
+	while (map[j] && !ft_strncmp(map[j], "\n", 2))
+		j++;
+	while (map[i + j])
+		++i;
+	*cpy = malloc(sizeof(char *) * (i + 1));
+	if (!(*cpy))
+		exit(-1);
+	i = 0;
+	while (map[i + j])
+	{
+		(*cpy)[i] = ft_strdup(map[i + j]);
+		i++;
+	}
+	(*cpy)[i] = NULL;
+}
+
+bool	is_close(char **cpy)
+{
+	size_t	i;
+
+	i = 1;
+	while (cpy[i] && ft_strlen(cpy[i]) == 1 && ft_isspace(cpy[i][0]))
+		i++;
+	while (cpy[i])
+		i++;
+	return (true);
+}
+
+bool	is_valid(char *cpy)
+{
+	static	int pos_nbr = 0;
+	size_t	j;
+
+	j = 0;
+	while (cpy[j] && j < ft_strlen(cpy) - 1)
+	{
+		if (cpy[j] != '0' && cpy[j] != '1')
+		{
+			if ((cpy[j] == 'N' || cpy[j] == 'S' || cpy[j] == 'W' || cpy[j] == 'E') && pos_nbr == 0)
+				pos_nbr += 1;
+			else
+			{
+				errno = 4;
+				return (false);
+			}
+		}
+		j++;
+	}
+	return (true);
+}
+
+void	check_elements(char **cpy)
+{
+	size_t	i;
+
+	i = 0;
+	while (cpy[i])
+	{
+		is_valid(cpy[i]);
+		i++;
+	}
+>>>>>>> 80442af295b92d000cbd42337769b591f26259e0
 }
 
 /**
@@ -53,9 +131,29 @@ void	parse_data(char ***file, t_data *data)
 		}
 		i++;
 	}
+<<<<<<< HEAD
 	get_map(data);
 //	check_map(data->map);
+=======
+	check_map(data);
+>>>>>>> 80442af295b92d000cbd42337769b591f26259e0
 	check_data(file, data);
+}
+
+void	check_map(t_data* data)
+{
+	size_t	i;
+	char	**cpy;
+
+	map_cpy(&data->map[1], &cpy);
+	map_cpy(cpy, &(data->map));
+	check_elements(cpy);
+	if (!is_close(cpy))
+		exit(-15);
+	i = 0;
+	while (cpy[i])
+		free(cpy[i++]);
+	free(cpy);
 }
 
 /**
@@ -127,6 +225,10 @@ static void	check_data(char ***file, t_data *data)
 			free((*file)[i]);
 		}
 		free(*file);
+		i = -1;
+		while (data->map[++i])
+			free(data->map[i]);
+		free(data->map);
 		ft_error(RED ERROR YELLOW INV_ELEMENT NC, errno);
 	}
 }
