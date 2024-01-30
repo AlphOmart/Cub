@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/30 20:14:35 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:35:26 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	check_map(t_data* data);
 
 char	*line_copy(char *str, size_t n)
 {
-
 	char	*tmp;
 	size_t	i;
 	size_t len = ft_strlen(str);
@@ -93,6 +92,7 @@ void	get_pos(char **cpy, int start[2])
 		}
 		++y;
 	}
+	errno = 4;
 }
 //TODO : /N in map
 void expension(char **map, int x, int y)
@@ -185,9 +185,11 @@ bool	is_close(char **cpy)
 {
 	int		start[2];
 
-	start[0] = 0;
-	start[1] = 1;
+	start[0] = -1;
+	start[1] = -1;
 	get_pos(cpy, start);
+	if (start[0] == -1 || start[1] == -1)
+		return (errno = 4, false);
 	cpy[start[0]][start[1]] = 'x';
 	expension(cpy, start[1], start[0]);
 	if (!close_up(cpy[0]) || !close_down(cpy) || !close_left(cpy) || !close_right(cpy))
@@ -288,16 +290,17 @@ void	check_map(t_data* data)
 {
 	char	**cpy;
 
+	cpy = NULL;
+	if (!data->map || !data->map[1])
+		return (data->map = NULL, errno = 4, (void)NULL);
 	map_cpy(&data->map[1], &cpy);
 	check_elements(cpy);
 	map_cpy(cpy, &(data->map));
 	if (!is_close(cpy))
 	{
-		int i = -1;
-		while (cpy[++i])
-			printf("%s", cpy[i]);
 		return (free_cpy(cpy));
 	}
+
 	int i = -1;
 	while (cpy[++i])
 		printf("%s", cpy[i]);
@@ -367,17 +370,18 @@ static void	check_data(char ***file, t_data *data)
 
 	if (errno == 4 || !bad_element(data) || (*file)[i] == NULL)
 	{
-		i = -1;
-		while ((*file)[++i] != NULL)
+		i = 0;
+		while ((*file)[i] != NULL)
 		{
 			if (i < 4 && data->element[i] != NULL)
 				free(*(char **) data->element[i]);
 			free((*file)[i]);
+			i++;
 		}
 		free(*file);
-		i = -1;
-		while (data->map[++i])
-			free(data->map[i]);
+		i = 0;
+		while (data->map && data->map[i])
+			free(data->map[i++]);
 		free(data->map);
 		ft_error(RED ERROR YELLOW INV_ELEMENT NC, errno);
 	}

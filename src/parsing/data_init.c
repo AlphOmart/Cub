@@ -35,6 +35,7 @@ void	data_init(t_data *data)
 		data->f[i] = -1;
 		data->c[i] = -1;
 	}
+	data->map = NULL;
 	element_init(data->element, data);
 }
 
