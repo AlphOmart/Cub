@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:56:38 by mwubneh           #+#    #+#             */
-/*   Updated: 2023/11/04 14:42:42 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:13:26 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void	data_init(t_data *data)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	data->no = NULL;
 	data->so = NULL;
 	data->we = NULL;
 	data->ea = NULL;
-	while (i++ < 3)
+	while (++i < 3)
 	{
 		data->f[i] = -1;
 		data->c[i] = -1;

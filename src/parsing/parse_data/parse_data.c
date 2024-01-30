@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/30 16:18:37 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:14:35 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ bool	close_right(char **cpy)
 	while (cpy[i])
 	{
 		j = ft_strlen(cpy[i]);
-		while (j >= 0 && cpy[i] && cpy[i][j] && cpy[i][j] != 1)
+		while (/*j >= 0 &&*/ cpy[i] && cpy[i][j] && cpy[i][j] != 1)
 		{
 			if (cpy[i][j] == 'X')
 				return (false);
@@ -318,11 +318,12 @@ bool	bad_colors(int const f[3], int const c[3])
 {
 	size_t	i;
 
-	i = -1;
-	while (++i < 3)
+	i = 0;
+	while (i < 3)
 	{
 		if (f[i] < 0 || c[i] < 0 || 255 < f[i] || 255 < c[i])
 			return (false);
+		++i;
 	}
 	return (true);
 }

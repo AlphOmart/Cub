@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 16:34:07 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/30 14:47:58 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 19:58:25 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	get_file(char *path, char ***file)
 	int		fd;
 
 	get_file_size(&file_size, path);
+	if (file_size <= 1)
+		ft_error(RED ERROR YELLOW "empty file"NC, 4);
 	valid_path(path, &fd);
 	*file = malloc(sizeof(char *) * file_size);
 	if (!(*file))

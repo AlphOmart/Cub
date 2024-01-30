@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 09:08:51 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/30 16:29:15 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:04:27 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	parse_textures(char **to_put, char *to_get)
 		i++;
 	if (*to_put != NULL)
 		errno = 4;
-	if (!ft_strncmp(&to_get[i], "./", 2))
-		*to_put = ft_strjoin(*to_put, trim_end(&to_get[i]));
+	// if (!ft_strncmp(&to_get[i], "./", 2))
+	*to_put = ft_strjoin(*to_put, trim_end(&to_get[i]));
 }
 
 /**
@@ -50,9 +50,9 @@ void	is_valid_path(char **path)
 	i = 0;
 	while ((*path) && (*path)[i] && ft_isspace((*path)[i]))
 		i++;
-	if (!ft_strncmp(path[i], "./", 2))
-		i += 2;
-	while ((*path)[i])
+	 if ((*path) && !ft_strncmp(path[i], "./", 2))
+	 	i += 2;
+	while ((*path) && (*path)[i])
 	{
 		if (ft_isspace((*path)[i]) &&
 			((*path)[i - 1] != '\\' || ft_isspace((*path)[i - 1])))
