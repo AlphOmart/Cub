@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/30 20:35:26 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:14:35 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,8 +197,6 @@ bool	is_close(char **cpy)
 		errno = 4;
 		return (false);
 	}
-
-
 	return (true);
 }
 
@@ -297,10 +295,7 @@ void	check_map(t_data* data)
 	check_elements(cpy);
 	map_cpy(cpy, &(data->map));
 	if (!is_close(cpy))
-	{
 		return (free_cpy(cpy));
-	}
-
 	int i = -1;
 	while (cpy[++i])
 		printf("%s", cpy[i]);
