@@ -72,7 +72,6 @@ char	*trim_end(char *string)
 
 	i = ft_strlen(string);
 	i--;
-	printf("|%c|\n", string[i]);
 	if (string[i] && ft_isspace(string[i]))
 	{
 		while (i > 0 && ft_isspace(string[i]))
