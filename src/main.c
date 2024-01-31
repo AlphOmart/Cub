@@ -27,7 +27,7 @@ void	ft_error(char *str, int err)
 	perror(str);
 	exit(err);
 }
-
+//TODO: space after coor Floor
 int	main(int argc, char **argv)
 {
 	t_data	data;

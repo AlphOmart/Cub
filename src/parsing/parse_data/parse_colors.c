@@ -40,14 +40,14 @@ void	get_colors(int colors[3], char *to_get)
 	size_t	i;
 
 	i = 0;
+	to_get = trim_end(to_get);
+	if (!ft_isdigit(to_get[ft_strlen(to_get) - 1]))
+		return (errno = 4, (void)NULL);
 	while (to_get[i] && ft_isspace(to_get[i]))
 		i++;
 	temp = ft_split(&to_get[i], ',');
 	if (get_split_size(temp) != 3)
-	{
-		errno = 4;
-		return (free_split(temp));
-	}
+		return (errno = 4, free_split(temp));
 	i = 0;
 	while (temp[i])
 	{
@@ -56,10 +56,7 @@ void	get_colors(int colors[3], char *to_get)
 		colors[i] = ft_atoi(temp[i]);
 		i++;
 	}
-	i = 0;
-	while (temp[i] != NULL)
-		free(temp[i++]);
-	free(temp);
+	free_split(temp);
 }
 
 static bool			only_digit(char *str)

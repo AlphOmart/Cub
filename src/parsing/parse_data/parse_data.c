@@ -439,7 +439,7 @@ void	get_info(char *str, t_data *data, char ***file, int n)
 			return (parse_textures(data->element[i], &str[2]),
 				is_valid_path(data->element[i]), data->map = &(*file)[n], (void)NULL);
 		else if (4 <= i && !ft_strncmp(str, info[i], 2))
-			return (get_colors(data->element[i], trim_end(&str[2])), data->map = &(*file)[n], (void)NULL);
+			return (get_colors(data->element[i], &str[2]), data->map = &(*file)[n], (void)NULL);
 		i++;
 	}
 }
