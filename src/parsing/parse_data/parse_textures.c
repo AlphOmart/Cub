@@ -31,7 +31,6 @@ void	parse_textures(char **to_put, char *to_get)
 		i++;
 	if (*to_put != NULL)
 		errno = 4;
-	// if (!ft_strncmp(&to_get[i], "./", 2))
 	*to_put = ft_strjoin(*to_put, trim_end(&to_get[i]));
 }
 
@@ -50,6 +49,7 @@ void	is_valid_path(char **path)
 	i = 0;
 	while ((*path) && (*path)[i] && ft_isspace((*path)[i]))
 		i++;
+	//(*path) = trim_end(*path);
 	 if ((*path) && !ft_strncmp(path[i], "./", 2))
 	 	i += 2;
 	while ((*path) && (*path)[i])
@@ -71,8 +71,13 @@ char	*trim_end(char *string)
 	size_t	i;
 
 	i = ft_strlen(string);
-	while (i > 0 && !ft_isspace(string[i]))
-		i--;
-	string[i] = '\0';
+	i--;
+	printf("|%c|\n", string[i]);
+	if (string[i] && ft_isspace(string[i]))
+	{
+		while (i > 0 && ft_isspace(string[i]))
+			i--;
+		string[i + 1] = '\0';
+	}
 	return (string);
 }

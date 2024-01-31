@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/30 20:35:26 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/01/30 20:14:35 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	get_pos(char **cpy, int start[2])
 		x = 0;
 		while (cpy[y][x])
 		{
-			if (cpy[y][x] == 'N' || cpy[y][x] == 'S' || cpy[y][x] == 'W' || cpy[y][x] == 'E') {
+			if (cpy[y][x] == 'N' || cpy[y][x] == 'S' || cpy[y][x] == 'W' || cpy[y][x] == 'E')
+			{
 				start[0] = y;
 				start[1] = x;
 				return ;
@@ -97,9 +98,9 @@ void	get_pos(char **cpy, int start[2])
 //TODO : /N in map
 void expension(char **map, int x, int y)
 {
-	if (map[y] && map[y][x] && (map[y][x] == '1' || map[y][x] == 'X' || map[y][x] == '\n'))
+	if (map[y] && map[y][x] && (map[y][x] == '1' || map[y][x] == 'X'))
 		return ;
-	else if (map[y][x] == 32)
+	else if (map[y][x] == 32 || map[y][x] == '\n')
 	{
 		errno = 4;
 		return ;
@@ -169,7 +170,7 @@ bool	close_right(char **cpy)
 	while (cpy[i])
 	{
 		j = ft_strlen(cpy[i]);
-		while (/*j >= 0 &&*/ cpy[i] && cpy[i][j] && cpy[i][j] != 1)
+		while (j >= 0 && cpy[i] && cpy[i][j] && cpy[i][j] != 1)
 		{
 			if (cpy[i][j] == 'X')
 				return (false);
@@ -180,7 +181,40 @@ bool	close_right(char **cpy)
 	return (true);
 }
 
+void	expension_1(char **map, int x, int y)
+{
+	if (map[y] && map[y][x] && (map[y][x] == 'Z' || map[y][x] == 32 || map[y][x] == '\n'))
+		return ;
+	map[y][x] = 'Z';
+	if (map[y] && map[y][x + 1])
+		expension_1(map, x + 1, y);
+	if (map[y + 1])
+		expension_1(map, x, y + 1);
+	if (map[y] && x - 1>= 0 && map[y][x - 1])
+		expension_1(map, x - 1, y);
+	if (y - 1 >= 0 && map[y - 1])
+		expension_1(map, x, y - 1);
+}
 
+bool	is_block(char **map)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] != 'Z' && !ft_isspace(map[i][j]))
+				return (false);
+			++j;
+		}
+		++i;
+	}
+	return (true);
+}
 bool	is_close(char **cpy)
 {
 	int		start[2];
@@ -192,13 +226,14 @@ bool	is_close(char **cpy)
 		return (errno = 4, false);
 	cpy[start[0]][start[1]] = 'x';
 	expension(cpy, start[1], start[0]);
+	int	i = -1;
+	while(cpy[++i])
+		printf("%s", cpy[i]);
 	if (!close_up(cpy[0]) || !close_down(cpy) || !close_left(cpy) || !close_right(cpy))
-	{
-		errno = 4;
-		return (false);
-	}
-
-
+		return (errno = 4, false);
+	expension_1(cpy, start[1], start[0]);
+	if(!is_block(cpy))
+		return (errno = 4, false);
 	return (true);
 }
 
@@ -297,10 +332,7 @@ void	check_map(t_data* data)
 	check_elements(cpy);
 	map_cpy(cpy, &(data->map));
 	if (!is_close(cpy))
-	{
 		return (free_cpy(cpy));
-	}
-
 	int i = -1;
 	while (cpy[++i])
 		printf("%s", cpy[i]);
@@ -400,13 +432,14 @@ void	get_info(char *str, t_data *data, char ***file, int n)
 	const char	*info[7] = {"NO ", "SO ", "WE ", "EA ", "F ", "C ", NULL};
 	size_t		i;
 
-	i = -1;
-	while (info[++i] != NULL && errno != 4)
+	i = 0;
+	while (info[i] != NULL && errno != 4)
 	{
 		if (i < 4 && !ft_strncmp(str, info[i], 2))
 			return (parse_textures(data->element[i], &str[2]),
 				is_valid_path(data->element[i]), data->map = &(*file)[n], (void)NULL);
 		else if (4 <= i && !ft_strncmp(str, info[i], 2))
 			return (get_colors(data->element[i], trim_end(&str[2])), data->map = &(*file)[n], (void)NULL);
+		i++;
 	}
 }
