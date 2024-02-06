@@ -13,7 +13,7 @@
 #include "cub3d.h"
 
 static size_t	get_split_size(char **temp);
-static bool			only_digit(char *str);
+static bool		only_digit(char *str);
 
 void	free_split(char **str)
 {
@@ -42,7 +42,7 @@ void	get_colors(int colors[3], char *to_get)
 	i = 0;
 	to_get = trim_end(to_get);
 	if (!ft_isdigit(to_get[ft_strlen(to_get) - 1]))
-		return (errno = 4, (void)NULL);
+		return (errno = 4, (void) NULL);
 	while (to_get[i] && ft_isspace(to_get[i]))
 		i++;
 	temp = ft_split(&to_get[i], ',');
@@ -59,21 +59,20 @@ void	get_colors(int colors[3], char *to_get)
 	free_split(temp);
 }
 
-static bool			only_digit(char *str)
+static bool	only_digit(char *str)
 {
 	size_t	i;
 
 	i = 0;
-
 	while (str[i])
 	{
-		while(str[i] && ft_isspace(str[i]))
+		while (str[i] && ft_isspace(str[i]))
 			i++;
 		if (!ft_isdigit(str[i]))
 			return (false);
 		i++;
 	}
-	return true;
+	return (true);
 }
 
 /**

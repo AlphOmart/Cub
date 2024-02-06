@@ -27,7 +27,7 @@ void	ft_error(char *str, int err)
 	perror(str);
 	exit(err);
 }
-//TODO: space after coor Floor
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
@@ -43,11 +43,10 @@ int	main(int argc, char **argv)
 
 	parse_data(&file, &data);
 
-	printf("%s\n", data.no);
-	printf("%s\n", data.so);
-	printf("%s\n", data.we);
-	if (data.ea)
-		printf("%s\n", data.ea);
+	printf("%s|\n", data.no);
+	printf("%s|\n", data.so);
+	printf("%s|\n", data.we);
+	printf("%s|\n", data.ea);
 	printf("f = %i, %i, %i\n", data.f[0], data.f[1], data.f[2]);
 	printf("c = %i, %i, %i\n", data.c[0], data.c[1], data.c[2]);
 

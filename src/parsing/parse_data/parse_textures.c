@@ -49,9 +49,8 @@ void	is_valid_path(char **path)
 	i = 0;
 	while ((*path) && (*path)[i] && ft_isspace((*path)[i]))
 		i++;
-	//(*path) = trim_end(*path);
-	 if ((*path) && !ft_strncmp(path[i], "./", 2))
-	 	i += 2;
+	if ((*path) && !ft_strncmp(path[i], "./", 2))
+		i += 2;
 	while ((*path) && (*path)[i])
 	{
 		if (ft_isspace((*path)[i]) &&
@@ -72,7 +71,6 @@ char	*trim_end(char *string)
 
 	i = ft_strlen(string);
 	i--;
-	printf
 	if (string[i] && ft_isspace(string[i]))
 	{
 		while (i > 0 && ft_isspace(string[i]))

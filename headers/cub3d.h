@@ -65,10 +65,23 @@ void	get_file(char *path, char ***file);
 void	data_init(t_data *data);
 //-------------------------------parse_data.c---------------------------------//
 void	parse_data(char ***file, t_data *data);
+void	get_pos(char **cpy, int start[2]);
 //-----------------------------parse_textures.c-------------------------------//
 void	parse_textures(char **to_put, char *to_get);
 void	is_valid_path(char **path);
 char	*trim_end(char *string);
 //-----------------------------parse_colors.c-------------------------------//
 void	get_colors(int colors[3], char *to_get);
+//-----------------------------check_close.c---------------------------------//
+bool	is_close(char **cpy);
+//-----------------------------expensions.c---------------------------------//
+void	zero_expension(char **map, int x, int y);
+void	one_expension(char **map, int x, int y);
+//-----------------------------check_map.c-----------------------------------//
+bool	is_block(char **map);
+//-----------------------------check_data.c---------------------------------//
+void	check_data(char ***file, t_data *data);
+void	free_map(char **cpy);
+//-----------------------------map_cpy.c-----------------------------------//
+void	map_cpy(char **map, char ***cpy);
 #endif

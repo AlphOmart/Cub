@@ -17,7 +17,13 @@ SRC			=	src/main.c \
 				src/parsing/data_init.c \
 				src/parsing/parse_data/parse_data.c \
 				src/parsing/parse_data/parse_textures.c \
-				src/parsing/parse_data/parse_colors.c
+				src/parsing/parse_data/parse_colors.c \
+				src/parsing/checker/check_close.c \
+				src/parsing/checker/check_data.c \
+				src/parsing/checker/check_map.c \
+				src/parsing/checker/map_cpy.c \
+				src/parsing/checker/expensions.c
+
 OBJS_DIR	=	.OBJS/
 OBJS		=	$(addprefix $(OBJS_DIR), $(SRC:.c=.o))
 HEADER_DIR	=	headers/
@@ -38,6 +44,7 @@ $(OBJS_DIR):
 				@mkdir -p $(OBJS_DIR)src
 				@mkdir -p $(OBJS_DIR)src/parsing
 				@mkdir -p $(OBJS_DIR)src/parsing/parse_data
+				@mkdir -p $(OBJS_DIR)src/parsing/checker
 
 all:			$(NAME)
 
