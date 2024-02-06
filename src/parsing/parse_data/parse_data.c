@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/30 20:35:26 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/02/06 13:58:22 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,14 @@ void	get_info(char *str, t_data *data, char ***file, int n)
 	{
 		if (i < 4 && !ft_strncmp(str, info[i], 2))
 			return (parse_textures(data->element[i], &str[2]),
-				is_valid_path(data->element[i]), data->map = &(*file)[n], (void)NULL);
+				is_valid_path(data->element[i]),
+				data->map = &(*file)[n], (void) NULL);
 		else if (4 <= i && !ft_strncmp(str, info[i], 2))
-			return (get_colors(data->element[i], &str[2]), data->map = &(*file)[n], (void)NULL);
+			return (get_colors(data->element[i], &str[2]),
+				data->map = &(*file)[n], (void) NULL);
 		i++;
 	}
 }
-
-
 
 void	get_pos(char **cpy, int start[2])
 {

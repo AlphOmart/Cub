@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/06 13:24:20 by mwubneh           #+#    #+#             */
+/*   Updated: 2024/02/06 14:01:30 by mwubneh          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void	check_elements(char **cpy);
@@ -20,7 +32,7 @@ void	check_map(t_data *data)
 bool	is_valid(char *cpy)
 {
 	static int	pos_nbr = 0;
-	size_t	j;
+	size_t		j;
 
 	j = 0;
 	while (cpy[j] && j < ft_strlen(cpy) - 1)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_close.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/06 13:24:20 by mwubneh           #+#    #+#             */
+/*   Updated: 2024/02/06 13:59:43 by mwubneh          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static bool	close_up(char *str);
@@ -16,13 +28,11 @@ bool	is_close(char **cpy)
 		return (errno = 4, false);
 	cpy[start[0]][start[1]] = 'x';
 	zero_expension(cpy, start[1], start[0]);
-	int	i = -1;
-	while(cpy[++i])
-		printf("%s", cpy[i]);
-	if (!close_up(cpy[0]) || !close_down(cpy) || !close_left(cpy) || !close_right(cpy))
+	if (!close_up(cpy[0]) || !close_down(cpy)
+		|| !close_left(cpy) || !close_right(cpy))
 		return (errno = 4, false);
 	one_expension(cpy, start[1], start[0]);
-	if(!is_block(cpy))
+	if (!is_block(cpy))
 		return (errno = 4, false);
 	return (true);
 }
@@ -83,7 +93,7 @@ static bool	close_right(char **cpy)
 	while (cpy[i])
 	{
 		j = ft_strlen(cpy[i]);
-		while (j >= 0 && cpy[i] && cpy[i][j] && cpy[i][j] != 1)
+		while (/*j >= 0 &&*/ cpy[i] && cpy[i][j] && cpy[i][j] != 1)
 		{
 			if (cpy[i][j] == 'X')
 				return (false);
