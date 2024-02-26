@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:35:29 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/01/26 15:41:46 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/02/26 14:01:50 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,45 @@ void	ft_free_data(t_data *data)
 	free_map(data->map);
 }
 
+unsigned int	rgb_conv(int rgb[3])
+{
+	unsigned int	result;
+	int	i;
+
+	i = 0;
+	result = 0xFF;
+	while (i < 3)
+	{
+		result = (result << 8) | (unsigned int)rgb[i];
+		i++;
+	}
+	return (result);
+}
+
 void color_pixels(t_mlx *mlx)
 {
-	int count_height;
-	int count_width;
+	unsigned int	floor;
+	unsigned int	celling;
+	int				count_height;
+	int				count_width;
+
+	floor = rgb_conv(mlx->data->f);
+	celling = rgb_conv(mlx->data->c);
+
 
 	count_height = 0;
-	while (count_height < (1080/2))
+	printf("celling = %X\n", celling);
+	printf("floor = %X\n", floor);
+	while (count_height < 1080)
 	{
 		count_width = 0;
 		while (count_width < 1920)
 		{
-			if (count_height > count_height / 2)
-				mlx->addr[count_height * 1920 + count_width] = 0xFF008000;
+			if (count_height > 1080 / 2)
+				mlx->addr[count_height * 1920 + count_width] = floor;
+			else
+				mlx->addr[count_height * 1920 + count_width] = celling;
+
 			count_width++;
 		}
 		count_height++;
