@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../../headers/cub3d.h"
 
 static void	get_info(char *str, t_data *data, char ***file, int n);
 void		check_map(t_data *data);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../../headers/cub3d.h"
 
 static void	get_hi_size(size_t *hi_size, size_t *i, size_t j, char **map);
 static char	*line_copy(char *str, size_t n);

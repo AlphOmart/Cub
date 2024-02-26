@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../../headers/cub3d.h"
 
 /**
  * @brief This function retrieves the content of to_get (a string) and inserts

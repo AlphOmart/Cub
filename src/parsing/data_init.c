@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../headers/cub3d.h"
 
 static void	element_init(void *element[6], t_data *data);
 
@@ -21,7 +21,7 @@ static void	element_init(void *element[6], t_data *data);
  * @return The program exits after the elements of the structure
  * 			located at the address passed as a parameter have been initialized.
  */
-void	data_init(t_data *data)
+void	data_init(t_data *data, t_mlx *mlx)
 {
 	int	i;
 
@@ -37,6 +37,22 @@ void	data_init(t_data *data)
 	}
 	data->map = NULL;
 	element_init(data->element, data);
+
+	mlx->mlx_ptr = NULL;
+	mlx->win = NULL;
+	mlx->img_ptr = NULL;
+	mlx->textures[0].img = NULL;
+	mlx->textures[0].width = 0;
+	mlx->textures[0].height = 0;
+	mlx->textures[1].img = NULL;
+	mlx->textures[1].width = 0;
+	mlx->textures[1].height = 0;
+	mlx->textures[2].img = NULL;
+	mlx->textures[2].width = 0;
+	mlx->textures[2].height = 0;
+	mlx->textures[3].img = NULL;
+	mlx->textures[3].width = 0;
+	mlx->textures[3].height = 0;
 }
 
 /**

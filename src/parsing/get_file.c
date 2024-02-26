@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../headers/cub3d.h"
 
 static void	valid_path(char *path, int *fd);
 static void	get_file_size(size_t *file_size, char *path);

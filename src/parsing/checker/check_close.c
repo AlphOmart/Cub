@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../../headers/cub3d.h"
 
 static bool	close_up(char *str);
 static bool	close_down(char **cpy);

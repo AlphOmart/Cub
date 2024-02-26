@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../../headers/cub3d.h"
 
 static size_t	get_split_size(char **temp);
 static bool		only_digit(char *str);

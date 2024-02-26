@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../headers/cub3d.h"
 
 /**
  * @brief This function is used to display an error message and
@@ -27,46 +27,101 @@ void	ft_error(char *str, int err)
 	perror(str);
 	exit(err);
 }
+void	ft_free_data(t_data *data)
+{
+	free(data->no);
+	free(data->so);
+	free(data->ea);
+	free(data->we);
+	free_map(data->map);
+}
+
+void color_pixels(t_mlx *mlx)
+{
+	int count_height;
+	int count_width;
+
+	count_height = 0;
+	while (count_height < (1080/2))
+	{
+		count_width = 0;
+		while (count_width < 1920)
+		{
+			if (count_height > count_height / 2)
+				mlx->addr[count_height * 1920 + count_width] = 0xFF008000;
+			count_width++;
+		}
+		count_height++;
+	}
+}
+
+int	raycast(t_mlx *mlx)
+{
+	double	cur_angle;
+	size_t	i;
+
+	cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
+	i = 0;
+	while (i < 1920)
+	{
+
+	}
+	return (0);
+}
+
+int	print_image(t_mlx *mlx)
+{
+	raycast(mlx);
+	color_pixels(mlx);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->img_ptr, 0, 0);
+	return 0;
+}
+
+double	get_start_angle(char c)
+{
+	if ( c == 'N')
+		return (90);
+	else if (c == 'W')
+		return (180);
+	else if (c == 'S')
+		return (270);
+	else if (c == 'E')
+		return (0);
+	return (0);
+}
+
+void	init_player(t_mlx *mlx, t_data *data)
+{
+	int	fd[2];
+
+	fd[0] = -1;
+	fd[1] = -1;
+	get_pos(data->map, fd);
+	mlx->player.pos[0] = fd[0];
+	mlx->player.pos[1] = fd[1];
+	mlx->player.angle = get_start_angle(data->map[fd[0]][fd[1]]);
+}
 
 int	main(int argc, char **argv)
 {
 	t_data	data;
+	t_mlx	mlx;
 	char	**file;
-	size_t	i;
 
 	if (argc != 2 || ft_strncmp(&argv[1][ft_strlen(argv[1]) - 4], ".cub", 5))
 		ft_error(RED ERROR YELLOW USAGE NC, 2);
-
 	get_file(argv[1], &file);
-	data_init(&data);
-	//fonctionne jusque la !
-
+	data_init(&data, &mlx);
 	parse_data(&file, &data);
-
-	printf("%s|\n", data.no);
-	printf("%s|\n", data.so);
-	printf("%s|\n", data.we);
-	printf("%s|\n", data.ea);
-	printf("f = %i, %i, %i\n", data.f[0], data.f[1], data.f[2]);
-	printf("c = %i, %i, %i\n", data.c[0], data.c[1], data.c[2]);
+	free_map(file);
+	init_player(&mlx, &data);
+	init_mlx(&mlx, &data);
+	mlx_hook(mlx.win, 17, 0, close_window, &mlx);
 
 
-	free(data.no);
-	free(data.so);
-	free(data.we);
-	free(data.ea);
-	i = -1;
-	while (data.map[++i] != NULL)
-	{
-		printf("%s", data.map[i]);
-		free(data.map[i]);
-	}
-	free(data.map);
-	i = -1;
-	while (file[++i] != NULL)
-	{
-		free(file[i]);
-	}
-	free(file);
+	//fonctionne jusque la !
+	//mlx_hook(mlx->win, KeyRelease, KeyRelease, handle_key_press, mlx);
+	mlx_loop_hook(mlx.mlx_ptr, print_image, &mlx);
+	mlx_loop(mlx.mlx_ptr);
 	return (0);
 }

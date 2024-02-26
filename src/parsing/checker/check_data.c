@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../../headers/cub3d.h"
 
 static bool	bad_element(t_data *data);
 static bool	bad_colors(int const f[3], int const c[3]);
