@@ -16,10 +16,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 //////////                         INCLUDES                           //////////
 ////////////////////////////////////////////////////////////////////////////////
+# include "../minilibx/mlx.h"
+# include "../minilibx/mlx_int.h"
 # include "../libft/headers/libft.h"
 # include <stdio.h>
 # include <errno.h>
 # include <stdbool.h>
+
 ////////////////////////////////////////////////////////////////////////////////
 //////////                         DEFINES                            //////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,6 +43,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 //////////                        STRUCTURES                          //////////
 ////////////////////////////////////////////////////////////////////////////////
+typedef struct s_player
+{
+	double	pos[2];
+	double	mov[2];
+	double	angle_mov;
+	double	angle;
+	float	fov;
+}			t_player;
 typedef struct s_data
 {
 	char	*no;
@@ -54,6 +65,28 @@ typedef struct s_data
 
 	void	*element[6];
 }		t_data;
+
+typedef struct s_textures
+{
+	void			*img;
+	int				height;
+	int				width;
+}					t_textures;
+
+typedef struct s_mlx
+{
+	void			*mlx_ptr;
+	void			*win;
+	void			*img_ptr;
+	int				*addr;
+	int				line_length;
+	int				bits_per_pixel;
+	int				endian;
+
+	t_player		player;
+	t_textures		textures[4];
+	t_data			*data;
+}					t_mlx;
 ////////////////////////////////////////////////////////////////////////////////
 //////////                        PROTOTYPES                          //////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +95,7 @@ void	ft_error(char *str, int err);
 //--------------------------------get_file.c----------------------------------//
 void	get_file(char *path, char ***file);
 //-------------------------------data-init.c----------------------------------//
-void	data_init(t_data *data);
+void	data_init(t_data *data, t_mlx *mlx);
 //-------------------------------parse_data.c---------------------------------//
 void	parse_data(char ***file, t_data *data);
 void	get_pos(char **cpy, int start[2]);
@@ -84,4 +117,7 @@ void	check_data(char ***file, t_data *data);
 void	free_map(char **cpy);
 //-----------------------------map_cpy.c-----------------------------------//
 void	map_cpy(char **map, char ***cpy);
+//-----------------------------mlx_init.c-----------------------------------//
+void	init_mlx(t_mlx *mlx, t_data *data);
+int		close_window(t_mlx *mlx);
 #endif
