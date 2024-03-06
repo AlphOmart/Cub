@@ -87,6 +87,17 @@ typedef struct s_mlx
 	t_textures		textures[4];
 	t_data			*data;
 }					t_mlx;
+
+typedef struct s_vec
+{
+	double x;
+	double y;
+}					t_vec;
+typedef struct s_ray
+{
+	t_vec	this;
+	t_vec	vec;
+}					t_ray;
 ////////////////////////////////////////////////////////////////////////////////
 //////////                        PROTOTYPES                          //////////
 ////////////////////////////////////////////////////////////////////////////////

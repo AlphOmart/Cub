@@ -83,14 +83,15 @@ void color_pixels(t_mlx *mlx)
 
 int	raycast(t_mlx *mlx)
 {
-	double	cur_angle;
+	//double	cur_angle;
 	size_t	i;
-
-	cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
+	t_ray	intersections[2];
+	//cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
 	i = 0;
-	while (i < 1920)
+	while (i < 1080)
 	{
-
+		check_horizontal();
+		check_vertical();
 	}
 	return (0);
 }
