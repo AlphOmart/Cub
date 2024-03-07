@@ -43,14 +43,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //////////                        STRUCTURES                          //////////
 ////////////////////////////////////////////////////////////////////////////////
-typedef struct s_player
-{
-	double	pos[2];
-	double	mov[2];
-	double	angle_mov;
-	double	angle;
-	float	fov;
-}			t_player;
+
 typedef struct s_data
 {
 	char	*no;
@@ -73,6 +66,27 @@ typedef struct s_textures
 	int				width;
 }					t_textures;
 
+typedef struct s_vec
+{
+	double x;
+	double y;
+}					t_vec;
+typedef struct s_ray
+{
+	double	inter[2];
+	double	dist;
+	bool	hit;
+}	t_ray;
+typedef struct s_player
+{
+	double	pos[2];
+	double	mov[2];
+	double	angle_mov;
+	double	angle;
+	float	fov;
+	t_ray	rays[1920];
+}			t_player;
+
 typedef struct s_mlx
 {
 	void			*mlx_ptr;
@@ -88,16 +102,6 @@ typedef struct s_mlx
 	t_data			*data;
 }					t_mlx;
 
-typedef struct s_vec
-{
-	double x;
-	double y;
-}					t_vec;
-typedef struct s_ray
-{
-	t_vec	this;
-	t_vec	vec;
-}					t_ray;
 ////////////////////////////////////////////////////////////////////////////////
 //////////                        PROTOTYPES                          //////////
 ////////////////////////////////////////////////////////////////////////////////

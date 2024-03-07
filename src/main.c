@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
+#define CELL_SIZE 64
 #include "../headers/cub3d.h"
 
 /**
@@ -81,17 +83,44 @@ void color_pixels(t_mlx *mlx)
 	}
 }
 
+void	check_horizontal(double pos[2], double angle, t_ray *ray)
+{
+	t_ray	inter;
+	double	rad;
+	double vec[2];
+
+	rad = angle * M_PI_4 / 45;
+	if (angle == 0 || angle == 180) {
+		ray->inter[0] = INFINITY;
+		ray->inter[1] = pos[1];
+		ray->dist = INFINITY;
+		ray->hit = 0;
+		return;
+	}
+	inter.inter[1] = (double) CELL_SIZE * ((int)(pos[1] / CELL_SIZE) + (angle  < 180));
+	inter.dist = (inter.inter[1] - pos[1]) / sin(rad);
+	inter.inter[0] = (inter.dist * cos(rad));
+	inter.inter[0] += pos[0];
+	vec[1] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
+	vec[0] = fabs((CELL_SIZE / (pos[1] - inter.inter[1])) * (inter.inter[0] - pos[0]));
+	if (angle > 90 || angle > 270)
+		vec[0] *= -1;
+	return;
+}
+
 int	raycast(t_mlx *mlx)
 {
-	//double	cur_angle;
+	double	cur_angle;
 	size_t	i;
-	t_ray	intersections[2];
-	//cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
+	t_ray	horiz;
+
+	cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
+	printf("%f", cur_angle);
 	i = 0;
-	while (i < 1080)
+	while (i < 1920)
 	{
-		check_horizontal();
-		check_vertical();
+		check_horizontal(mlx->player.pos, cur_angle, &horiz);
+		//check_vertical(mlx->player.pos, cur_angle, &ray_verical);
 	}
 	return (0);
 }
