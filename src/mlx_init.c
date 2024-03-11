@@ -1,8 +1,8 @@
 #include "../headers/cub3d.h"
 
-void color_pixels(t_mlx *mlx);
+void	color_pixels(t_mlx *mlx);
 void	open_textures(t_mlx *mlx, t_data *data);
-void	ft_free_data(t_data *data);
+void	ft_free_data(t_data *data, int i);
 
 void	init_mlx(t_mlx *mlx, t_data *data)
 {
@@ -12,8 +12,8 @@ void	init_mlx(t_mlx *mlx, t_data *data)
 	mlx->img_ptr = mlx_new_image(mlx->mlx_ptr, 1920, 1080);
 	mlx->addr = (int *)mlx_get_data_addr(mlx->img_ptr, &mlx->bits_per_pixel, &mlx->line_length,
 	&mlx->endian);
-	color_pixels(mlx);
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->img_ptr, 0, 0);
+	// color_pixels(mlx);
+	// mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->img_ptr, 0, 0);
 	open_textures(mlx, data);
 }
 
@@ -35,7 +35,7 @@ void	free_mlx(t_mlx *mlx, int n)
 
 void ft_exit(t_data *data, t_mlx *mlx, int n)
 {
-	ft_free_data(data);
+	ft_free_data(data, 1);
 	free_mlx(mlx, n);
 	ft_error(RED ERROR YELLOW "invalid sprites path !\n" NC, 4);
 }
@@ -59,7 +59,7 @@ void	open_textures(t_mlx *mlx, t_data *data)
 			data->ea, &(mlx->textures[3].width), &(mlx->textures[3].height));
 	if (!mlx->textures[3].img)
 		ft_exit(data, mlx, 3);
-	ft_free_data(data);
+	ft_free_data(data, 0);
 }
 
 int close_window(t_mlx *mlx)

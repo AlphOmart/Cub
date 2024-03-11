@@ -29,12 +29,13 @@ void	ft_error(char *str, int err)
 	perror(str);
 	exit(err);
 }
-void	ft_free_data(t_data *data)
+void	ft_free_data(t_data *data, int i)
 {
 	free(data->no);
 	free(data->so);
 	free(data->ea);
 	free(data->we);
+	if (i != 0)
 	free_map(data->map);
 }
 
@@ -83,52 +84,142 @@ void color_pixels(t_mlx *mlx)
 	}
 }
 
-void	check_horizontal(double pos[2], double angle, t_ray *ray)
-{
-	t_ray	inter;
-	double	rad;
-	double vec[2];
+// void	check_horizontal(double pos[2], double angle, t_ray *ray)
+// {
+// 	t_ray	inter;
+// 	double	rad;
+// 	double vec[2];
+//
+// 	rad = angle * M_PI_4 / 45;
+// 	if (angle == 0 || angle == 180) {
+// 		ray->inter[0] = INFINITY;
+// 		ray->inter[1] = pos[1];
+// 		ray->dist = INFINITY;
+// 		ray->hit = 0;
+// 		return;
+// 	}
+// 	inter.inter[1] = (double) CELL_SIZE * ((int)(pos[1] / CELL_SIZE) + (angle  < 180));
+// 	inter.dist = (inter.inter[1] - pos[1]) / sin(rad);
+// 	inter.inter[0] = (inter.dist * cos(rad));
+// 	inter.inter[0] += pos[0];
+// 	vec[1] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
+// 	vec[0] = fabs((CELL_SIZE / (pos[1] - inter.inter[1])) * (inter.inter[0] - pos[0]));
+// 	if (angle > 90 || angle > 270)
+// 		vec[0] *= -1;
+//
+// 	printf("Coucou : %f\n", inter.dist);
+// 	return;
+// }
 
-	rad = angle * M_PI_4 / 45;
-	if (angle == 0 || angle == 180) {
-		ray->inter[0] = INFINITY;
-		ray->inter[1] = pos[1];
-		ray->dist = INFINITY;
-		ray->hit = 0;
-		return;
+// int	raycast(t_mlx *mlx)
+// {
+// 	double	cur_angle;
+// 	size_t	i;
+// 	t_ray	horiz;
+//
+// 	cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
+// 	//printf("%f", cur_angle);
+// 	i = 0;
+// 	while (i < 1920)
+// 	{
+// 		check_horizontal(mlx->player.pos, cur_angle, &horiz);
+// 		printf("Coucou %li : %f\n", i, horiz.dist);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+//
+// void	draw_player_angle(t_mlx *mlx)
+// {
+// 	printf()
+// }
+
+void	draw_player(t_mlx *mlx, double i, double j)
+{
+	double start_j;
+	double	start_i;
+
+
+	j += 5;
+	i += 5;
+	start_i = i;
+	start_j = j
+	;
+	while(i < start_i + 5)
+	{
+		j = start_j;
+		while(j < start_j + 5)
+		{
+			mlx->addr[(size_t)i * 1920 + (size_t)j] = 0xFFE83845;
+			j++;
+		}
+		i++;
 	}
-	inter.inter[1] = (double) CELL_SIZE * ((int)(pos[1] / CELL_SIZE) + (angle  < 180));
-	inter.dist = (inter.inter[1] - pos[1]) / sin(rad);
-	inter.inter[0] = (inter.dist * cos(rad));
-	inter.inter[0] += pos[0];
-	vec[1] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
-	vec[0] = fabs((CELL_SIZE / (pos[1] - inter.inter[1])) * (inter.inter[0] - pos[0]));
-	if (angle > 90 || angle > 270)
-		vec[0] *= -1;
-	return;
+	//draw_player_angle();
 }
 
-int	raycast(t_mlx *mlx)
+void	draw(t_mlx *mlx, int content, size_t i, size_t j)
 {
-	double	cur_angle;
-	size_t	i;
-	t_ray	horiz;
+	size_t	start_i;
+	size_t	start_j;
 
-	cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
-	printf("%f", cur_angle);
-	i = 0;
-	while (i < 1920)
+	start_i = i;
+	start_j = j;
+	while (i < 1080 && i < start_i + 16)
 	{
-		check_horizontal(mlx->player.pos, cur_angle, &horiz);
-		//check_vertical(mlx->player.pos, cur_angle, &ray_verical);
+		j = start_j;
+		while (j < 1920 && j < start_j + 16)
+		{
+			if (content == 1 && i < start_i + 15 &&j < start_j + 15)
+				mlx->addr[i * 1920 + j] = 0xFF000000;
+			else if (content == 0 && i < start_i + 15 && j < start_j + 15)
+				mlx->addr[i * 1920 + j] = 0xFFFFFFFF;
+			else if (content == 2 && i < start_i + 15 && j < start_j + 15)
+			{
+				mlx->addr[i * 1920 + j] = 0xFFFFFFFF;
+			}
+			else
+				mlx->addr[i * 1920 + j] = 0xFF808080;
+			j++;
+		}
+		i++;
 	}
-	return (0);
+	if (content == 2)
+		draw_player(mlx, mlx->player.pos[0] * 16, mlx->player.pos[1] * 16);
+}
+
+
+void	print_map(t_mlx *mlx, char **map)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		printf("%c\n", map[i][j]);
+		while (map[i][j])
+		{
+			if (map[i][j] == '1')
+				draw(mlx, 1, i * 16, j * 16);
+			else if (map[i][j] == '0')
+				draw(mlx, 0, i * 16, j * 16);
+			else if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E')
+				draw(mlx, 2, i * 16, j * 16);
+			else if (map[i][j] == '\n')
+				break;
+			j++;
+		}
+		i++;
+	}
 }
 
 int	print_image(t_mlx *mlx)
 {
-	raycast(mlx);
+	//raycast(mlx);
 	color_pixels(mlx);
+	print_map(mlx, mlx->data->map);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->img_ptr, 0, 0);
 	return 0;
 }
