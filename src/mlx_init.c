@@ -31,6 +31,7 @@ void	free_mlx(t_mlx *mlx, int n)
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
 	mlx_destroy_display(mlx->mlx_ptr);
 	free(mlx->mlx_ptr);
+	free_map(mlx->data->map);
 }
 
 void ft_exit(t_data *data, t_mlx *mlx, int n)

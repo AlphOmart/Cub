@@ -129,10 +129,31 @@ void color_pixels(t_mlx *mlx)
 // 	return (0);
 // }
 //
-// void	draw_player_angle(t_mlx *mlx)
-// {
-// 	printf()
-// }
+void	draw_player_angle(t_mlx *mlx)
+{
+	size_t k = 0;
+
+	double x = mlx->player.pos[0] * 16;
+	double y = mlx->player.pos[1] * 16 + 7;
+	double angle = (270 * (M_PI / 180));
+
+	double i = cos(angle);
+	double j = sinf(angle);
+	double r = sqrtf(pow(i, 2) + pow(j, 2));
+
+	printf("angle : %f\n", angle);
+	printf("x : %f\n", x);
+	printf("y : %f\n", y);
+	printf("i : %f\n", i);
+	printf("j : %f\n", j);
+	printf("r : %f\n", r);
+
+	while (k < 10)
+	{
+		mlx->addr[(size_t)(x + (k * j)) * 1920 + (size_t)(y + (k *i))] = 0xFFE83845;
+		k++;
+	}
+}
 
 void	draw_player(t_mlx *mlx, double i, double j)
 {
@@ -155,7 +176,7 @@ void	draw_player(t_mlx *mlx, double i, double j)
 		}
 		i++;
 	}
-	//draw_player_angle();
+	draw_player_angle(mlx);
 }
 
 void	draw(t_mlx *mlx, int content, size_t i, size_t j)
