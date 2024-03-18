@@ -112,19 +112,63 @@ void	check_horizontal(double x, double y, double angle, t_ray *ray)
 	return;
 }
 
+void	check_vertical(double x, double y, double angle, t_ray *ray)
+{
+	t_ray	inter;
+	double	rad;
+	double vec[2];
+
+	rad = angle * M_PI_4 / 45;
+	if (angle == 90 || angle == 270) {
+		ray->inter[0] = INFINITY;
+		ray->inter[1] = y;
+		ray->dist = INFINITY;
+		ray->hit = 0;
+		return;
+	}
+	inter.inter[0] = (double) CELL_SIZE * ((int)(x / CELL_SIZE) + (angle  < 180));
+	inter.dist = (inter.inter[0] - y) / sin(rad);
+	inter.inter[1] = (inter.dist * cos(rad));
+	inter.inter[1] += x;
+	vec[0] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
+	vec[1] = fabs((CELL_SIZE / (x - inter.inter[0])) * (inter.inter[1] - y));
+	if (angle > 0 || angle > 180)
+		vec[1] *= -1;
+	printf("Coucou : %f\n", inter.dist);
+	ray->inter[0] = inter.inter[0];
+	ray->inter[1] = inter.inter[1];
+	ray->dist = inter.dist;
+	ray->hit = 1;
+	return;
+}
+
 int	raycast(t_mlx *mlx)
 {
 	double	cur_angle;
 	size_t	i;
-	t_ray	horiz[1920];
+	t_ray	horiz;
+	t_ray	vert;
 
 	cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
 	i = 0;
 	while (i < 1920)
 	{
-		check_horizontal(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &horiz[i]);
-		mlx->player.rays[i] = horiz[i];
-		printf("in ray cast %li : %f\n", i, horiz[i].dist);
+		check_horizontal(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &horiz);
+		check_vertical(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &vert);
+		if (horiz.dist < vert.dist)
+		{
+			mlx->player.rays[i].inter[0] = horiz.inter[0];
+			mlx->player.rays[i].inter[1] = horiz.inter[1];
+			mlx->player.rays[i].dist = horiz.dist;
+			mlx->player.rays[i].hit = 1;
+		}
+		else if (horiz.dist > vert.dist)
+			{
+			mlx->player.rays[i].inter[0] = vert.inter[0];
+			mlx->player.rays[i].inter[1] = vert.inter[1];
+			mlx->player.rays[i].dist = vert.dist;
+			mlx->player.rays[i].hit = 1;
+		}
 		i++;
 	}
 	return (0);
@@ -169,7 +213,8 @@ void	draw_line(t_mlx *mlx, double len, double angle, double x, double y)
 
 	if (len != INFINITY)
 	{
-		while (k < len) {
+		while (k < len)
+			{
 			mlx->addr[(size_t)(x - (k * j)) * 1920 + (size_t)(y + (k * i))] = 0xFF808080;
 			k++;
 		}
@@ -310,6 +355,38 @@ void	init_player(t_mlx *mlx, t_data *data)
 	mlx->player.angle = get_start_angle(data->map[fd[0]][fd[1]]);
 }
 
+int handle_key_press(int keycode, t_mlx *mlx)
+{
+	double angle;
+
+	angle = mlx->player.angle;
+	if (keycode == XK_Escape)
+		close_window(mlx);
+	if (keycode == XK_w)
+	{
+		mlx->player.pos[0] += mlx->player.pdx;
+		mlx->player.pos[1] += mlx->player.pdy;
+	}
+	else if (keycode == XK_s)
+	{
+		mlx->player.pos[0] -= mlx->player.pdx;
+		mlx->player.pos[1] -= mlx->player.pdy;
+	}
+	else if (keycode == XK_a)
+	{
+		mlx->player.angle += 0.5;
+		mlx->player.pdx = cos(angle) * 15;
+		mlx->player.pdy = sin (angle) * 15;
+	}
+	else if (keycode == XK_d)
+	{
+		mlx->player.angle -= 0.15;
+		mlx->player.pdx = cos(angle) * 15;
+		mlx->player.pdy = sin (angle) * 15;
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
@@ -328,7 +405,7 @@ int	main(int argc, char **argv)
 
 
 	//fonctionne jusque la !
-	mlx_hook(mlx->win, KeyRelease, KeyRelease, handle_key_press, mlx);
+	mlx_hook(mlx.win, KeyRelease, KeyRelease, handle_key_press, &mlx);
 	mlx_loop_hook(mlx.mlx_ptr, print_image, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 	return (0);

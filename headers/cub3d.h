@@ -84,6 +84,8 @@ typedef struct s_player
 	double	pos[2];
 	double	mov[2];
 	double	angle_mov;
+	double	pdx;
+	double	pdy;
 	double	angle;
 	float	fov;
 	t_ray	rays[1920];

@@ -42,7 +42,7 @@ all:			lib mlx	$(NAME)
 
 $(NAME):		$(OBJS) $(HEADER)
 				@echo "\033[0;33m\nCOMPILING cub3d...\n"
-				@$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(MLX_EX) -o $@
+				@$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(MLX_EX) -o $@ -lm
 				@echo "\033[1;32m./cub3d created\n"
 
 lib:
