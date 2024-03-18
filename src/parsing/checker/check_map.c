@@ -12,7 +12,7 @@
 
 #include "../../../headers/cub3d.h"
 
-static void	check_elements(char **cpy);
+static void	check_elements(t_data *data, char **cpy);
 
 void	check_map(t_data *data)
 {
@@ -22,14 +22,14 @@ void	check_map(t_data *data)
 	if (!data->map || !data->map[1])
 		return (data->map = NULL, errno = 4, (void) NULL);
 	map_cpy(&data->map[1], &cpy);
-	check_elements(cpy);
+	check_elements(data, cpy);
 	map_cpy(cpy, &(data->map));
 	if (!is_close(cpy))
 		return (free_map(cpy));
 	free_map(cpy);
 }
 
-bool	is_valid(char *cpy)
+bool	is_valid(t_data *data, char *cpy)
 {
 	static int	pos_nbr = 0;
 	size_t		j;
@@ -52,19 +52,21 @@ bool	is_valid(char *cpy)
 		}
 		j++;
 	}
+	data->width_map = j;
 	return (true);
 }
 
-static void	check_elements(char **cpy)
+static void	check_elements(t_data *data, char **cpy)
 {
 	size_t	i;
 
 	i = 0;
 	while (cpy[i])
 	{
-		is_valid(cpy[i]);
+		is_valid(data, cpy[i]);
 		i++;
 	}
+	data->high_map = i;
 }
 
 bool	is_block(char **map)

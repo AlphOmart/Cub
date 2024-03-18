@@ -82,7 +82,63 @@ void color_pixels(t_mlx *mlx)
 	}
 }
 
-void	check_horizontal(double x, double y, double angle, t_ray *ray)
+int	c1(double vector[2], t_ray *ray, t_data *data)
+{
+	int	to_check[2];
+
+	to_check[0] = (int) ray->inter[0] / CELL_SIZE - (vector[0] < 0);
+	to_check[1] = (int) ray->inter[1] / CELL_SIZE;
+	if (to_check[0] < 0 || to_check[0] >= data->width_map || \
+		to_check[1] < 0 || to_check[1] >= data->high_map)
+		return (ray->hit = 0, 0);
+	if (data->map[to_check[1]][to_check[0]] == '1')
+		return (ray->hit = 1, 1);
+	return (0);
+}
+
+int	c2(double vector[2], t_ray *ray, t_data *data)
+{
+	int	to_check[2];
+
+	to_check[1] = (int) ray->inter[1] / CELL_SIZE - (vector[1] < 0);
+	to_check[0] = (int) ray->inter[0] / CELL_SIZE;
+	if (to_check[0] < 0 || to_check[0] >= data->width_map || \
+		to_check[1] < 0 || to_check[1] >= data->high_map)
+		return (ray->hit = 0, 0);
+	if (data->map[to_check[1]][to_check[0]] == '1')
+		return (ray->hit = 1, 1);
+	return (0);
+}
+
+t_ray	check_collide(t_ray inter, double vec[2], t_mlx *mlx, int i)
+{
+	int		nb_iter;
+	int		hit;
+	double	vec_magnitude;
+
+	inter.hit = 0;
+	nb_iter = 0;
+	inter.dist = fabs(inter.dist);
+	if (i == 1)
+		hit = c1(vec, &inter, mlx->data);
+	else
+		hit = c2(vec, &inter, mlx->data);
+	vec_magnitude = sqrt(vec[0] * vec[0] + vec[1] * vec[1]);
+	while (!hit && nb_iter < 512)
+	{
+		inter.inter[0] += vec[0];
+		inter.inter[1] += vec[1];
+		inter.dist += vec_magnitude;
+		if (i == 1)
+			hit = c1(vec, &inter, mlx->data);
+		else
+			hit = c1(vec, &inter, mlx->data);
+		nb_iter++;
+	}
+	return (inter);
+}
+
+void	check_horizontal(double x, double y, double angle, t_ray *ray, t_mlx *mlx)
 {
 	t_ray	inter;
 	double	rad;
@@ -101,44 +157,38 @@ void	check_horizontal(double x, double y, double angle, t_ray *ray)
 	inter.dist = (inter.inter[1] - y) / sin(rad);
 	inter.inter[0] = (inter.dist * cos(rad));
 	inter.inter[0] += x;
-	vec[1] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
-	vec[0] = fabs((CELL_SIZE / (y - inter.inter[1])) * (inter.inter[0] - x));
+	vec[0] = CELL_SIZE - 2 * CELL_SIZE * (angle > 90 || angle < 270);
+	vec[0] = fabs((CELL_SIZE / (x - inter.inter[0])) * (inter.inter[1] - y));
 	if (angle > 90 || angle > 270)
 		vec[0] *= -1;
-	ray->inter[0] = inter.inter[0];
-	ray->inter[1] = inter.inter[1];
-	ray->dist = inter.dist;
-	ray->hit = 1;
+	*ray = check_collide(inter, vec, mlx, 2);
 	return;
 }
 
-void	check_vertical(double x, double y, double angle, t_ray *ray)
+void	check_vertical(double x, double y, double angle, t_ray *ray, t_mlx *mlx)
 {
 	t_ray	inter;
 	double	rad;
 	double vec[2];
 
 	rad = angle * M_PI_4 / 45;
-	if (angle == 90 || angle == 290)
+	if (angle == 90 || angle == 270)
 	{
-		ray->inter[0] = x;
-		ray->inter[1] = INFINITY;
+		ray->inter[0] = INFINITY;
+		ray->inter[1] = y;
 		ray->dist = INFINITY;
 		ray->hit = 0;
 		return;
 	}
-	inter.inter[1] = (double) CELL_SIZE * ((int)(y / CELL_SIZE) + (angle < 180));
-	inter.dist = (inter.inter[1] - y) / cos(rad);
-	inter.inter[0] = (inter.dist * sin(rad));
-	inter.inter[0] += x;
-	vec[1] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
-	vec[0] = fabs((CELL_SIZE / (y - inter.inter[1])) * (inter.inter[0] - x));
+	inter.inter[0] = (double) CELL_SIZE * ((int)(y / CELL_SIZE) + (angle > 90 || angle < 270));
+	inter.dist = (inter.inter[0] - x) / cos(rad);
+	inter.inter[1] = (inter.dist * sin(rad));
+	inter.inter[1] += x;
+	vec[0] = CELL_SIZE - 2 * CELL_SIZE * (angle > 90 || angle < 270);
+	vec[0] = fabs((CELL_SIZE / (x - inter.inter[0])) * (inter.inter[1] - y));
 	if (angle > 90 || angle > 270)
 		vec[0] *= -1;
-	ray->inter[0] = inter.inter[0];
-	ray->inter[1] = inter.inter[1];
-	ray->dist = fabs(inter.dist);
-	ray->hit = 1;
+	*ray = check_collide(inter, vec, mlx,1);
 	return;
 }
 
@@ -153,8 +203,8 @@ int	raycast(t_mlx *mlx)
 	i = 0;
 	while (i < 1920)
 	{
-		check_horizontal(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &horiz);
-		check_vertical(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &vert);
+		check_horizontal(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &horiz, mlx);
+		check_vertical(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &vert, mlx);
 		if (horiz.dist < vert.dist)
 		{
 			mlx->player.rays[i].inter[0] = horiz.inter[0];
@@ -168,10 +218,7 @@ int	raycast(t_mlx *mlx)
 			mlx->player.rays[i].inter[1] = vert.inter[1];
 			mlx->player.rays[i].dist = vert.dist;
 			mlx->player.rays[i].hit = 1;
-		}
-		printf("hor dist : %f\n", horiz.dist);
-		printf("vert dist : %f\n", vert.dist);
-		printf("raycast dist : %f\n", mlx->player.rays[i].dist);
+		 }
 		i++;
 	}
 	return (0);
@@ -214,7 +261,7 @@ void	draw_line(t_mlx *mlx, double len, double angle, double x, double y)
 	x = mlx->player.pos[0] * 16 + 7;
 	y = mlx->player.pos[1] * 16 + 7;
 
-	if (len != INFINITY)
+	if (len != INFINITY && len > 0)
 	{
 		while (k < len)
 			{

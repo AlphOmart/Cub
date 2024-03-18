@@ -55,6 +55,8 @@ typedef struct s_data
 	int		c[3];
 
 	char	**map;
+	int		width_map;
+	int		high_map;
 
 	void	*element[6];
 }		t_data;
