@@ -17,7 +17,7 @@ void	init_mlx(t_mlx *mlx, t_data *data)
 	open_textures(mlx, data);
 }
 
-void	free_mlx(t_mlx *mlx, int n)
+void	free_mlx(t_mlx *mlx, int n, int c)
 {
 	if (n)
 		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[0].img);
@@ -31,13 +31,14 @@ void	free_mlx(t_mlx *mlx, int n)
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
 	mlx_destroy_display(mlx->mlx_ptr);
 	free(mlx->mlx_ptr);
-	free_map(mlx->data->map);
+	if (c != 0)
+		free_map(mlx->data->map);
 }
 
-void ft_exit(t_data *data, t_mlx *mlx, int n)
+void ft_exit(t_data *data, t_mlx *mlx, int n, int c)
 {
 	ft_free_data(data, 1);
-	free_mlx(mlx, n);
+	free_mlx(mlx, n, c);
 	ft_error(RED ERROR YELLOW "invalid sprites path !\n" NC, 4);
 }
 
@@ -46,25 +47,25 @@ void	open_textures(t_mlx *mlx, t_data *data)
 	mlx->textures[0].img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->no,
 			&(mlx->textures[0].width), &(mlx->textures[0].height));
 	if (!mlx->textures[0].img)
-		ft_exit(data, mlx, 0);
+		ft_exit(data, mlx, 0, 0);
 	mlx->textures[1].img = mlx_xpm_file_to_image(mlx->mlx_ptr,
 			data->so, &(mlx->textures[1].width), &(mlx->textures[1].height));
 	if (!mlx->textures[1].img)
-		ft_exit(data, mlx, 1);
+		ft_exit(data, mlx, 1, 0);
 
 	mlx->textures[2].img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->we,
 			&(mlx->textures[2].width), &(mlx->textures[2].height));
 	if (!mlx->textures[2].img)
-		ft_exit(data, mlx, 2);
+		ft_exit(data, mlx, 2, 0);
 	mlx->textures[3].img = mlx_xpm_file_to_image(mlx->mlx_ptr,
 			data->ea, &(mlx->textures[3].width), &(mlx->textures[3].height));
 	if (!mlx->textures[3].img)
-		ft_exit(data, mlx, 3);
+		ft_exit(data, mlx, 3, 0);
 	ft_free_data(data, 0);
 }
 
 int close_window(t_mlx *mlx)
 {
-	free_mlx(mlx, 4);
+	free_mlx(mlx, 4, 1);
 	exit(0);
 }

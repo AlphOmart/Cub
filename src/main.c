@@ -36,7 +36,7 @@ void	ft_free_data(t_data *data, int i)
 	free(data->ea);
 	free(data->we);
 	if (i != 0)
-	free_map(data->map);
+		free_map(data->map);
 }
 
 unsigned int	rgb_conv(int rgb[3])
