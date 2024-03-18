@@ -138,7 +138,7 @@ void	check_vertical(double x, double y, double angle, t_ray *ray)
 	ray->inter[0] = inter.inter[0];
 	ray->inter[1] = inter.inter[1];
 	ray->dist = inter.dist;
-	ray->hit = 1;
+	ray->hit = 1;dasdas
 	return;
 }
 
