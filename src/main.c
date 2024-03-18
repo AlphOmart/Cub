@@ -89,14 +89,15 @@ void	check_horizontal(double x, double y, double angle, t_ray *ray)
 	double vec[2];
 
 	rad = angle * M_PI_4 / 45;
-	if (angle == 0 || angle == 180) {
+	if (angle == 0 || angle == 180)
+	{
 		ray->inter[0] = INFINITY;
 		ray->inter[1] = y;
 		ray->dist = INFINITY;
 		ray->hit = 0;
 		return;
 	}
-	inter.inter[1] = (double) CELL_SIZE * ((int)(y / CELL_SIZE) + (angle  < 180));
+	inter.inter[1] = (double) CELL_SIZE * ((int)(y / CELL_SIZE) + (angle < 180));
 	inter.dist = (inter.inter[1] - y) / sin(rad);
 	inter.inter[0] = (inter.dist * cos(rad));
 	inter.inter[0] += x;
@@ -104,7 +105,6 @@ void	check_horizontal(double x, double y, double angle, t_ray *ray)
 	vec[0] = fabs((CELL_SIZE / (y - inter.inter[1])) * (inter.inter[0] - x));
 	if (angle > 90 || angle > 270)
 		vec[0] *= -1;
-	printf("Coucou : %f\n", inter.dist);
 	ray->inter[0] = inter.inter[0];
 	ray->inter[1] = inter.inter[1];
 	ray->dist = inter.dist;
@@ -119,25 +119,25 @@ void	check_vertical(double x, double y, double angle, t_ray *ray)
 	double vec[2];
 
 	rad = angle * M_PI_4 / 45;
-	if (angle == 90 || angle == 270) {
-		ray->inter[0] = INFINITY;
-		ray->inter[1] = y;
+	if (angle == 90 || angle == 290)
+	{
+		ray->inter[0] = x;
+		ray->inter[1] = INFINITY;
 		ray->dist = INFINITY;
 		ray->hit = 0;
 		return;
 	}
-	inter.inter[0] = (double) CELL_SIZE * ((int)(x / CELL_SIZE) + (angle  < 180));
-	inter.dist = (inter.inter[0] - y) / sin(rad);
-	inter.inter[1] = (inter.dist * cos(rad));
-	inter.inter[1] += x;
-	vec[0] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
-	vec[1] = fabs((CELL_SIZE / (x - inter.inter[0])) * (inter.inter[1] - y));
-	if (angle > 0 || angle > 180)
-		vec[1] *= -1;
-	printf("Coucou : %f\n", inter.dist);
+	inter.inter[1] = (double) CELL_SIZE * ((int)(y / CELL_SIZE) + (angle < 180));
+	inter.dist = (inter.inter[1] - y) / cos(rad);
+	inter.inter[0] = (inter.dist * sin(rad));
+	inter.inter[0] += x;
+	vec[1] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
+	vec[0] = fabs((CELL_SIZE / (y - inter.inter[1])) * (inter.inter[0] - x));
+	if (angle > 90 || angle > 270)
+		vec[0] *= -1;
 	ray->inter[0] = inter.inter[0];
 	ray->inter[1] = inter.inter[1];
-	ray->dist = inter.dist;
+	ray->dist = fabs(inter.dist);
 	ray->hit = 1;
 	return;
 }
@@ -162,13 +162,16 @@ int	raycast(t_mlx *mlx)
 			mlx->player.rays[i].dist = horiz.dist;
 			mlx->player.rays[i].hit = 1;
 		}
-		else if (horiz.dist > vert.dist)
+		else if (horiz.dist >= vert.dist)
 			{
 			mlx->player.rays[i].inter[0] = vert.inter[0];
 			mlx->player.rays[i].inter[1] = vert.inter[1];
 			mlx->player.rays[i].dist = vert.dist;
 			mlx->player.rays[i].hit = 1;
 		}
+		printf("hor dist : %f\n", horiz.dist);
+		printf("vert dist : %f\n", vert.dist);
+		printf("raycast dist : %f\n", mlx->player.rays[i].dist);
 		i++;
 	}
 	return (0);
