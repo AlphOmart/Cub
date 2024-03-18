@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <math.h>
-#define CELL_SIZE 64
+#define CELL_SIZE 16
 #include "../headers/cub3d.h"
 
 /**
@@ -54,8 +54,7 @@ unsigned int	rgb_conv(int rgb[3])
 	return (result);
 }
 
-void color_pixels(t_mlx *mlx)
-{
+void color_pixels(t_mlx *mlx) {
 	unsigned int	floor;
 	unsigned int	celling;
 	int				count_height;
@@ -82,147 +81,157 @@ void color_pixels(t_mlx *mlx)
 	}
 }
 
-int	c1(double vector[2], t_ray *ray, t_data *data)
-{
-	int	to_check[2];
-
-	to_check[0] = (int) ray->inter[0] / CELL_SIZE - (vector[0] < 0);
-	to_check[1] = (int) ray->inter[1] / CELL_SIZE;
-	if (to_check[0] < 0 || to_check[0] >= data->width_map || \
-		to_check[1] < 0 || to_check[1] >= data->high_map)
-		return (ray->hit = 0, 0);
-	if (data->map[to_check[1]][to_check[0]] == '1')
-		return (ray->hit = 1, 1);
-	return (0);
-}
-
-int	c2(double vector[2], t_ray *ray, t_data *data)
-{
-	int	to_check[2];
-
-	to_check[1] = (int) ray->inter[1] / CELL_SIZE - (vector[1] < 0);
-	to_check[0] = (int) ray->inter[0] / CELL_SIZE;
-	if (to_check[0] < 0 || to_check[0] >= data->width_map || \
-		to_check[1] < 0 || to_check[1] >= data->high_map)
-		return (ray->hit = 0, 0);
-	if (data->map[to_check[1]][to_check[0]] == '1')
-		return (ray->hit = 1, 1);
-	return (0);
-}
-
-t_ray	check_collide(t_ray inter, double vec[2], t_mlx *mlx, int i)
-{
-	int		nb_iter;
-	int		hit;
-	double	vec_magnitude;
-
-	inter.hit = 0;
-	nb_iter = 0;
-	inter.dist = fabs(inter.dist);
-	if (i == 1)
-		hit = c1(vec, &inter, mlx->data);
-	else
-		hit = c2(vec, &inter, mlx->data);
-	vec_magnitude = sqrt(vec[0] * vec[0] + vec[1] * vec[1]);
-	while (!hit && nb_iter < 512)
-	{
-		inter.inter[0] += vec[0];
-		inter.inter[1] += vec[1];
-		inter.dist += vec_magnitude;
-		if (i == 1)
-			hit = c1(vec, &inter, mlx->data);
-		else
-			hit = c1(vec, &inter, mlx->data);
-		nb_iter++;
-	}
-	return (inter);
-}
-
-void	check_horizontal(double x, double y, double angle, t_ray *ray, t_mlx *mlx)
-{
-	t_ray	inter;
-	double	rad;
-	double vec[2];
-
-	rad = angle * M_PI_4 / 45;
-	if (angle == 0 || angle == 180)
-	{
-		ray->inter[0] = INFINITY;
-		ray->inter[1] = y;
-		ray->dist = INFINITY;
-		ray->hit = 0;
-		return;
-	}
-	inter.inter[1] = (double) CELL_SIZE * ((int)(y / CELL_SIZE) + (angle < 180));
-	inter.dist = (inter.inter[1] - y) / sin(rad);
-	inter.inter[0] = (inter.dist * cos(rad));
-	inter.inter[0] += x;
-	vec[0] = CELL_SIZE - 2 * CELL_SIZE * (angle > 90 || angle < 270);
-	vec[0] = fabs((CELL_SIZE / (x - inter.inter[0])) * (inter.inter[1] - y));
-	if (angle > 90 || angle > 270)
-		vec[0] *= -1;
-	*ray = check_collide(inter, vec, mlx, 2);
-	return;
-}
-
-void	check_vertical(double x, double y, double angle, t_ray *ray, t_mlx *mlx)
-{
-	t_ray	inter;
-	double	rad;
-	double vec[2];
-
-	rad = angle * M_PI_4 / 45;
-	if (angle == 90 || angle == 270)
-	{
-		ray->inter[0] = INFINITY;
-		ray->inter[1] = y;
-		ray->dist = INFINITY;
-		ray->hit = 0;
-		return;
-	}
-	inter.inter[0] = (double) CELL_SIZE * ((int)(y / CELL_SIZE) + (angle > 90 || angle < 270));
-	inter.dist = (inter.inter[0] - x) / cos(rad);
-	inter.inter[1] = (inter.dist * sin(rad));
-	inter.inter[1] += x;
-	vec[0] = CELL_SIZE - 2 * CELL_SIZE * (angle > 90 || angle < 270);
-	vec[0] = fabs((CELL_SIZE / (x - inter.inter[0])) * (inter.inter[1] - y));
-	if (angle > 90 || angle > 270)
-		vec[0] *= -1;
-	*ray = check_collide(inter, vec, mlx,1);
-	return;
-}
-
-int	raycast(t_mlx *mlx)
-{
-	double	cur_angle;
-	size_t	i;
-	t_ray	horiz;
-	t_ray	vert;
-
-	cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
-	i = 0;
-	while (i < 1920)
-	{
-		check_horizontal(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &horiz, mlx);
-		check_vertical(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &vert, mlx);
-		if (horiz.dist < vert.dist)
-		{
-			mlx->player.rays[i].inter[0] = horiz.inter[0];
-			mlx->player.rays[i].inter[1] = horiz.inter[1];
-			mlx->player.rays[i].dist = horiz.dist;
-			mlx->player.rays[i].hit = 1;
-		}
-		else if (horiz.dist >= vert.dist)
-			{
-			mlx->player.rays[i].inter[0] = vert.inter[0];
-			mlx->player.rays[i].inter[1] = vert.inter[1];
-			mlx->player.rays[i].dist = vert.dist;
-			mlx->player.rays[i].hit = 1;
-		 }
-		i++;
-	}
-	return (0);
-}
+// int	ray_collide_horiz(double vector[2], t_ray *ray, t_mlx *mlx)
+// {
+// 	int	to_check[2];
+//
+// 	to_check[1] = (int)ray->inter[1] / CELL_SIZE - (vector[1] < 0);
+// 	to_check[0] = (int)ray->inter[0] / CELL_SIZE;
+// 	if (to_check[0] < 0 || to_check[0] >= mlx->data->width_map || \
+// 		to_check[1] < 0 || to_check[1] >= mlx->data->high_map)
+// 		return (ray->hit = 0, 0);
+// 	if (mlx->data->map[to_check[1]][to_check[0]] == '1')
+// 		return (ray->hit = 1, 1);
+// 	return (0);
+// }
+// int	ray_collide_vert(double vector[2], t_ray *ray, t_mlx* mlx)
+// {
+// 	int	to_check[2];
+//
+// 	to_check[0] = (int) ray->inter[0] / CELL_SIZE - (vector[0] < 0);
+// 	to_check[1] = (int) ray->inter[1] / CELL_SIZE;
+// 	if (to_check[0] < 0 || to_check[0] >= mlx->data->width_map || \
+// 		to_check[1] < 0 || to_check[1] >= mlx->data->high_map)
+// 		return (ray->hit = 0, 0);
+// 	if (mlx->data->map[to_check[1]][to_check[0]] == '1')
+// 		return (ray->hit = 1, 1);
+// 	return (0);
+// }
+// t_ray	check_collide(t_ray inter, double vec[2], t_mlx *mlx, int i)
+// {
+// 	int		nb_iter;
+// 	int		hit;
+// 	double	vec_magnitude;
+//
+// 	inter.hit = 0;
+// 	nb_iter = 0;
+// 	inter.dist = fabs(inter.dist);
+// 	vec_magnitude = sqrt(vec[0] * vec[0] + vec[1] * vec[1]);
+// 	if (i == 1)
+// 		hit = ray_collide_horiz(vec, &inter, mlx);
+// 	else
+// 		hit = ray_collide_vert(vec, &inter, mlx);
+// 	while (!hit && nb_iter < 512)
+// 	{
+// 		inter.inter[0] += vec[0];
+// 		inter.inter[1] += vec[1];
+// 		inter.dist += vec_magnitude;
+// 		if (i == 1)
+// 			hit = ray_collide_horiz(vec, &inter, mlx);
+// 		else
+// 			hit = ray_collide_vert(vec, &inter, mlx);
+// 		nb_iter++;
+// 	}
+// 	return (inter);
+// }
+//
+// 	void	check_horizontal(double x, double y, double angle, t_ray *ray, t_mlx *mlx)
+// 	{
+// 	t_ray	inter;
+// 	double	rad;
+// 	double vec[2];
+//
+// 	rad = angle * (M_PI / 180);
+// 	if (angle == 0 || angle == 180)
+// 	{
+// 		ray->inter[0] = INFINITY;
+// 		ray->inter[1] = y;
+// 		ray->dist = INFINITY;
+// 		ray->hit = 0;
+// 		return;
+// 	}
+// 	inter.inter[1] = (double) CELL_SIZE * (((int)y / CELL_SIZE) + \
+// 			(angle < 180) + \
+// 			(fabs(fmod(y, CELL_SIZE) - CELL_SIZE) <= 0.0001 && \
+// 							angle < 180) - \
+// 			(fmod(y, CELL_SIZE) <= 0.0001 && \
+// 							angle > 180));
+// 	inter.dist = (inter.inter[1] - y) / sin(rad);
+// 	inter.inter[0] = (inter.dist * cos(rad));
+// 	inter.inter[0] += x;
+// 	vec[1] = CELL_SIZE - 2 * CELL_SIZE * (angle > 180);
+// 	vec[0] = fabs((CELL_SIZE / (y - inter.inter[1])) * (inter.inter[0] - x));
+// 	if (angle > 90 && angle < 270)
+//   		vec[0] *= -1;
+// 	*ray = check_collide(inter, vec, mlx, 1);
+// 	return;
+// }
+//
+//   void	check_vertical(double x, double y, double angle, t_ray *ray, t_mlx *mlx)
+//   {
+//   	t_ray	inter;
+//   	double	rad;
+//   	double vec[2];
+//
+// 	rad = angle * (M_PI / 180);
+//   	if (angle == 90 || angle == 270)
+//   	{
+//   		ray->inter[0] = INFINITY;
+//   		ray->inter[1] = y;
+//   		ray->dist = INFINITY;
+//   		ray->hit = 0;
+//   		return;
+//   	}
+// 	inter.inter[0] = ((double) CELL_SIZE) * (((int)x / CELL_SIZE) + \
+// 		  (angle < 90 || angle > 270) - \
+// 		  (fabs(fmod(x, CELL_SIZE)) <= 0.0001 && \
+// 					  (angle > 90 && angle < 270)) + \
+// 		  (fabs(fmod(x, CELL_SIZE) - CELL_SIZE) <= 0.0001 && \
+// 					  (angle <= 90 || angle >= 270)));
+// 	inter.dist = (inter.inter[0] - x) / cos(rad);
+// 	inter.inter[1] = (inter.dist * sin(rad));
+// 	inter.inter[1] += y;
+// 	vec[0] = CELL_SIZE - 2 * CELL_SIZE * (angle > 90 && angle < 270);
+// 	vec[1] = (CELL_SIZE / (x - inter.inter[0])) * \
+// 								(inter.inter[1] - y);
+// 	if (angle < 90 || angle > 270)
+// 		vec[1] *= -1;
+//   	*ray = check_collide(inter, vec, mlx,2);
+//   	return;
+//   }
+//
+// int	raycast(t_mlx *mlx)
+// {
+// 	double	cur_angle;
+// 	size_t	i;
+// 	t_ray	horiz;
+// 	t_ray	vert;
+//
+// 	cur_angle = mlx->player.angle - (mlx->player.fov * 0.5);
+// 	i = 0;
+// 	while (i < 1920)
+// 	{
+// 		check_horizontal(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &horiz, mlx);
+// 		check_vertical(mlx->player.pos[0], mlx->player.pos[1], cur_angle, &vert, mlx);
+// 		if (horiz.dist < vert.dist)
+// 		{
+// 			mlx->player.rays[i].inter[0] = horiz.inter[0];
+// 			mlx->player.rays[i].inter[1] = horiz.inter[1];
+// 			mlx->player.rays[i].dist = horiz.dist;
+// 			mlx->player.rays[i].hit = 1;
+// 		}
+// 		else if (horiz.dist >= vert.dist)
+// 			{
+// 			mlx->player.rays[i].inter[0] = vert.inter[0];
+// 			mlx->player.rays[i].inter[1] = vert.inter[1];
+// 			mlx->player.rays[i].dist = vert.dist;
+// 			mlx->player.rays[i].hit = 1;
+// 		 }
+// 		cur_angle += mlx->player.fov / 1920;
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 void draw_direction(t_mlx *mlx, double angle, double x, double y)
 {
@@ -252,44 +261,38 @@ void	draw_line(t_mlx *mlx, double len, double angle, double x, double y)
 	double	k;
 	double	i;
 	double	j;
-
+	double r;
 	angle = angle * (M_PI / 180);
 	i = cos(angle);
 	j = sin(angle);
-//	len = 15;
 	k = 0;
 	x = mlx->player.pos[0] * 16 + 7;
 	y = mlx->player.pos[1] * 16 + 7;
-
-	if (len != INFINITY && len > 0)
+	while (k < len)
 	{
-		while (k < len)
-			{
-			mlx->addr[(size_t)(x - (k * j)) * 1920 + (size_t)(y + (k * i))] = 0xFF808080;
-			k++;
-		}
+		mlx->addr[(size_t)(x - (k * j)) * 1920 + (size_t)(y + (k * i))] = 0xFF808080;
+		k++;
 	}
 }
 
-void	draw_angle(t_mlx *mlx)
-{
-	size_t	i;
-	mlx->player.fov = 60;
-	double current = mlx->player.angle - (mlx->player.fov * 0.5);
-	i = 0;
-	while (i < 1920)
-	{
-		current = current + (mlx->player.fov / 1920);
-		//printf("dist = %f\n", mlx->player.rays[i].dist);
-		draw_line(mlx, mlx->player.rays[i].dist, current, mlx->player.pos[0], mlx->player.pos[1]);
-		i++;
-	}
-}
+// void	draw_angle(t_mlx *mlx)
+// {
+// 	size_t	i;
+//
+// 	double current = mlx->player.angle - (mlx->player.fov * 0.5);
+// 	i = 0;
+// 	while (i < 1920)
+// 	{
+// 		draw_line(mlx, mlx->player.rays[i].dist, current, mlx->player.pos[0], mlx->player.pos[1]);
+// 		current += (mlx->player.fov / 1920);
+// 		i++;
+// 	}
+// }
 
 void	draw_player_angle(t_mlx *mlx)
 {
 	draw_direction(mlx, mlx->player.angle, mlx->player.pos[0], mlx->player.pos[1]);
-	draw_angle(mlx);
+	//draw_angle(mlx);
 }
 
 void	draw_player(t_mlx *mlx, double i, double j)
@@ -322,16 +325,16 @@ void	draw(t_mlx *mlx, int content, size_t i, size_t j)
 
 	start_i = i;
 	start_j = j;
-	while (i < 1080 && i < start_i + 16)
+	while (i < 1080 && i < start_i + CELL_SIZE + 1)
 	{
 		j = start_j;
-		while (j < 1920 && j < start_j + 16)
+		while (j < 1920 && j < start_j + CELL_SIZE)
 		{
-			if (content == 1 && i < start_i + 15 &&j < start_j + 15)
+			if (content == 1 && i < start_i + CELL_SIZE && j < start_j + CELL_SIZE)
 				mlx->addr[i * 1920 + j] = 0xFF000000;
-			else if (content == 0 && i < start_i + 15 && j < start_j + 15)
+			else if (content == 0 && i < start_i + CELL_SIZE && j < start_j + CELL_SIZE)
 				mlx->addr[i * 1920 + j] = 0xFFFFFFFF;
-			else if (content == 2 && i < start_i + 15 && j < start_j + 15)
+			else if (content == 2 && i < start_i + CELL_SIZE && j < start_j + CELL_SIZE)
 			{
 				mlx->addr[i * 1920 + j] = 0xFFFFFFFF;
 			}
@@ -341,8 +344,7 @@ void	draw(t_mlx *mlx, int content, size_t i, size_t j)
 		}
 		i++;
 	}
-	if (content == 2)
-		draw_player(mlx, mlx->player.pos[0] * 16, mlx->player.pos[1] * 16);
+
 }
 
 
@@ -362,13 +364,14 @@ void	print_map(t_mlx *mlx, char **map)
 			else if (map[i][j] == '0')
 				draw(mlx, 0, i * 16, j * 16);
 			else if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E')
-				draw(mlx, 2, i * 16, j * 16);
+				draw(mlx, 0, i * 16, j * 16);
 			else if (map[i][j] == '\n')
 				break;
 			j++;
 		}
 		i++;
 	}
+	draw_player(mlx, mlx->player.pos[0] * 16, mlx->player.pos[1] * 16);
 }
 
 int	print_image(t_mlx *mlx)
@@ -403,6 +406,7 @@ void	init_player(t_mlx *mlx, t_data *data)
 	mlx->player.pos[0] = fd[0];
 	mlx->player.pos[1] = fd[1];
 	mlx->player.angle = get_start_angle(data->map[fd[0]][fd[1]]);
+	mlx->player.fov = 60;
 }
 
 int handle_key_press(int keycode, t_mlx *mlx)
@@ -425,14 +429,14 @@ int handle_key_press(int keycode, t_mlx *mlx)
 	else if (keycode == XK_a)
 	{
 		mlx->player.angle += 0.5;
-		mlx->player.pdx = cos(angle) * 15;
-		mlx->player.pdy = sin (angle) * 15;
+		mlx->player.pdx = cos(angle) * 5;
+		mlx->player.pdy = sin (angle) * 5;
 	}
 	else if (keycode == XK_d)
 	{
-		mlx->player.angle -= 0.15;
-		mlx->player.pdx = cos(angle) * 15;
-		mlx->player.pdy = sin (angle) * 15;
+		mlx->player.angle -= 0.5;
+		mlx->player.pdx = cos(angle) * 5;
+		mlx->player.pdy = sin (angle) * 5;
 	}
 	return (0);
 }
