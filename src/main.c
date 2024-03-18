@@ -66,8 +66,6 @@ void color_pixels(t_mlx *mlx)
 
 
 	count_height = 0;
-	printf("celling = %X\n", celling);
-	printf("floor = %X\n", floor);
 	while (count_height < 1080)
 	{
 		count_width = 0;
@@ -129,37 +127,76 @@ void color_pixels(t_mlx *mlx)
 // 	return (0);
 // }
 //
-void	draw_player_angle(t_mlx *mlx)
+void draw_direction(t_mlx *mlx, double angle, double x, double y)
 {
-	size_t k = 0;
+	double	k;
+	double	r;
+	double	i;
+	double	j;
 
-	double x = mlx->player.pos[0] * 16;
-	double y = mlx->player.pos[1] * 16 + 7;
-	double angle = (270 * (M_PI / 180));
+	angle = angle * (M_PI / 180);
+	i = cos(angle);
+	j = sin(angle);
 
-	double i = cos(angle);
-	double j = sinf(angle);
-	double r = sqrtf(pow(i, 2) + pow(j, 2));
+	k = 0;
+	r = 15;
+	x = mlx->player.pos[0] * 16 + 7;
+	y = mlx->player.pos[1] * 16 + 7;
 
-	printf("angle : %f\n", angle);
-	printf("x : %f\n", x);
-	printf("y : %f\n", y);
-	printf("i : %f\n", i);
-	printf("j : %f\n", j);
-	printf("r : %f\n", r);
-
-	while (k < 10)
+	while (k < r)
 	{
-		mlx->addr[(size_t)(x + (k * j)) * 1920 + (size_t)(y + (k *i))] = 0xFFE83845;
+		mlx->addr[(size_t)(x - (k * j)) * 1920 + (size_t)(y + (k * i))] = 0xFFE83845;
 		k++;
 	}
+}
+
+void	draw_line(t_mlx *mlx, double len, double angle, double x, double y)
+{
+	double	k;
+	double	r;
+	double	i;
+	double	j;
+
+	angle = angle * (M_PI / 180);
+	i = cos(angle);
+	j = sin(angle);
+
+	k = 0;
+	r = len;
+	x = mlx->player.pos[0] * 16 + 7;
+	y = mlx->player.pos[1] * 16 + 7;
+
+	while (k < r)
+	{
+		mlx->addr[(size_t)(x - (k * j)) * 1920 + (size_t)(y + (k * i))] = 0xFF808080;
+		k++;
+	}
+}
+
+void	draw_angle(t_mlx *mlx)
+{
+	size_t	i;
+	mlx->player.fov = 60;
+	double current = mlx->player.angle - (mlx->player.fov * 0.5);
+	i = 0;
+	while (i < 1920)
+	{
+		current = current + (mlx->player.fov / 1920);
+		draw_line(mlx, mlx->player.rays[i].dist, current, mlx->player.pos[0], mlx->player.pos[1]);
+		i++;
+	}
+}
+
+void	draw_player_angle(t_mlx *mlx)
+{
+	draw_direction(mlx, mlx->player.angle, mlx->player.pos[0], mlx->player.pos[1]);
+	draw_angle(mlx);
 }
 
 void	draw_player(t_mlx *mlx, double i, double j)
 {
 	double start_j;
 	double	start_i;
-
 
 	j += 5;
 	i += 5;
@@ -219,7 +256,6 @@ void	print_map(t_mlx *mlx, char **map)
 	while (map[i])
 	{
 		j = 0;
-		printf("%c\n", map[i][j]);
 		while (map[i][j])
 		{
 			if (map[i][j] == '1')

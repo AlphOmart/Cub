@@ -71,12 +71,14 @@ typedef struct s_vec
 	double x;
 	double y;
 }					t_vec;
+
 typedef struct s_ray
 {
 	double	inter[2];
 	double	dist;
 	bool	hit;
 }	t_ray;
+
 typedef struct s_player
 {
 	double	pos[2];
