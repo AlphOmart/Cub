@@ -30,7 +30,8 @@ SRC			=	src/main.c \
 				src/parsing/checker/check_map.c \
 				src/parsing/checker/map_cpy.c \
 				src/parsing/checker/expensions.c \
-				src/mlx_init.c
+				src/mlx_init.c \
+				src/font.c
 
 OBJS_DIR	=	.OBJS/
 OBJS		=	$(addprefix $(OBJS_DIR), $(SRC:.c=.o))
