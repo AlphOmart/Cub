@@ -141,4 +141,6 @@ void	map_cpy(char **map, char ***cpy);
 //-----------------------------mlx_init.c-----------------------------------//
 void	init_mlx(t_mlx *mlx, t_data *data);
 int		close_window(t_mlx *mlx);
+
+void color_pixels(t_mlx *mlx);
 #endif
