@@ -16,7 +16,11 @@
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
 # define PI 3.14159265359
+# define CELL_SIZE 64
 
+extern int mapX, mapY, mapS;
+
+extern int	map[];
 
 # include <stdlib.h>
 # include <X11/keysym.h>
@@ -57,8 +61,8 @@ typedef struct s_mlx
 }					t_mlx;
 
 //window
-int				close_window(t_mlx *mlx);
-void				color_pixels(t_mlx *mlx, int width, int height);
+int					close_window(t_mlx *mlx);
+void				color_pixels(t_mlx *mlx);
 void				init_mlx_data(t_mlx *mlx);
 void				init_window(t_mlx	*mlx);
 
@@ -67,8 +71,10 @@ void				draw_player(t_data data);
 int					handle_key_press(int keycode, t_mlx *mlx);
 
 
-void				print(t_mlx *mlx);
-void				draw_map(t_mlx* mlx, int cell_size);
+int				print(t_mlx *mlx);
+void				draw_map(t_mlx* mlx);
+
+void check_vertical(t_data data, double *rx, double *ry);
 // void	ft_free(t_data *data, int n);
 // void	ft_error(char *str, t_data *data, int n);
 

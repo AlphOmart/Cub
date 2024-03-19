@@ -12,58 +12,41 @@
 
 #include "../includes/cub3d.h"
 
-char	map[10][10] =
-{
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 1, 1, 1, 1, 1, 1, 0, 1},
-	{1, 0, 1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 1, 0, 1, 1, 0, 1, 0, 1},
-	{1, 0, 1, 0, 1, 1, 0, 1, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
-
-
 void mlx_fill_square(t_mlx *mlx, int x, int y, int size, int color)
 {
 	int	i;
 	int	j;
 
-	j = 0;
-	i = 0;
-	while (i < size)
+	j = 2;
+	i = 2;
+	while (i < size - 3)
 	{
-		j = 0;
-		while (j < size)
+		j = 2;
+		while (j < size - 3)
 		{
-			mlx->data.addr[(x + i) * WIN_WIDTH + (y + j)] = color;
+			mlx->data.addr[(x + i) * mapX*mapS + (y + j)] = color;
 			j++;
 		}
 		i++;
 	}
 }
 
-void draw_map(t_mlx* mlx, int cell_size)
+void draw_map(t_mlx* mlx)
 {
 
-	//int window_height;
 	int y;
 	int x;
 	int color;
 
 	x = 0;
 	y = 0;
-	//window_height = 10 * cell_size;
-	while (y < 10)
+	while (y < mapY)
 	{
 		x = 0;
-		while (x < 10)
+		while (x < mapX)
 		{
-			color = (map[x][y] == 1) ? 0x808080 : 0xFFFFFF;
-			mlx_fill_square(mlx, x * (cell_size + 2), y * (cell_size + 2), cell_size, color);
+			color = (map[x*mapX+y] == 1) ? 0x808080 : 0xFFFFFF;
+			mlx_fill_square(mlx, x * mapS, y * mapS, mapS, color);
 			x++;
 		}
 		y++;
