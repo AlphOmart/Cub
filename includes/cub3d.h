@@ -76,14 +76,14 @@ void				init_window(t_mlx	*mlx);
 
 //player
 void				draw_player(t_data data);
+void	draw_line(t_data data, double xo, double yo);
 int					handle_key_press(int keycode, t_mlx *mlx);
 
 
 int				print(t_mlx *mlx);
 void				draw_map(t_mlx* mlx);
 
-void check_vertical(t_data data, t_ray *ray, double ray_angle);
-void	final_check(t_data data, t_ray *ray, double ray_angle, int dof);
+void	raycast(t_data data);
 // void	ft_free(t_data *data, int n);
 // void	ft_error(char *str, t_data *data, int n);
 

@@ -57,7 +57,7 @@ void	check_vertical(t_data data, t_ray *ray, double ray_angle)
 		ray->ry = (((int)data.player.pos_y >> 6) << 6) - 0.0001;
 		ray->rx = ((data.player.pos_y) - ray->ry) * a_tan + data.player.pos_x;
 		ray->yo = -CELL_SIZE;
-		ray->xo = -(ray->yo) * aTan;
+		ray->xo = -(ray->yo) * a_tan;
 	}
 	if (ray_angle < M_PI)
 	{

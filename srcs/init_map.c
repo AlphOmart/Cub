@@ -19,10 +19,10 @@ void	mlx_fill_square(t_mlx *mlx, int x, int y, int color)
 
 	j = 2;
 	i = 2;
-	while (i < size - 3)
+	while (i < mapS - 3)
 	{
 		j = 2;
-		while (j < size - 3)
+		while (j < mapS - 3)
 		{
 			mlx->data.addr[(x + i) * mapX * mapS + (y + j)] = color;
 			j++;
