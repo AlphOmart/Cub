@@ -25,7 +25,8 @@ void	draw_player(t_data data)
 		j = 0;
 		while (j < 6)
 		{
-			data.addr[(int)(data.player.pos_x + i) * mapX*mapS + ((int)(data.player.pos_y + j))] = 0xFFD50000; // Rouge
+			data.addr[((int)(data.player.pos_x + i)) * mapX * mapS + \
+				((int)(data.player.pos_y + j))] = 0xFFD50000;
 			++j;
 		}
 		++i;
@@ -34,14 +35,14 @@ void	draw_player(t_data data)
 	j = sin(data.player.pa);
 	while (z <= 20)
 	{
-		data.addr[((int)data.player.pos_x + 3 + (int)(i * z)) * mapX*mapS + ((int)data.player.pos_y + 3 + (int)(j * z))] = 0xFFD50000; // Rouge
+		data.addr[((int)data.player.pos_x + 3 + (int)(i * z)) * mapX * mapS + \
+				((int)data.player.pos_y + 3 + (int)(j * z))] = 0xFFD50000;
 		++z;
 	}
 }
 
-int handle_key_press(int keycode, t_mlx *mlx)
+int	handle_key_press(int keycode, t_mlx *mlx)
 {
-
 	if (keycode == XK_Escape)
 		close_window(mlx);
 	if (keycode == XK_w)

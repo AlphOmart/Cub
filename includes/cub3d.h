@@ -34,6 +34,14 @@ extern int	map[];
 # include "../minilibx-linux/mlx.h"
 # include "../minilibx-linux/mlx_int.h"
 
+typedef struct s_ray
+{
+	double	angle;
+	double	yo, xo;
+	double	rx;
+	double	ry;
+}	t_ray;
+
 typedef struct s_player
 {
 	float	pos_x;
@@ -74,7 +82,8 @@ int					handle_key_press(int keycode, t_mlx *mlx);
 int				print(t_mlx *mlx);
 void				draw_map(t_mlx* mlx);
 
-void check_vertical(t_data data, double *rx, double *ry);
+void check_vertical(t_data data, t_ray *ray, double ray_angle);
+void	final_check(t_data data, t_ray *ray, double ray_angle, int dof);
 // void	ft_free(t_data *data, int n);
 // void	ft_error(char *str, t_data *data, int n);
 
