@@ -20,7 +20,7 @@
 
 extern int mapX, mapY, mapS;
 
-extern int	map[];
+extern char	map[10][10];
 
 # include <stdlib.h>
 # include <X11/keysym.h>
@@ -44,17 +44,20 @@ typedef struct s_ray
 
 typedef struct s_player
 {
-	float	pos_x;
-	float	pos_y;
-	float	pdx;
-	float	pdy;
-	float	pa;
+	double	pos_x;
+	double	pos_y;
+	double	pdx;
+	double	pdy;
+	double	pa;
+	double	fov;
 }					t_player;
 
 typedef struct s_data
 {
 	void			*img_ptr;
+	void			*game_ptr;
 	int				*addr;
+	int				*game_addr;
 	int				line_length;
 	int				bits_per_pixel;
 	int				endian;
@@ -70,13 +73,13 @@ typedef struct s_mlx
 
 //window
 int					close_window(t_mlx *mlx);
-void				color_pixels(t_mlx *mlx);
+void				color_pixels(t_mlx *mlx, int width, int height);
 void				init_mlx_data(t_mlx *mlx);
 void				init_window(t_mlx	*mlx);
 
 //player
 void				draw_player(t_data data);
-void	draw_line(t_data data, double xo, double yo);
+void				draw_line(t_data data, double xo, double yo, double angle);
 int					handle_key_press(int keycode, t_mlx *mlx);
 
 
