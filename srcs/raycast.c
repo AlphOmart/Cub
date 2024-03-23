@@ -3,14 +3,32 @@
 
 void	check_vertical(t_data data, t_ray *ray, double ray_angle);
 void	check_horizontal(t_data data, t_ray *ray, double ray_angle);
-void	select_ray(t_player player, t_ray vert, t_ray horiz, double def[2]);
+void	select_ray(t_data data, t_ray vert, t_ray horiz, t_ray *selected, double angle);
+
+
+void	draw_walls(t_data data, t_ray ray, size_t i)
+{
+	int	j;
+	int line0;
+	double	lineH = (720 * (mapS)) / ray.dist;
+
+	if (lineH > 720)
+		lineH = 720;
+	line0 = (720 / 2) - (lineH / 2);
+	j = 0;
+	while (j < lineH)
+	{
+		data.game_addr[(j + line0) * 1280 + i] = 0x808080;
+		j++;
+	}
+}
 
 void	raycast(t_data data)
 {
 	t_ray	horiz;
-	double	def_inter[2];
-	double	angle;
 	t_ray	vert;
+	t_ray	selected;
+	double	angle;
 	size_t	i;
 
 	angle =((data.player.pa * 180) / M_PI) - (data.player.fov * 0.5);
@@ -21,9 +39,10 @@ void	raycast(t_data data)
 	{
 		check_vertical(data, &vert, angle);
 		check_horizontal(data, &horiz, angle);
-		select_ray(data.player, vert, horiz, def_inter);
-		draw_line(data, def_inter[0], def_inter[1], angle);
+		select_ray(data, vert, horiz, &selected, angle);
+		draw_line(data, selected.rx, selected.ry, angle);
 		//draw_line(data, horiz.rx, horiz.ry, angle);
+		draw_walls(data, selected, i);
 		angle = (angle * 180 / M_PI) + (data.player.fov / 1280);
 		angle = fmod((fmod(angle, 360) + 360), 360);
 		angle = angle * M_PI / 180;
@@ -108,30 +127,39 @@ void	check_vertical(t_data data, t_ray *ray, double ray_angle)
 	final_check(data, ray, ray_angle, dof);
 }
 
-void	select_ray(t_player player, t_ray vert, t_ray horiz, double def[2])
+void	select_ray(t_data data, t_ray vert, t_ray horiz, t_ray *selected, double angle)
 {
+	double ca = data.player.pa - angle;
+
 	double	vert_dist;
 	double	horiz_dist;
 	double	prod1;
 	double	prod2;
 
-	prod1 = vert.rx - player.pos_x;
-	prod2 = vert.ry - player.pos_y;
+	if (ca < 0)
+		ca += 2 * M_PI;
+	if (ca > 0)
+		ca -= 2 * M_PI;
+
+	prod1 = vert.rx - data.player.pos_x;
+	prod2 = vert.ry - data.player.pos_y;
 
 	vert_dist = sqrt((prod1 * prod1) + (prod2 * prod2));
-	prod1 = horiz.rx - player.pos_x;
-	prod2 = horiz.ry - player.pos_y;
+	prod1 = horiz.rx - data.player.pos_x;
+	prod2 = horiz.ry - data.player.pos_y;
 	horiz_dist = sqrt((prod1 * prod1) + (prod2 * prod2));
 	if (horiz_dist < vert_dist)
 	{
-		def[0] = horiz.rx;
-		def[1] = horiz.ry;
+		selected->rx = horiz.rx;
+		selected->ry = horiz.ry;
+		selected->dist = horiz_dist * cos(ca);
 		return ;
 	}
-	else if (vert_dist < horiz_dist)
+	else if (vert_dist <= horiz_dist)
 	{
-		def[0] = vert.rx;
-		def[1] = vert.ry;
+		selected->rx = vert.rx;
+		selected->ry = vert.ry;
+		selected->dist = vert_dist * cos(ca);
 		return;
 	}
 }

@@ -40,6 +40,7 @@ typedef struct s_ray
 	double	yo, xo;
 	double	rx;
 	double	ry;
+	double dist;
 }	t_ray;
 
 typedef struct s_player
@@ -50,7 +51,7 @@ typedef struct s_player
 	double	pdy;
 	double	pa;
 	double	fov;
-}					t_player;
+}				t_player;
 
 typedef struct s_data
 {

@@ -51,27 +51,21 @@ int	handle_key_press(int keycode, t_mlx *mlx)
 		close_window(mlx);
 	if (keycode == XK_w)
 	{
-		temp1 = (int)(mlx->data.player.pos_y + mlx->data.player.pdy) >> 6;
-		temp2 = (int)(mlx->data.player.pos_x + mlx->data.player.pdx) >> 6;
-		printf("test1 = %f\n", temp1);
-		printf("test1 = %i\n", (int)temp1);
-		printf("test : %c\n",map[(int)temp1][(int)temp2]);
+		temp1 = (int)(mlx->data.player.pos_y + (mlx->data.player.pdy * 2)) >> 6;
+		temp2 = (int)(mlx->data.player.pos_x + (mlx->data.player.pdx * 2)) >> 6;
 		if (map[(int)temp1][(int)temp2] == '1')
 			return (0);
-		mlx->data.player.pos_x += mlx->data.player.pdx;
-		mlx->data.player.pos_y += mlx->data.player.pdy;
+		mlx->data.player.pos_x += mlx->data.player.pdx * 2;
+		mlx->data.player.pos_y += mlx->data.player.pdy * 2;
 	}
 	else if (keycode == XK_s)
 	{
-		temp1 = (int)(mlx->data.player.pos_y - mlx->data.player.pdy) >> 6;
-		temp2 = (int)(mlx->data.player.pos_x - mlx->data.player.pdx) >> 6;
-		printf("test1 = %f\n", temp1);
-		printf("test1 = %i\n", (int)temp1);
-		printf("test : %c\n",map[(int)temp1][(int)temp2]);
+		temp1 = (int)(mlx->data.player.pos_y - (mlx->data.player.pdy * 2)) >> 6;
+		temp2 = (int)(mlx->data.player.pos_x - (mlx->data.player.pdx * 2)) >> 6;
 		if (map[(int)temp1][(int)temp2] == '1')
 			return (0);
-		mlx->data.player.pos_x -= mlx->data.player.pdx;
-		mlx->data.player.pos_y -= mlx->data.player.pdy;
+		mlx->data.player.pos_x -= mlx->data.player.pdx * 2;
+		mlx->data.player.pos_y -= mlx->data.player.pdy * 2;
 	}
 	else if (keycode == XK_a)
 	{

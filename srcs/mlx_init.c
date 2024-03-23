@@ -66,7 +66,7 @@ void	init_window(t_mlx	*mlx)
 			&mlx->data.line_length, &mlx->data.endian);
 	mlx->data.player.pos_x = 1.10 * CELL_SIZE;
 	mlx->data.player.pos_y = 1.10 * CELL_SIZE;
-	mlx->data.player.pa = (0 * M_PI) / 180;
+	mlx->data.player.pa = (90 * M_PI) / 180;
 	mlx->data.player.fov = 60;
 	mlx->data.player.pdx = cos(mlx->data.player.pa);
 	mlx->data.player.pdy = sin(mlx->data.player.pa);
