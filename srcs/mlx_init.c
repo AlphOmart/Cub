@@ -48,6 +48,34 @@ void	color_pixels(t_mlx *mlx, int width, int height)
 	}
 }
 
+void	open_textures(t_mlx *mlx, t_data *data)
+{
+	data->no = "textures/1.xpm";
+	data->so = "textures/2.xpm";
+	data->ea = "textures/3.xpm";
+	data->we = "textures/4.xpm";
+	mlx->data.textures[0].img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->no,
+			&(mlx->data.textures[0].width), &(mlx->data.textures[0].height));
+	if (!mlx->data.textures[0].img)
+		exit(0);
+	mlx->data.textures[1].img = mlx_xpm_file_to_image(mlx->mlx_ptr,
+			data->so, &(mlx->data.textures[1].width), &(mlx->data.textures[1].height));
+	if (!mlx->data.textures[1].img)
+		exit(0);
+	mlx->data.textures[2].img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->we,
+			&(mlx->data.textures[2].width), &(mlx->data.textures[2].height));
+	if (!mlx->data.textures[2].img)
+		exit(0);
+	mlx->data.textures[3].img = mlx_xpm_file_to_image(mlx->mlx_ptr,
+			data->ea, &(mlx->data.textures[3].width), &(mlx->data.textures[3].height));
+	if (!mlx->data.textures[3].img)
+		exit(0);
+	mlx->data.textures[0].addr = mlx_get_data_addr \
+				(mlx->data.textures[0].img, \
+				&mlx->data.textures[0].bits_per_pixel, \
+				&mlx->data.textures[0].width, &mlx->data.textures[0].endian);
+}
+
 //Memo cos et sin prennent uniquement des radiants
 void	init_window(t_mlx	*mlx)
 {
@@ -71,4 +99,5 @@ void	init_window(t_mlx	*mlx)
 	mlx->data.player.fov = 60;
 	mlx->data.player.pdx = cos(mlx->data.player.pa);
 	mlx->data.player.pdy = sin(mlx->data.player.pa);
+	open_textures(mlx, &mlx->data);
 }

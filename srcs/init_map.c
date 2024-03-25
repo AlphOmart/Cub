@@ -23,9 +23,13 @@ void	draw_walls(t_data data, t_ray ray, size_t i)
 		line_h = 720;
 	line_0 = (720 / 2) - (line_h / 2);
 	j = 0;
+	float t_y;
 	while (j < line_h)
 	{
-		data.game_addr[(j + line_0) * 1280 + i] = 0x808080;
+		t_y = (int)((j * data.textures[0].height) / line_h) % data.textures[0].height;
+		char	*dst = data.textures[0].addr + (int)(t_y * data.textures[0].width + i * (data.textures[0].bits_per_pixel / 8));
+		int color = *(unsigned int *)dst;
+		data.game_addr[(j + line_0) * 1280 + i] = color;
 		j++;
 	}
 }

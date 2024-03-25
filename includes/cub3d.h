@@ -34,6 +34,16 @@ extern char	map[10][10];
 # include "../minilibx-linux/mlx.h"
 # include "../minilibx-linux/mlx_int.h"
 
+typedef struct s_textures
+{
+	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				endian;
+	int				height;
+	int				width;
+}					t_textures;
+
 typedef struct s_ray
 {
 	double	angle;
@@ -62,14 +72,20 @@ typedef struct s_data
 	int				line_length;
 	int				bits_per_pixel;
 	int				endian;
+	t_textures		textures[4];
 	t_player		player;
-}					t_data;
+	char			*no;
+	char			*so;
+	char			*ea;
+	char			*we;
+}	t_data;
 
 typedef struct s_mlx
 {
 	void			*mlx_ptr;
 	void			*win;
 	t_data			data;
+
 }					t_mlx;
 
 //window
