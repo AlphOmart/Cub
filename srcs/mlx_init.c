@@ -4,7 +4,7 @@
 /*   mlx_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edboutil <edboutil@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                     (720 * (mapS)) / ray.dist                           +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:35:40 by edboutil          #+#    #+#             */
 /*   Updated: 2024/01/22 17:23:18 by edboutil         ###   ########.fr       */
 /*                                                                            */
@@ -14,6 +14,7 @@
 
 int	close_window(t_mlx *mlx)
 {
+	mlx_destroy_image(mlx->mlx_ptr, mlx->data.game_ptr);
 	mlx_destroy_image(mlx->mlx_ptr, mlx->data.img_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
 	mlx_destroy_display(mlx->mlx_ptr);
@@ -28,22 +29,22 @@ int	close_window(t_mlx *mlx)
 */
 void	color_pixels(t_mlx *mlx, int width, int height)
 {
-	int	count_height;
-	int	count_width;
+	int	count_h;
+	int	count_w;
 
-	count_height = 0;
-	while (count_height < height)
+	count_h = 0;
+	while (count_h < height)
 	{
-		count_width = 0;
-		while (count_width < width)
+		count_w = 0;
+		while (count_w < width)
 		{
-			if (count_height > height / 2)
-				mlx->data.game_addr[count_height * width + count_width] = 0xFFB3E5FC;
+			if (count_h > height / 2)
+				mlx->data.game_addr[count_h * width + count_w] = 0xFFB3E5FC;
 			else
-				mlx->data.game_addr[count_height * width + count_width] = 0xFFB005FC;
-			count_width++;
+				mlx->data.game_addr[count_h * width + count_w] = 0xFFB005FC;
+			count_w++;
 		}
-		count_height++;
+		count_h++;
 	}
 }
 
@@ -58,7 +59,7 @@ void	init_window(t_mlx	*mlx)
 			(mlx->data.img_ptr, \
 			&mlx->data.bits_per_pixel, \
 			&mlx->data.line_length, &mlx->data.endian);
-	mlx->data.game_ptr = mlx_new_image(mlx->mlx_ptr,  1280, \
+	mlx->data.game_ptr = mlx_new_image(mlx->mlx_ptr, 1280, \
 			720);
 	mlx->data.game_addr = (int *)mlx_get_data_addr \
 			(mlx->data.game_ptr, \

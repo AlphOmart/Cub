@@ -12,77 +12,60 @@
 
 #include "../includes/cub3d.h"
 
-void	draw_player(t_data data)
+void	press_w(double tmp_x, double tmp_y, t_mlx *mlx)
 {
-	double	i;
-	double	j;
-	int		z;
+	tmp_x = (int)(mlx->data.player.pos_x + (mlx->data.player.pdx * 2)) >> 6;
+	tmp_y = (int)(mlx->data.player.pos_y + (mlx->data.player.pdy * 2)) >> 6;
+	if (map[(int)tmp_y][(int)tmp_x] == '1')
+		return ;
+	mlx->data.player.pos_x += mlx->data.player.pdx * 2;
+	mlx->data.player.pos_y += mlx->data.player.pdy * 2;
+}
 
-	z = 0;
-	i = 0;
-	while (i < 6)
-	{
-		j = 0;
-		while (j < 6)
-		{
-			data.addr[((int)(data.player.pos_y + j)) * mapX * mapS + \
-				((int)(data.player.pos_x + i))] = 0xFFD50000;
-			++j;
-		}
-		++i;
-	}
-	i = cos(data.player.pa);
-	j = sin(data.player.pa);
-	while (z <= 20)
-	{
-		data.addr[((int)data.player.pos_y + 3 + (int)(j * z)) * mapX * mapS + \
-				((int)data.player.pos_x + 3 + (int)(i * z))] = 0xFFD50000;
-		++z;
-	}
+void	press_s(double tmp_x, double tmp_y, t_mlx *mlx)
+{
+	tmp_x = (int)(mlx->data.player.pos_x - (mlx->data.player.pdx * 2)) >> 6;
+	tmp_y = (int)(mlx->data.player.pos_y - (mlx->data.player.pdy * 2)) >> 6;
+	if (map[(int)tmp_y][(int)tmp_x] == '1')
+		return ;
+	mlx->data.player.pos_x -= mlx->data.player.pdx * 2;
+	mlx->data.player.pos_y -= mlx->data.player.pdy * 2;
+}
+
+void	press_a(t_mlx *mlx)
+{
+	mlx->data.player.pa -= 0.1;
+	if (mlx->data.player.pa < 0)
+		mlx->data.player.pa += (2 * M_PI);
+	mlx->data.player.pdx = cosf(mlx->data.player.pa) * 5;
+	mlx->data.player.pdy = sinf(mlx->data.player.pa) * 5;
+}
+
+void	press_d(t_mlx *mlx)
+{
+	mlx->data.player.pa += 0.1;
+	if (mlx->data.player.pa > 2 * M_PI)
+		mlx->data.player.pa -= (2 * M_PI);
+	mlx->data.player.pdx = cosf(mlx->data.player.pa) * 5;
+	mlx->data.player.pdy = sinf(mlx->data.player.pa) * 5;
 }
 
 int	handle_key_press(int keycode, t_mlx *mlx)
 {
+	double		tmp_x;
+	double		tmp_y;
 
-	double		temp1, temp2;
-
-
+	tmp_x = 0;
+	tmp_y = 0;
 	if (keycode == XK_Escape)
 		close_window(mlx);
 	if (keycode == XK_w)
-	{
-		temp1 = (int)(mlx->data.player.pos_y + (mlx->data.player.pdy * 2)) >> 6;
-		temp2 = (int)(mlx->data.player.pos_x + (mlx->data.player.pdx * 2)) >> 6;
-		if (map[(int)temp1][(int)temp2] == '1')
-			return (0);
-		mlx->data.player.pos_x += mlx->data.player.pdx * 2;
-		mlx->data.player.pos_y += mlx->data.player.pdy * 2;
-	}
+		press_w(tmp_x, tmp_y, mlx);
 	else if (keycode == XK_s)
-	{
-		temp1 = (int)(mlx->data.player.pos_y - (mlx->data.player.pdy * 2)) >> 6;
-		temp2 = (int)(mlx->data.player.pos_x - (mlx->data.player.pdx * 2)) >> 6;
-		if (map[(int)temp1][(int)temp2] == '1')
-			return (0);
-		mlx->data.player.pos_x -= mlx->data.player.pdx * 2;
-		mlx->data.player.pos_y -= mlx->data.player.pdy * 2;
-	}
+		press_s(tmp_x, tmp_y, mlx);
 	else if (keycode == XK_a)
-	{
-		mlx->data.player.pa -= 0.1;
-		if (mlx->data.player.pa < 0)
-			mlx->data.player.pa += (2 * M_PI);
-		mlx->data.player.pdx = cosf(mlx->data.player.pa) * 5;
-		mlx->data.player.pdy = sinf(mlx->data.player.pa) * 5;
-	}
+		press_a(mlx);
 	else if (keycode == XK_d)
-	{
-		mlx->data.player.pa += 0.1;
-		if (mlx->data.player.pa > 2 * M_PI)
-			mlx->data.player.pa -= (2 * M_PI);
-		mlx->data.player.pdx = cosf(mlx->data.player.pa) * 5;
-		mlx->data.player.pdy = sinf(mlx->data.player.pa) * 5;
-	}
-	print(mlx);
+		press_d(mlx);
 	return (0);
 }

@@ -1,27 +1,9 @@
 
-# include "../includes/cub3d.h"
+#include "../includes/cub3d.h"
 
 void	check_vertical(t_data data, t_ray *ray, double ray_angle);
 void	check_horizontal(t_data data, t_ray *ray, double ray_angle);
-void	select_ray(t_data data, t_ray vert, t_ray horiz, t_ray *selected, double angle);
-
-
-void	draw_walls(t_data data, t_ray ray, size_t i)
-{
-	int	j;
-	int line0;
-	double	lineH = (720 * (mapS)) / ray.dist;
-
-	if (lineH > 720)
-		lineH = 720;
-	line0 = (720 / 2) - (lineH / 2);
-	j = 0;
-	while (j < lineH)
-	{
-		data.game_addr[(j + line0) * 1280 + i] = 0x808080;
-		j++;
-	}
-}
+t_ray	select_ray(t_data data, t_ray vert, t_ray horiz, double angle);
 
 void	raycast(t_data data)
 {
@@ -31,7 +13,7 @@ void	raycast(t_data data)
 	double	angle;
 	size_t	i;
 
-	angle =((data.player.pa * 180) / M_PI) - (data.player.fov * 0.5);
+	angle = ((data.player.pa * 180) / M_PI) - (data.player.fov * 0.5);
 	angle = fmod((fmod(angle, 360) + 360), 360);
 	angle = angle * M_PI / 180;
 	i = 0;
@@ -39,7 +21,7 @@ void	raycast(t_data data)
 	{
 		check_vertical(data, &vert, angle);
 		check_horizontal(data, &horiz, angle);
-		select_ray(data, vert, horiz, &selected[i], angle);
+		selected[i] = select_ray(data, vert, horiz, data.player.pa - angle);
 		draw_line(data, selected[i].rx, selected[i].ry, angle);
 		//draw_line(data, horiz.rx, horiz.ry, angle);
 		draw_walls(data, selected[i], i);
@@ -68,7 +50,7 @@ void	final_check(t_data data, t_ray *ray, double ray_angle, int dof)
 		my = ((int)(ray->ry) >> 6);
 		mp = (mx * mapX + my);
 		(void)mp;
-		if (mx >= 0 && mx < 10 && my < 10 && my>=0 && map[my][mx] == '1')
+		if (mx >= 0 && mx < 10 && my < 10 && my >= 0 && map[my][mx] == '1')
 			dof = 8;
 		else
 		{
@@ -84,7 +66,7 @@ void	check_horizontal(t_data data, t_ray *ray, double ray_angle)
 	double	a_tan;
 	int		dof;
 
-	a_tan = - 1 / tan(ray_angle);
+	a_tan = -1 / tan(ray_angle);
 	dof = 0;
 	if (ray_angle > M_PI)
 	{
@@ -127,39 +109,49 @@ void	check_vertical(t_data data, t_ray *ray, double ray_angle)
 	final_check(data, ray, ray_angle, dof);
 }
 
-void	select_ray(t_data data, t_ray vert, t_ray horiz, t_ray *selected, double angle)
+double	fisheyes_fix(double ca)
 {
-	double ca = data.player.pa - angle;
-
-	double	vert_dist;
-	double	horiz_dist;
-	double	prod1;
-	double	prod2;
-
 	if (ca < 0)
 		ca += 2 * M_PI;
 	if (ca > 0)
 		ca -= 2 * M_PI;
+	return (ca);
+}
 
-	prod1 = vert.rx - data.player.pos_x;
-	prod2 = vert.ry - data.player.pos_y;
+double	dist_calc(double x1, double x2, double t1, double t2)
+{
+	double	prod_1;
+	double	prod_2;
 
-	vert_dist = sqrt((prod1 * prod1) + (prod2 * prod2));
-	prod1 = horiz.rx - data.player.pos_x;
-	prod2 = horiz.ry - data.player.pos_y;
-	horiz_dist = sqrt((prod1 * prod1) + (prod2 * prod2));
+	prod_1 = x1 - t1;
+	prod_2 = x2 - t2;
+	return (sqrt((prod_1 * prod_1) + (prod_2 * prod_2)));
+}
+
+t_ray	select_ray(t_data data, t_ray vert, t_ray horiz, double ca)
+{
+	double	vert_dist;
+	double	horiz_dist;
+	t_ray	selected;
+
+	vert_dist = dist_calc(vert.rx, vert.ry, \
+						data.player.pos_x, data.player.pos_y);
+	horiz_dist = dist_calc(horiz.rx, horiz.ry, \
+						data.player.pos_x, data.player.pos_y);
+	selected.rx = 0;
+	selected.ry = 0;
+	selected.dist = 0;
 	if (horiz_dist < vert_dist)
 	{
-		selected->rx = horiz.rx;
-		selected->ry = horiz.ry;
-		selected->dist = horiz_dist * cos(ca);
-		return ;
+		selected.rx = horiz.rx;
+		selected.ry = horiz.ry;
+		selected.dist = horiz_dist * cos(fisheyes_fix(ca));
 	}
 	else if (vert_dist <= horiz_dist)
 	{
-		selected->rx = vert.rx;
-		selected->ry = vert.ry;
-		selected->dist = vert_dist * cos(ca);
-		return;
+		selected.rx = vert.rx;
+		selected.ry = vert.ry;
+		selected.dist = vert_dist * cos(fisheyes_fix(ca));
 	}
+	return (selected);
 }

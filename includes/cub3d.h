@@ -88,6 +88,7 @@ int				print(t_mlx *mlx);
 void				draw_map(t_mlx* mlx);
 
 void	raycast(t_data data);
+void	draw_walls(t_data data, t_ray ray, size_t i);
 // void	ft_free(t_data *data, int n);
 // void	ft_error(char *str, t_data *data, int n);
 
