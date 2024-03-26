@@ -12,7 +12,7 @@
 
 #VAR ---------------------------------------------------------------
 OBJS_DIR		=	.objs/
-SRCS			=	main.c \
+SRCS			=	srcs/main.c \
 					srcs/mlx_init.c \
 					srcs/mlx_hook.c \
 					srcs/init_map.c \

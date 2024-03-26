@@ -5,11 +5,10 @@ void	check_vertical(t_data data, t_ray *ray, double ray_angle);
 void	check_horizontal(t_data data, t_ray *ray, double ray_angle);
 t_ray	select_ray(t_data data, t_ray vert, t_ray horiz, double angle);
 
-void	raycast(t_data data)
+void	raycast(t_data data, t_ray *selected)
 {
 	t_ray	horiz;
 	t_ray	vert;
-	t_ray	selected[1280];
 	double	angle;
 	size_t	i;
 
@@ -24,7 +23,7 @@ void	raycast(t_data data)
 		selected[i] = select_ray(data, vert, horiz, data.player.pa - angle);
 		draw_line(data, selected[i].rx, selected[i].ry, angle);
 		//draw_line(data, horiz.rx, horiz.ry, angle);
-		draw_walls(data, selected[i], i);
+		//draw_walls(data, selected[i], i);
 		angle = (angle * 180 / M_PI) + (data.player.fov / 1280);
 		angle = fmod((fmod(angle, 360) + 360), 360);
 		angle = angle * M_PI / 180;

@@ -74,6 +74,18 @@ void	open_textures(t_mlx *mlx, t_data *data)
 				(mlx->data.textures[0].img, \
 				&mlx->data.textures[0].bits_per_pixel, \
 				&mlx->data.textures[0].width, &mlx->data.textures[0].endian);
+	mlx->data.textures[1].addr = mlx_get_data_addr \
+					(mlx->data.textures[1].img, \
+					&mlx->data.textures[1].bits_per_pixel, \
+					&mlx->data.textures[1].width, &mlx->data.textures[1].endian);
+	mlx->data.textures[2].addr = mlx_get_data_addr \
+						(mlx->data.textures[2].img, \
+						&mlx->data.textures[2].bits_per_pixel, \
+						&mlx->data.textures[2].width, &mlx->data.textures[2].endian);
+	mlx->data.textures[3].addr = mlx_get_data_addr \
+						(mlx->data.textures[3].img, \
+						&mlx->data.textures[3].bits_per_pixel, \
+						&mlx->data.textures[3].width, &mlx->data.textures[3].endian);
 }
 
 //Memo cos et sin prennent uniquement des radiants

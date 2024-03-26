@@ -103,8 +103,8 @@ int					handle_key_press(int keycode, t_mlx *mlx);
 int				print(t_mlx *mlx);
 void				draw_map(t_mlx* mlx);
 
-void	raycast(t_data data);
-void	draw_walls(t_data data, t_ray ray, size_t i);
+void		raycast(t_data data, t_ray *selected);
+void	draw_wall(t_data *data, int pos, t_ray r, t_textures tex);
 // void	ft_free(t_data *data, int n);
 // void	ft_error(char *str, t_data *data, int n);
 

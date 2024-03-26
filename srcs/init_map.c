@@ -12,7 +12,30 @@
 
 #include "../includes/cub3d.h"
 
-void	draw_walls(t_data data, t_ray ray, size_t i)
+/*void	draw_walls(t_data data, t_ray ray, size_t i)
+{
+	int		j;
+	int		line_0;
+	double	line_h;
+	float t_y = 0;
+	j = 0;
+	line_h = (720 * (mapS)) / ray.dist;
+	float ty_steps = (int)(( data.textures[0].height) / line_h);
+	if (line_h > 720)
+		line_h = 720;
+	line_0 = (720 / 2) - (line_h / 2);
+	//float t_x = (int)(ray.rx) % 2048;
+	while (j < line_h)
+	{
+		char	*dst = data.textures[0].addr + (int)(t_y * data.textures[0].width + (i* (data.textures[0].bits_per_pixel / 8)));
+		int color = *(unsigned int *)dst;
+		data.game_addr[(j + line_0) * 1280 + i] = color;
+		t_y += ty_steps;
+		j++;
+	}
+}*/
+
+/*void	draw_walls(t_data data, t_ray ray, size_t i)
 {
 	int		j;
 	int		line_0;
@@ -22,17 +45,19 @@ void	draw_walls(t_data data, t_ray ray, size_t i)
 	if (line_h > 720)
 		line_h = 720;
 	line_0 = (720 / 2) - (line_h / 2);
+	double ty = 0;
+	double ty_step = 2048 / line_h;
+
 	j = 0;
-	float t_y;
 	while (j < line_h)
 	{
-		t_y = (int)((j * data.textures[0].height) / line_h) % data.textures[0].height;
-		char	*dst = data.textures[0].addr + (int)(t_y * data.textures[0].width + i * (data.textures[0].bits_per_pixel / 8));
+		char	*dst = data.textures[0].addr + (int)(ty * data.textures[0].width);
 		int color = *(unsigned int *)dst;
-		data.game_addr[(j + line_0) * 1280 + i] = color;
+		data.game_addr[(j + line_0) * 1280 + i] = color ;//0xFF892839;
+		ty += ty_step;
 		j++;
 	}
-}
+}*/
 
 void	draw_player(t_data data)
 {
