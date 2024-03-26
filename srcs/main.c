@@ -93,16 +93,17 @@ int	print(t_mlx *mlx)
 	while (i < 1280)
 	{
 		//printf("%f\n", mlx->data.player.pos_x - rays[i].rx);
-		if (fmod(rays[i].rx, mapS) == 0 && mlx->data.player.pos_x - rays[i].rx > 0)
+		if (fmod(rays[i].ry, mapS) == 0 && mlx->data.player.pos_x - rays[i].rx > 0)
 			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);//printf("Coucou1\n");
 		else if (fmod(rays[i].rx, mapS) == 0 && mlx->data.player.pos_x - rays[i].rx < 0)
 			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);//printf("2\n");
-		else if (fmod(rays[i].ry, mapS) == 0 && mlx->data.player.pos_y - rays[i].ry > 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);//printf("3\n");
+		else if (fmod(rays[i].ry, mapS) == 0 && mlx->data.player.pos_y - rays[i].ry < 0)
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[1]);//printf("3\n");
 		else
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[1]);
-			//printf("4\n");
-			//draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
+		{
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[2]);
+		}
+		printf("%f\n", mlx->data.player.pos_y - rays[i].ry);
 		i++;
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->data.img_ptr, 0, 0);
