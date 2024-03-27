@@ -68,7 +68,7 @@ typedef struct s_data
 	void			*img_ptr;
 	void			*game_ptr;
 	int				*addr;
-	int				*game_addr;
+	char			*game_addr;
 	int				line_length;
 	int				bits_per_pixel;
 	int				endian;

@@ -31,6 +31,7 @@ void	color_pixels(t_mlx *mlx, int width, int height)
 {
 	int	count_h;
 	int	count_w;
+	char	*dst;
 
 	count_h = 0;
 	while (count_h < height)
@@ -38,10 +39,11 @@ void	color_pixels(t_mlx *mlx, int width, int height)
 		count_w = 0;
 		while (count_w < width)
 		{
+			dst = mlx->data.game_addr + (count_h * width + count_w * (mlx->data.bits_per_pixel / 8));
 			if (count_h > height / 2)
-				mlx->data.game_addr[count_h * width + count_w] = 0xFFB3E5FC;
+				*(unsigned int*)dst = 0xFFB3E5FC;
 			else
-				mlx->data.game_addr[count_h * width + count_w] = 0xFFB005FC;
+				*(unsigned int*)dst = 0xFFB005FC;
 			count_w++;
 		}
 		count_h++;
@@ -50,7 +52,7 @@ void	color_pixels(t_mlx *mlx, int width, int height)
 
 void	open_textures(t_mlx *mlx, t_data *data)
 {
-	data->no = "textures/1.xpm";
+	data->no = "textures/east.xpm";
 	data->so = "textures/2.xpm";
 	data->ea = "textures/3.xpm";
 	data->we = "textures/4.xpm";
@@ -101,7 +103,7 @@ void	init_window(t_mlx	*mlx)
 			&mlx->data.line_length, &mlx->data.endian);
 	mlx->data.game_ptr = mlx_new_image(mlx->mlx_ptr, 1280, \
 			720);
-	mlx->data.game_addr = (int *)mlx_get_data_addr \
+	mlx->data.game_addr = mlx_get_data_addr \
 			(mlx->data.game_ptr, \
 			&mlx->data.bits_per_pixel, \
 			&mlx->data.line_length, &mlx->data.endian);
