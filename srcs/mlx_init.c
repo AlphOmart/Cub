@@ -53,8 +53,8 @@ void	color_pixels(t_mlx *mlx, int width, int height)
 void	open_textures(t_mlx *mlx, t_data *data)
 {
 	data->no = "textures/east.xpm";
-	data->so = "textures/2.xpm";
-	data->ea = "textures/3.xpm";
+	data->so = "textures/west.xpm";
+	data->ea = "textures/M1.xpm";
 	data->we = "textures/4.xpm";
 	mlx->data.textures[0].img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->no,
 			&(mlx->data.textures[0].width), &(mlx->data.textures[0].height));

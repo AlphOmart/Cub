@@ -52,6 +52,26 @@ char map[10][10] =
 //void	color_pixels(t_mlx *mlx, int width, int height);
 void	draw_player(t_data data);
 
+int	get_src_x(t_ray r, t_data *data, t_textures tex)
+{
+	int src_x;
+	src_x = -1;
+
+	if ((int)fmod(r.rx, mapS) + 1 == mapS && data->player.pos_x - r.rx > 0)
+		src_x = ((int)(tex.width - r.ry + 64) % mapS) * tex.width / mapS;
+	else if (fmod(r.rx, mapS) == 0 && (data->player.pos_x - r.rx) < 0)//
+		src_x = ((int)(r.ry) % mapS) * tex.width / mapS;//
+	else if (fmod(r.ry, mapS) == 0 && data->player.pos_y - r.ry < 0)
+		src_x = ((int)(tex.width - r.rx + 64) % mapS) * tex.width / mapS;
+	else
+		src_x = ((int)(r.rx) % mapS) * tex.width / mapS;
+	//(void)data;
+	//src_x = ((int)(tex.width - r.ry) % mapS) * tex.width / mapS;
+	//if (fmod(r.ry, mapS) == 0 || (int)fmod(r.ry, mapS) == mapS - 1)
+	//	src_x = ((int) r.ry % mapS) * tex.width / mapS;
+	return (src_x);
+}
+
 void	draw_wall(t_data *data, int pos, t_ray r, t_textures tex)
 {
 	int		i;
@@ -59,9 +79,7 @@ void	draw_wall(t_data *data, int pos, t_ray r, t_textures tex)
 	int		slice_height;
 	int		src_x;
 
-	src_x = ((int) r.ry % mapS) * tex.width / mapS;
-	if ((int)fmod(r.ry, mapS) + 1 == mapS)
-		src_x = ((int) (tex.width - r.rx) % mapS) * tex.width / mapS;
+	src_x = get_src_x(r, data, tex);
 	if (src_x < 0)
 		return ;
 	slice_height = (int)(mapS / r.dist * (720));
@@ -96,13 +114,13 @@ int	print(t_mlx *mlx)
 	while (i < 1280)
 	{
 		if ((int)fmod(rays[i].rx, mapS) + 1 == mapS && mlx->data.player.pos_x - rays[i].rx > 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);//a l'envers.
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);
 		else if (fmod(rays[i].rx, mapS) == 0 && (mlx->data.player.pos_x - rays[i].rx) < 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);
 		else if (fmod(rays[i].ry, mapS) == 0 && mlx->data.player.pos_y - rays[i].ry < 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);//a l'envers
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);//a l'envers
 		else
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);
 		i++;
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->data.img_ptr, 0, 0);
