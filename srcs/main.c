@@ -58,17 +58,14 @@ int	get_src_x(t_ray r, t_data *data, t_textures tex)
 	src_x = -1;
 
 	if ((int)fmod(r.rx, mapS) + 1 == mapS && data->player.pos_x - r.rx > 0)
-		src_x = ((int)(tex.width - r.ry + 64) % mapS) * tex.width / mapS;
+		src_x = ((int)(tex.width - r.ry + (2048 / tex.width *mapS)) % mapS) * tex.width / mapS;
 	else if (fmod(r.rx, mapS) == 0 && (data->player.pos_x - r.rx) < 0)//
 		src_x = ((int)(r.ry) % mapS) * tex.width / mapS;//
 	else if (fmod(r.ry, mapS) == 0 && data->player.pos_y - r.ry < 0)
-		src_x = ((int)(tex.width - r.rx + 64) % mapS) * tex.width / mapS;
+		src_x = ((int)(tex.width - r.rx + (2048 / tex.width *mapS)) % mapS) * tex.width / mapS;
 	else
 		src_x = ((int)(r.rx) % mapS) * tex.width / mapS;
-	//(void)data;
-	//src_x = ((int)(tex.width - r.ry) % mapS) * tex.width / mapS;
-	//if (fmod(r.ry, mapS) == 0 || (int)fmod(r.ry, mapS) == mapS - 1)
-	//	src_x = ((int) r.ry % mapS) * tex.width / mapS;
+
 	return (src_x);
 }
 
@@ -114,13 +111,13 @@ int	print(t_mlx *mlx)
 	while (i < 1280)
 	{
 		if ((int)fmod(rays[i].rx, mapS) + 1 == mapS && mlx->data.player.pos_x - rays[i].rx > 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
 		else if (fmod(rays[i].rx, mapS) == 0 && (mlx->data.player.pos_x - rays[i].rx) < 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
 		else if (fmod(rays[i].ry, mapS) == 0 && mlx->data.player.pos_y - rays[i].ry < 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);//a l'envers
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
 		else
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[3]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
 		i++;
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->data.img_ptr, 0, 0);
