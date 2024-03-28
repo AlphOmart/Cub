@@ -111,13 +111,13 @@ int	print(t_mlx *mlx)
 	while (i < 1280)
 	{
 		if ((int)fmod(rays[i].rx, mapS) + 1 == mapS && mlx->data.player.pos_x - rays[i].rx > 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[2]);
 		else if (fmod(rays[i].rx, mapS) == 0 && (mlx->data.player.pos_x - rays[i].rx) < 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[2]);
 		else if (fmod(rays[i].ry, mapS) == 0 && mlx->data.player.pos_y - rays[i].ry < 0)
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[2]);
 		else
-			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[0]);
+			draw_wall(&mlx->data, i, rays[i], mlx->data.textures[2]);
 		i++;
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->data.img_ptr, 0, 0);
