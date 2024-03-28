@@ -8,26 +8,27 @@ void	init_mlx(t_mlx *mlx, t_data *data)
 {
 	mlx->data = data;
 	mlx->mlx_ptr = mlx_init();
-	mlx->win = mlx_new_window(mlx->mlx_ptr, 1920, 1080, "cub3d");
-	mlx->img_ptr = mlx_new_image(mlx->mlx_ptr, 1920, 1080);
-	mlx->addr = (int *)mlx_get_data_addr(mlx->img_ptr, &mlx->bits_per_pixel, &mlx->line_length,
+	mlx->win = mlx_new_window(mlx->mlx_ptr, 1920, 1920, "cub3d");
+	mlx->game_ptr = mlx_new_image(mlx->mlx_ptr, 1920, 1080);
+	mlx->map_ptr = mlx_new_image(mlx->mlx_ptr, (mlx->player.width_map * CELL_SIZE), (mlx->player.high_map * CELL_SIZE));
+	mlx->map_addr = (int *)mlx_get_data_addr(mlx->map_ptr, &mlx->bits_per_pixel, &mlx->line_length,
 	&mlx->endian);
-	// color_pixels(mlx);
-	// mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->img_ptr, 0, 0);
+	mlx->game_addr = mlx_get_data_addr(mlx->game_ptr, &mlx->bits_per_pixel, &mlx->line_length,
+	&mlx->endian);
 	open_textures(mlx, data);
 }
 
 void	free_mlx(t_mlx *mlx, int n, int c)
 {
 	if (n)
-		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[0].img);
+		mlx_destroy_image(mlx->mlx_ptr, mlx->no.img);
 	if (n >= 2)
-		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[1].img);
+		mlx_destroy_image(mlx->mlx_ptr, mlx->so.img);
 	if (n >= 3)
-		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[2].img);
+		mlx_destroy_image(mlx->mlx_ptr, mlx->we.img);
 	if (n >= 4)
-		mlx_destroy_image(mlx->mlx_ptr, mlx->textures[3].img);
-	mlx_destroy_image(mlx->mlx_ptr, mlx->img_ptr);
+		mlx_destroy_image(mlx->mlx_ptr, mlx->ea.img);
+	mlx_destroy_image(mlx->mlx_ptr, mlx->game_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
 	mlx_destroy_display(mlx->mlx_ptr);
 	free(mlx->mlx_ptr);
@@ -44,22 +45,26 @@ void ft_exit(t_data *data, t_mlx *mlx, int n, int c)
 
 void	open_textures(t_mlx *mlx, t_data *data)
 {
-	mlx->textures[0].img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->no,
-			&(mlx->textures[0].width), &(mlx->textures[0].height));
-	if (!mlx->textures[0].img)
+	mlx->no.img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->no,
+			&(mlx->no.width), &(mlx->no.height));
+	mlx->no.addr = mlx_get_data_addr \
+				(mlx->no.img, \
+				&mlx->no.bits_per_pixel, \
+				&mlx->no.width, &mlx->no.endian);
+	if (!mlx->no.img)
 		ft_exit(data, mlx, 0, 0);
-	mlx->textures[1].img = mlx_xpm_file_to_image(mlx->mlx_ptr,
-			data->so, &(mlx->textures[1].width), &(mlx->textures[1].height));
-	if (!mlx->textures[1].img)
+	mlx->so.img = mlx_xpm_file_to_image(mlx->mlx_ptr,
+			data->so, &(mlx->so.width), &(mlx->so.height));
+	if (!mlx->so.img)
 		ft_exit(data, mlx, 1, 0);
 
-	mlx->textures[2].img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->we,
-			&(mlx->textures[2].width), &(mlx->textures[2].height));
-	if (!mlx->textures[2].img)
+	mlx->we.img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->we,
+			&(mlx->we.width), &(mlx->we.height));
+	if (!mlx->we.img)
 		ft_exit(data, mlx, 2, 0);
-	mlx->textures[3].img = mlx_xpm_file_to_image(mlx->mlx_ptr,
-			data->ea, &(mlx->textures[3].width), &(mlx->textures[3].height));
-	if (!mlx->textures[3].img)
+	mlx->ea.img = mlx_xpm_file_to_image(mlx->mlx_ptr,
+			data->ea, &(mlx->ea.width), &(mlx->ea.height));
+	if (!mlx->ea.img)
 		ft_exit(data, mlx, 3, 0);
 	ft_free_data(data, 0);
 }

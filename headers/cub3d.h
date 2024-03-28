@@ -22,6 +22,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include <stdbool.h>
+# include <math.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 //////////                         DEFINES                            //////////
@@ -40,6 +41,9 @@
 # define INV_ELEMENT "Invalid file (element in file)."
 # define MALL_ERR "malloc failed, "
 # define FILE_READ_ERR "Problem encountered during file reading"
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
+#define CELL_SIZE 64
 ////////////////////////////////////////////////////////////////////////////////
 //////////                        STRUCTURES                          //////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,47 +68,52 @@ typedef struct s_data
 typedef struct s_textures
 {
 	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				endian;
 	int				height;
 	int				width;
 }					t_textures;
 
-typedef struct s_vec
-{
-	double x;
-	double y;
-}					t_vec;
-
 typedef struct s_ray
 {
-	double	inter[2];
+	double	angle;
+	double	yo, xo;
+	double	rx;
+	double	ry;
 	double	dist;
-	bool	hit;
 }	t_ray;
 
 typedef struct s_player
 {
-	double	pos[2];
-	double	mov[2];
-	double	angle_mov;
+	double	pos_x;
+	double	pos_y;
 	double	pdx;
 	double	pdy;
-	double	angle;
-	float	fov;
-	t_ray	rays[1920];
+	double	pa;
+	double	fov;
+	char	**map;
+	int		width_map;
+	int		high_map;
 }			t_player;
 
 typedef struct s_mlx
 {
 	void			*mlx_ptr;
 	void			*win;
-	void			*img_ptr;
-	int				*addr;
+	void			*map_ptr;
+	void			*game_ptr;
+	int				*map_addr;
+	char			*game_addr;
 	int				line_length;
 	int				bits_per_pixel;
 	int				endian;
 
 	t_player		player;
-	t_textures		textures[4];
+	t_textures		no;
+	t_textures		so;
+	t_textures		ea;
+	t_textures		we;
 	t_data			*data;
 }					t_mlx;
 
@@ -142,5 +151,7 @@ void	map_cpy(char **map, char ***cpy);
 void	init_mlx(t_mlx *mlx, t_data *data);
 int		close_window(t_mlx *mlx);
 
-void color_pixels(t_mlx *mlx);
+void	color_pixels(t_mlx *mlx);
+void	raycast(t_mlx *mlx, t_player player, t_ray *selected);
+int	handle_key_press(int keycode, t_mlx *mlx);
 #endif

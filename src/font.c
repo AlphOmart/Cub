@@ -15,27 +15,27 @@ static unsigned int	rgb_conv(int rgb[3])
 	return (result);
 }
 
-void color_pixels(t_mlx *mlx) {
+void color_pixels(t_mlx *mlx)
+{
 	unsigned int	floor;
 	unsigned int	celling;
 	int				count_height;
 	int				count_width;
+	char			*dst;
 
 	floor = rgb_conv(mlx->data->f);
 	celling = rgb_conv(mlx->data->c);
-
-
 	count_height = 0;
-	while (count_height < 1080)
+	while (count_height < WIN_HEIGHT)
 	{
 		count_width = 0;
-		while (count_width < 1920)
+		while (count_width < WIN_WIDTH)
 		{
-			if (count_height > 1080 / 2)
-				mlx->addr[count_height * 1920 + count_width] = floor;
+			dst = mlx->game_addr + (count_height * mlx->line_length + count_width * (mlx->bits_per_pixel / 8));
+			if (count_height > WIN_HEIGHT / 2)
+				*(unsigned int *)dst = floor;
 			else
-				mlx->addr[count_height * 1920 + count_width] = celling;
-
+				*(unsigned int *)dst = celling;
 			count_width++;
 		}
 		count_height++;

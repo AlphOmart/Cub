@@ -40,19 +40,19 @@ void	data_init(t_data *data, t_mlx *mlx)
 
 	mlx->mlx_ptr = NULL;
 	mlx->win = NULL;
-	mlx->img_ptr = NULL;
-	mlx->textures[0].img = NULL;
-	mlx->textures[0].width = 0;
-	mlx->textures[0].height = 0;
-	mlx->textures[1].img = NULL;
-	mlx->textures[1].width = 0;
-	mlx->textures[1].height = 0;
-	mlx->textures[2].img = NULL;
-	mlx->textures[2].width = 0;
-	mlx->textures[2].height = 0;
-	mlx->textures[3].img = NULL;
-	mlx->textures[3].width = 0;
-	mlx->textures[3].height = 0;
+	mlx->game_ptr = NULL;
+	mlx->no.img = NULL;
+	mlx->no.width = 0;
+	mlx->no.height = 0;
+	mlx->so.img = NULL;
+	mlx->so.width = 0;
+	mlx->so.height = 0;
+	mlx->we.img = NULL;
+	mlx->we.width = 0;
+	mlx->we.height = 0;
+	mlx->ea.img = NULL;
+	mlx->ea.width = 0;
+	mlx->ea.height = 0;
 }
 
 /**
