@@ -62,8 +62,6 @@ void	draw_wall(t_mlx *mlx, int pos, t_ray r, t_textures tex)
 	int		slice_height;
 	int		src_x;
 
-	// src_x = get_src_x(r, mlx->player, tex);
-	// printf("ray :%d\n", r.hit);
 	src_x = ((int) r.rx % CELL_SIZE) * tex.width / CELL_SIZE;
 	if (fmod(r.rx, CELL_SIZE) == 0 || (int)fmod(r.rx, CELL_SIZE) == CELL_SIZE - 1)
 		src_x = ((int) r.ry % CELL_SIZE) * tex.width / CELL_SIZE;
