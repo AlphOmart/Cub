@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../headers/cub3d.h"
 
 /**
@@ -38,77 +37,6 @@ void	ft_free_data(t_data *data, int i)
 		free_map(data->map);
 }
 
-int	get_src_x(t_ray r, t_player player, t_textures tex)
-{
-	int src_x;
-	src_x = 0;
-
-	if ((int)fmod(r.rx, CELL_SIZE) + 1 == CELL_SIZE)
-		src_x = ((int)(tex.width - r.ry) % CELL_SIZE) * tex.width / CELL_SIZE;
-	else if (fmod(r.rx, CELL_SIZE) == 0 && (player.pos_x - r.rx) < 0)//
-		src_x = ((int)(r.ry) % CELL_SIZE) * tex.width / CELL_SIZE;//
-	else if (fmod(r.ry, CELL_SIZE) == 0 && player.pos_y - r.ry < 0)
-		src_x = ((int)(tex.width - r.rx + (2048 / tex.width *CELL_SIZE)) % CELL_SIZE) * tex.width / CELL_SIZE;
-	else
-		src_x = ((int)(r.rx) % CELL_SIZE) * tex.width / CELL_SIZE;
-
-	return (src_x);
-}
-
-void	draw_wall(t_mlx *mlx, int pos, t_ray r, t_textures tex)
-{
-	int		i;
-	double	src_pos;
-	int		slice_height;
-	int		src_x;
-
-	src_x = ((int) r.rx % CELL_SIZE) * tex.width / CELL_SIZE;
-	if (fmod(r.rx, CELL_SIZE) == 0 || (int)fmod(r.rx, CELL_SIZE) == CELL_SIZE - 1)
-		src_x = ((int) r.ry % CELL_SIZE) * tex.width / CELL_SIZE;
-	if (src_x < 0 || !r.hit)
-		return ;
-	slice_height = (int)(CELL_SIZE / r.dist * (WIN_HEIGHT));
-	i = WIN_HEIGHT / 2 - slice_height / 2;
-	src_pos = 0;
-	if (i < 0)
-	{
-		src_pos = -i * (double) tex.height / (double) slice_height;
-		i = 0;
-	}
-	while (src_pos < tex.height && i < WIN_HEIGHT)
-	{
-		char *dst = tex.addr + (int)src_pos * tex.width + src_x;
-		int color = *(unsigned int *)dst;
-		dst = mlx->game_addr + (int)i * mlx->line_length + pos * (mlx->bits_per_pixel / 8);
-		*(unsigned int*)dst = color;
-		src_pos += (double) tex.height / (double) slice_height;
-		i++;
-	}
-}
-
-int	print_image(t_mlx *mlx)
-{
-	t_ray	rays[WIN_WIDTH];
-	int		i;
-
-	i = 0;
-	color_pixels(mlx);
-	raycast(mlx->player, rays);
-	while(i < WIN_WIDTH)
-	{
-		if ((int)fmod(rays[i].rx, CELL_SIZE) + 1 == CELL_SIZE && mlx->player.pos_x - rays[i].rx > 0) // west
-			draw_wall(mlx, i, rays[i], mlx->we);
-		else if (fmod(rays[i].rx, CELL_SIZE) == 0 && (mlx->player.pos_x - rays[i].rx) < 0) // east
-			draw_wall(mlx, i, rays[i], mlx->ea);
-		else if (fmod(rays[i].ry, CELL_SIZE) == 0 && mlx->player.pos_y - rays[i].ry < 0)//south
-			draw_wall(mlx, i, rays[i], mlx->so);
-		else
-			draw_wall(mlx, i, rays[i], mlx->no);
-		i++;
-	}
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->game_ptr, 0, 0);
-	return 0;
-}
 
 double	get_start_angle(char c)
 {
