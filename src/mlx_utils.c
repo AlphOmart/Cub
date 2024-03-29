@@ -33,11 +33,11 @@ void	free_mlx(t_mlx *mlx, int n, int c)
 	if (n)
 		mlx_destroy_image(mlx->mlx_ptr, mlx->no.img);
 	if (n >= 2)
-		mlx_destroy_image(mlx->mlx_ptr, mlx->so.img);
-	if (n >= 3)
-		mlx_destroy_image(mlx->mlx_ptr, mlx->we.img);
-	if (n >= 4)
 		mlx_destroy_image(mlx->mlx_ptr, mlx->ea.img);
+	if (n >= 3)
+		mlx_destroy_image(mlx->mlx_ptr, mlx->so.img);
+	if (n >= 4)
+		mlx_destroy_image(mlx->mlx_ptr, mlx->we.img);
 	mlx_destroy_image(mlx->mlx_ptr, mlx->game_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win);
 	mlx_destroy_display(mlx->mlx_ptr);

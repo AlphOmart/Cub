@@ -69,7 +69,7 @@ void	open_reversed_textures(t_mlx *mlx, t_data *data)
 	mlx->so.img = mlx_xpm_file_to_image(mlx->mlx_ptr,
 			data->so, &(mlx->so.width), &(mlx->so.height));
 	if (!mlx->so.img)
-		ft_exit(data, mlx, 1, 0);
+		ft_exit(data, mlx, 2, 0);
 	mlx->so.addr = mlx_get_data_addr \
 					(mlx->so.img, \
 					&mlx->so.bits_per_pixel, \
@@ -78,7 +78,7 @@ void	open_reversed_textures(t_mlx *mlx, t_data *data)
 	mlx->we.img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->we,
 			&(mlx->we.width), &(mlx->we.height));
 	if (!mlx->we.img)
-		ft_exit(data, mlx, 2, 0);
+		ft_exit(data, mlx, 3, 0);
 	mlx->we.addr = mlx_get_data_addr \
 					(mlx->we.img, \
 					&mlx->we.bits_per_pixel, \
@@ -99,7 +99,7 @@ void	open_textures(t_mlx *mlx, t_data *data)
 	mlx->ea.img = mlx_xpm_file_to_image(mlx->mlx_ptr,
 			data->ea, &(mlx->ea.width), &(mlx->ea.height));
 	if (!mlx->ea.img)
-		ft_exit(data, mlx, 3, 0);
+		ft_exit(data, mlx, 1, 0);
 	mlx->ea.addr = mlx_get_data_addr \
 					(mlx->ea.img, \
 					&mlx->ea.bits_per_pixel, \

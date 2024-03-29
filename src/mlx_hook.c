@@ -76,7 +76,6 @@ void	press_a(double tmp_x, double tmp_y, t_mlx *mlx)
 	mlx->player.pos_y -= mlx->player.pdy * 2;
 	mlx->player.pdx = cosf(mlx->player.pa) * 5;
 	mlx->player.pdy = sinf(mlx->player.pa) * 5;
-	//mlx->player.pos_y -= pdy * 2;
 }
 
 int	handle_key_press(int keycode, t_mlx *mlx)

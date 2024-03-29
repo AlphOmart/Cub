@@ -46,7 +46,7 @@ void	check_on_map(t_ray *ray, int *dof, t_player player, int mx_y[2])
 						mx_y[1] >= 0 && player.map[mx_y[1]][mx_y[0]] == '1')
 	{
 		ray->hit = true;
-		*dof = 168;
+		*dof = 42;
 	}
 	else
 	{
@@ -61,7 +61,7 @@ void	final_check(t_player player, t_ray *ray, int dof)
 	int	mx_y[2];
 
 	ray->hit = false;
-	while (dof < 168)
+	while (dof < 42)
 	{
 		mx_y[0] = ((int)(ray->rx) >> 6);
 		mx_y[1] = ((int)(ray->ry) >> 6);
