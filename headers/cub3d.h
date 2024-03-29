@@ -43,7 +43,7 @@
 # define FILE_READ_ERR "Problem encountered during file reading"
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
-#define CELL_SIZE 64
+# define CELL_SIZE 64
 ////////////////////////////////////////////////////////////////////////////////
 //////////                        STRUCTURES                          //////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +77,7 @@ typedef struct s_textures
 
 typedef struct s_ray
 {
+	bool	hit;
 	double	angle;
 	double	yo, xo;
 	double	rx;
@@ -152,6 +153,6 @@ void	init_mlx(t_mlx *mlx, t_data *data);
 int		close_window(t_mlx *mlx);
 
 void	color_pixels(t_mlx *mlx);
-void	raycast(t_mlx *mlx, t_player player, t_ray *selected);
+void	raycast(t_player player, t_ray *selected);
 int	handle_key_press(int keycode, t_mlx *mlx);
 #endif

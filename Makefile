@@ -20,6 +20,8 @@ MLX_FLAGS	=	-lX11 -lXext
 MLX_EX		=	$(MLX) $(MLX_FLAGS)
 #---MINISHELL_VAR----------------------------------
 SRC			=	src/main.c \
+				src/raycast.c \
+				src/mlx_hook.c \
 				src/parsing/get_file.c \
 				src/parsing/data_init.c \
 				src/parsing/parse_data/parse_data.c \

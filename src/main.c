@@ -37,104 +37,14 @@ void	ft_free_data(t_data *data, int i)
 	if (i != 0)
 		free_map(data->map);
 }
-void	draw_line(t_mlx *mlx, double xo, double yo, double angle)
-{
-	double i;
-	double j;
-	double k;
-	size_t z;
-
-	i = xo - mlx->player.pos_x;
-	j = yo - mlx->player.pos_y;
-	k = sqrt((i * i) + (j * j));
-	i = cos(angle);
-	j = sin(angle);
-	z = 0;
-	while (z <= k && z < 550)
-	{
-		mlx->map_addr[((int)mlx->player.pos_y + 3 + (int)(j * z)) * mlx->player.width_map * CELL_SIZE + \
-				((int)mlx->player.pos_x + 3 + (int)(i * z))] = 0xFF015000;
-		++z;
-	}
-}
-
-void	draw_player(t_mlx *mlx)
-{
-	double	i;
-	double	j;
-	int		z;
-
-	z = 0;
-	i = 0;
-	while (i < 6)
-	{
-		j = 0;
-		while (j < 6)
-		{
-			mlx->map_addr[((int)(mlx->player.pos_y + j)) * mlx->player.width_map * CELL_SIZE + \
-				((int)(mlx->player.pos_x + i))] = 0xFFD50000;
-			++j;
-		}
-		++i;
-	}
-	i = cos(mlx->player.pa);
-	j = sin(mlx->player.pa);
-	while (z <= 20)
-	{
-		mlx->map_addr[((int)mlx->player.pos_y + 3 + (int)(j * z)) * mlx->player.width_map * CELL_SIZE + \
-				((int)mlx->player.pos_x + 3 + (int)(i * z))] = 0xFFD50000;
-		++z;
-	}
-}
-
-void	mlx_fill_square(t_mlx *mlx, int y, int x, int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < CELL_SIZE - 1)
-	{
-		j = 0;
-		while (j < CELL_SIZE - 1)
-		{
-			mlx->map_addr[(y + i) * (mlx->player.width_map * CELL_SIZE) + (x + j)] = color;
-			j++;
-		}
-		i++;
-	}
-}
-
-void	draw_map(t_mlx *mlx)
-{
-	int	y;
-	int	x;
-	int	color;
-
-	y = 0;
-	while (y < mlx->player.high_map)
-	{
-		x = 0;
-		while (x < mlx->player.width_map)
-		{
-			if (mlx->player.map[y][x] == '1')
-				color = 0x808080;
-			else
-				color = 0xFFFFFF;
-			mlx_fill_square(mlx, y * CELL_SIZE + 3, x * CELL_SIZE + 3, color);
-			x++;
-		}
-		y++;
-	}
-}
 
 int	get_src_x(t_ray r, t_player player, t_textures tex)
 {
 	int src_x;
-	src_x = -1;
+	src_x = 0;
 
-	if ((int)fmod(r.rx, CELL_SIZE) + 1 == CELL_SIZE && player.pos_x - r.rx > 0)
-		src_x = ((int)(tex.width - r.ry + (2048 / tex.width *CELL_SIZE)) % CELL_SIZE) * tex.width / CELL_SIZE;
+	if ((int)fmod(r.rx, CELL_SIZE) + 1 == CELL_SIZE)
+		src_x = ((int)(tex.width - r.ry) % CELL_SIZE) * tex.width / CELL_SIZE;
 	else if (fmod(r.rx, CELL_SIZE) == 0 && (player.pos_x - r.rx) < 0)//
 		src_x = ((int)(r.ry) % CELL_SIZE) * tex.width / CELL_SIZE;//
 	else if (fmod(r.ry, CELL_SIZE) == 0 && player.pos_y - r.ry < 0)
@@ -152,8 +62,12 @@ void	draw_wall(t_mlx *mlx, int pos, t_ray r, t_textures tex)
 	int		slice_height;
 	int		src_x;
 
-	src_x = get_src_x(r, mlx->player, tex);
-	if (src_x < 0)
+	// src_x = get_src_x(r, mlx->player, tex);
+	// printf("ray :%d\n", r.hit);
+	src_x = ((int) r.rx % CELL_SIZE) * tex.width / CELL_SIZE;
+	if (fmod(r.rx, CELL_SIZE) == 0 || (int)fmod(r.rx, CELL_SIZE) == CELL_SIZE - 1)
+		src_x = ((int) r.ry % CELL_SIZE) * tex.width / CELL_SIZE;
+	if (src_x < 0 || !r.hit)
 		return ;
 	slice_height = (int)(CELL_SIZE / r.dist * (WIN_HEIGHT));
 	i = WIN_HEIGHT / 2 - slice_height / 2;
@@ -181,23 +95,20 @@ int	print_image(t_mlx *mlx)
 
 	i = 0;
 	color_pixels(mlx);
-	draw_map(mlx);
-	draw_player(mlx);
-	raycast(mlx, mlx->player, rays);
+	raycast(mlx->player, rays);
 	while(i < WIN_WIDTH)
 	{
-		if ((int)fmod(rays[i].rx, CELL_SIZE) + 1 == CELL_SIZE && mlx->player.pos_x - rays[i].rx > 0)
-			draw_wall(mlx, i, rays[i], mlx->no);
-		else if (fmod(rays[i].rx, CELL_SIZE) == 0 && (mlx->player.pos_x - rays[i].rx) < 0)
-			draw_wall(mlx, i, rays[i], mlx->no);
-		else if (fmod(rays[i].ry, CELL_SIZE) == 0 && mlx->player.pos_y - rays[i].ry < 0)
-			draw_wall(mlx, i, rays[i], mlx->no);
+		if ((int)fmod(rays[i].rx, CELL_SIZE) + 1 == CELL_SIZE && mlx->player.pos_x - rays[i].rx > 0) // west
+			draw_wall(mlx, i, rays[i], mlx->we);
+		else if (fmod(rays[i].rx, CELL_SIZE) == 0 && (mlx->player.pos_x - rays[i].rx) < 0) // east
+			draw_wall(mlx, i, rays[i], mlx->ea);
+		else if (fmod(rays[i].ry, CELL_SIZE) == 0 && mlx->player.pos_y - rays[i].ry < 0)//south
+			draw_wall(mlx, i, rays[i], mlx->so);
 		else
 			draw_wall(mlx, i, rays[i], mlx->no);
 		i++;
 	}
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->map_ptr, 0, 0);
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->game_ptr, 0, 400);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->game_ptr, 0, 0);
 	return 0;
 }
 

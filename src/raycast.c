@@ -5,7 +5,7 @@ void	check_vertical(t_player player, t_ray *ray, double ray_angle);
 void	check_horizontal(t_player player, t_ray *ray, double ray_angle);
 t_ray	select_ray(t_player player, t_ray vert, t_ray horiz, double angle);
 void	draw_line(t_mlx *mlx, double xo, double yo, double angle);
-void	raycast(t_mlx *mlx,t_player player, t_ray *selected)
+void	raycast(t_player player, t_ray *selected)
 {
 	t_ray	horiz;
 	t_ray	vert;
@@ -21,7 +21,6 @@ void	raycast(t_mlx *mlx,t_player player, t_ray *selected)
 		check_vertical(player, &vert, angle);
 		check_horizontal(player, &horiz, angle);
 		selected[i] = select_ray(player, vert, horiz, player.pa - angle);
-		draw_line(mlx, selected[i].rx, selected[i].ry, angle);
 		angle = (angle * 180 / M_PI) + (player.fov / WIN_WIDTH);
 		angle = fmod((fmod(angle, 360) + 360), 360);
 		angle = angle * M_PI / 180;
@@ -33,28 +32,34 @@ void	final_check(t_player player, t_ray *ray, double ray_angle, int dof)
 {
 	int	mx;
 	int	my;
-	int	mp;
 
 	if (ray_angle == 0 || ray_angle == M_PI)
 	{
 		ray->rx = player.pos_x;
 		ray->ry = player.pos_y;
-		dof = 8;
+		dof = 168;
 	}
-	while (dof < 42)
+	ray->hit = false;
+	while (dof < 168)
 	{
 		mx = ((int)(ray->rx) >> 6);
 		my = ((int)(ray->ry) >> 6);
-		mp = (mx * player.width_map + my);
-		(void)mp;
 		if (mx >= 0 && mx < player.width_map && my < player.high_map && my >= 0 && player.map[my][mx] == '1')
-			dof = 42;
+		{
+			ray->hit = true;
+			dof = 168;
+		}
 		else
 		{
 			ray->rx += ray->xo;
 			ray->ry += ray->yo;
 			dof += 1;
 		}
+	}
+	if (!ray->hit)
+	{
+		ray->rx = INFINITY;
+		ray->ry = INFINITY;
 	}
 }
 
@@ -138,17 +143,32 @@ t_ray	select_ray(t_player player, t_ray vert, t_ray horiz, double ca)
 	selected.rx = 0;
 	selected.ry = 0;
 	selected.dist = 0;
+	if (horiz.hit && !vert.hit)
+	{	selected.rx = horiz.rx;
+		selected.ry = horiz.ry;
+		selected.dist = horiz_dist * cos(fisheyes_fix(ca));
+		selected.hit = horiz.hit;
+		return (selected);
+	}
+	if (vert.hit && !horiz.hit)
+	{
+		selected.rx = vert.rx;
+		selected.ry = vert.ry;
+		selected.dist = vert_dist * cos(fisheyes_fix(ca));
+		selected.hit = vert.hit;
+		return (selected);
+	}
 	if (horiz_dist < vert_dist)
 	{
 		selected.rx = horiz.rx;
 		selected.ry = horiz.ry;
 		selected.dist = horiz_dist * cos(fisheyes_fix(ca));
+		selected.hit = horiz.hit;
+		return (selected);
 	}
-	else if (vert_dist <= horiz_dist)
-	{
-		selected.rx = vert.rx;
-		selected.ry = vert.ry;
-		selected.dist = vert_dist * cos(fisheyes_fix(ca));
-	}
+	selected.rx = vert.rx;
+	selected.ry = vert.ry;
+	selected.dist = vert_dist * cos(fisheyes_fix(ca));
+	selected.hit = vert.hit;
 	return (selected);
 }
