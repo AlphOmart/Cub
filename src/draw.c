@@ -27,17 +27,18 @@ int	print_image(t_mlx *mlx)
 	raycast(mlx->player, rays);
 	while (i < WIN_WIDTH)
 	{
-		if ((int)fmod(rays[i].rx, CELL_SIZE) + 1 == CELL_SIZE && \
-								mlx->player.pos_x - rays[i].rx > 0)
-			draw_wall(mlx, i, rays[i], mlx->we);
-		else if (fmod(rays[i].rx, CELL_SIZE) == 0 && \
+		//printf("fmod %f\n", fmod(rays[i].ry, CELL_SIZE));
+		if ((int)fmod(rays[i].ry, CELL_SIZE) + 1 == CELL_SIZE && \
+								mlx->player.pos_y - rays[i].ry > 0)
+			draw_wall(mlx, i, rays[i], mlx->no);
+		 else if (fmod(rays[i].rx, CELL_SIZE) == 0 && \
 								mlx->player.pos_x - rays[i].rx < 0)
 			draw_wall(mlx, i, rays[i], mlx->ea);
 		else if (fmod(rays[i].ry, CELL_SIZE) == 0 && \
 								mlx->player.pos_y - rays[i].ry < 0)
 			draw_wall(mlx, i, rays[i], mlx->so);
 		else
-			draw_wall(mlx, i, rays[i], mlx->no);
+			draw_wall(mlx, i, rays[i], mlx->we);
 		i++;
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win, mlx->game_ptr, 0, 0);
