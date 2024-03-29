@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 12:13:57 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/03/29 12:14:35 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/03/29 16:29:42 by edboutil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ int	print_image(t_mlx *mlx)
 	raycast(mlx->player, rays);
 	while (i < WIN_WIDTH)
 	{
-		//printf("fmod %f\n", fmod(rays[i].ry, CELL_SIZE));
 		if ((int)fmod(rays[i].ry, CELL_SIZE) + 1 == CELL_SIZE && \
 								mlx->player.pos_y - rays[i].ry > 0)
 			draw_wall(mlx, i, rays[i], mlx->no);
-		 else if (fmod(rays[i].rx, CELL_SIZE) == 0 && \
+		else if (fmod(rays[i].rx, CELL_SIZE) == 0 && \
 								mlx->player.pos_x - rays[i].rx < 0)
 			draw_wall(mlx, i, rays[i], mlx->ea);
 		else if (fmod(rays[i].ry, CELL_SIZE) == 0 && \

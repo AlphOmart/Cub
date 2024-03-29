@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:00:54 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/03/29 13:01:57 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/03/29 16:30:47 by edboutil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,3 @@ void	check_vertical(t_player player, t_ray *ray, double ray_angle)
 	}
 	final_check(player, ray, dof);
 }
-
-
