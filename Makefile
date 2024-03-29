@@ -24,6 +24,7 @@ SRC			=	src/main.c \
 				src/draw.c \
 				src/raycast.c \
 				src/raycast_utils.c \
+				src/mlx_hook_move.c \
 				src/mlx_hook.c \
 				src/parsing/get_file.c \
 				src/parsing/data_init.c \
