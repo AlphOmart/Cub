@@ -28,17 +28,11 @@ void	raycast(t_player player, t_ray *selected)
 	}
 }
 
-void	final_check(t_player player, t_ray *ray, double ray_angle, int dof)
+void	final_check(t_player player, t_ray *ray, int dof)
 {
 	int	mx;
 	int	my;
 
-	if (ray_angle == 0 || ray_angle == M_PI)
-	{
-		ray->rx = player.pos_x;
-		ray->ry = player.pos_y;
-		dof = 168;
-	}
 	ray->hit = false;
 	while (dof < 168)
 	{
@@ -84,7 +78,7 @@ void	check_horizontal(t_player player, t_ray *ray, double ray_angle)
 		ray->yo = CELL_SIZE;
 		ray->xo = -(ray->yo) * a_tan;
 	}
-	final_check(player, ray, ray_angle, dof);
+	final_check(player, ray, dof);
 }
 
 void	check_vertical(t_player player, t_ray *ray, double ray_angle)
@@ -108,7 +102,7 @@ void	check_vertical(t_player player, t_ray *ray, double ray_angle)
 		ray->xo = CELL_SIZE;
 		ray->yo = -(ray->xo) * n_tan;
 	}
-	final_check(player, ray, ray_angle, dof);
+	final_check(player, ray, dof);
 }
 
 double	fisheyes_fix(double ca)
