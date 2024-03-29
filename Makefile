@@ -20,6 +20,7 @@ MLX_FLAGS	=	-lX11 -lXext
 MLX_EX		=	$(MLX) $(MLX_FLAGS)
 #---MINISHELL_VAR----------------------------------
 SRC			=	src/main.c \
+				src/init_player.c \
 				src/draw.c \
 				src/raycast.c \
 				src/raycast_utils.c \

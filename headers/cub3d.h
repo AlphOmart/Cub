@@ -6,7 +6,7 @@
 /*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:36:49 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/03/29 12:46:57 by edboutil         ###   ########lyon.fr   */
+/*   Updated: 2024/03/29 13:08:01 by edboutil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ typedef struct s_ray
 {
 	bool	hit;
 	double	angle;
-	double	yo, xo;
+	double	yo;
+	double	xo;
 	double	rx;
 	double	ry;
 	double	dist;
@@ -151,10 +152,13 @@ void	map_cpy(char **map, char ***cpy);
 //-----------------------------mlx_init.c-----------------------------------//
 void	init_mlx(t_mlx *mlx, t_data *data);
 int		close_window(t_mlx *mlx);
-
 //-----------------------------mlx_utils.c-----------------------------------//
 void	ft_exit(t_data *data, t_mlx *mlx, int n, int c);
 int		close_window(t_mlx *mlx);
+//-----------------------------init_player.c--------------------------------//
+void	ft_free_data(t_data *data, int i);
+double	get_start_angle(char c);
+void	init_player(t_mlx *mlx, t_data *data);
 
 void	color_pixels(t_mlx *mlx);
 void	raycast(t_player player, t_ray *selected);
@@ -162,4 +166,5 @@ int		handle_key_press(int keycode, t_mlx *mlx);
 void	ft_free_data(t_data *data, int i);
 int		print_image(t_mlx *mlx);
 t_ray	select_ray(t_player player, t_ray vert, t_ray horiz, double ca);
+
 #endif
