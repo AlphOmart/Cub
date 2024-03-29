@@ -155,6 +155,17 @@ int		close_window(t_mlx *mlx);
 //-----------------------------mlx_utils.c-----------------------------------//
 void	ft_exit(t_data *data, t_mlx *mlx, int n, int c);
 int		close_window(t_mlx *mlx);
+//-----------------------------mlx_hook.c-----------------------------------//
+int		handle_key_press(int keycode, t_mlx *mlx);
+void	press_left(t_mlx *mlx);
+void	press_right(t_mlx *mlx);
+
+//-----------------------------mlx_hook_move.c-----------------------------------//
+void	press_w(double tmp_x, double tmp_y, t_mlx *mlx);
+void	press_s(double tmp_x, double tmp_y, t_mlx *mlx);
+void	press_d(double tmp_x, double tmp_y, t_mlx *mlx);
+void	press_a(double tmp_x, double tmp_y, t_mlx *mlx);
+
 //-----------------------------init_player.c--------------------------------//
 void	ft_free_data(t_data *data, int i);
 double	get_start_angle(char c);
