@@ -27,7 +27,7 @@ int	print_image(t_mlx *mlx)
 	raycast(mlx->player, rays);
 	while (i < WIN_WIDTH)
 	{
-		if ((int)fmod(rays[i].ry, CELL_SIZE) + 1 == CELL_SIZE && \
+		if (fmod(rays[i].ry, CELL_SIZE) + 0.01 == CELL_SIZE && \
 								mlx->player.pos_y - rays[i].ry > 0)
 			draw_wall(mlx, i, rays[i], mlx->no);
 		else if (fmod(rays[i].rx, CELL_SIZE) == 0 && \

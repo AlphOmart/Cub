@@ -160,7 +160,7 @@ int		handle_key_press(int keycode, t_mlx *mlx);
 void	press_left(t_mlx *mlx);
 void	press_right(t_mlx *mlx);
 
-//-----------------------------mlx_hook_move.c-----------------------------------//
+//-----------------------------mlx_hook_move.c-----------------------------//
 void	press_w(double tmp_x, double tmp_y, t_mlx *mlx);
 void	press_s(double tmp_x, double tmp_y, t_mlx *mlx);
 void	press_d(double tmp_x, double tmp_y, t_mlx *mlx);
