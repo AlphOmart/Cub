@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   font.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/29 11:59:03 by edboutil          #+#    #+#             */
+/*   Updated: 2024/03/29 12:07:31 by edboutil         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/cub3d.h"
 
 static unsigned int	rgb_conv(int rgb[3])
 {
 	unsigned int	result;
-	int	i;
+	int				i;
 
 	i = 0;
 	result = 0xFF;
@@ -15,7 +27,7 @@ static unsigned int	rgb_conv(int rgb[3])
 	return (result);
 }
 
-void color_pixels(t_mlx *mlx)
+void	color_pixels(t_mlx *mlx)
 {
 	unsigned int	floor;
 	unsigned int	celling;
