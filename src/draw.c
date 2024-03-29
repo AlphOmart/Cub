@@ -60,7 +60,7 @@ static void	draw_wall(t_mlx *mlx, int pos, t_ray r, t_textures tex)
 	slice_height = (int)(CELL_SIZE / r.dist * (WIN_HEIGHT));
 	src_pos = 0;
 	get_i(&i, slice_height, &src_pos, tex);
-	while (src_pos < tex.height && i < WIN_HEIGHT)
+	while (src_pos <= tex.height && i < WIN_HEIGHT)
 	{
 		mlx_put_pixel(mlx, i, pos, mlx_get_color(src_pos, src_x, tex));
 		src_pos += (double) tex.height / (double) slice_height;

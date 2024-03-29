@@ -58,8 +58,8 @@ void	press_d(double tmp_x, double tmp_y, t_mlx *mlx)
 	 	tmp_y = (int)(mlx->player.pos_y + mlx->player.pdy) >> 6;
 	 	if (mlx->player.map[(int)tmp_y][(int)tmp_x] == '1')
 			return ;
-		mlx->player.pos_x += mlx->player.pdx * 5;
-		mlx->player.pos_y += mlx->player.pdy * 5;
+		mlx->player.pos_x += mlx->player.pdx * 2;
+		mlx->player.pos_y += mlx->player.pdy * 2;
 		mlx->player.pdx = cosf(mlx->player.pa) * 5;
 		mlx->player.pdy = sinf(mlx->player.pa) * 5;
 }
@@ -72,8 +72,8 @@ void	press_a(double tmp_x, double tmp_y, t_mlx *mlx)
 	tmp_y = (int)(mlx->player.pos_y - mlx->player.pdy) >> 6;
 	if (mlx->player.map[(int)tmp_y][(int)tmp_x] == '1')
 		return ;
-	mlx->player.pos_x -= mlx->player.pdx * 5;
-	mlx->player.pos_y -= mlx->player.pdy * 5;
+	mlx->player.pos_x -= mlx->player.pdx * 2;
+	mlx->player.pos_y -= mlx->player.pdy * 2;
 	mlx->player.pdx = cosf(mlx->player.pa) * 5;
 	mlx->player.pdy = sinf(mlx->player.pa) * 5;
 	//mlx->player.pos_y -= pdy * 2;

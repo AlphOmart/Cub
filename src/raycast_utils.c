@@ -29,9 +29,9 @@ t_ray	select_ray(t_player player, t_ray vert, t_ray horiz, double ca)
 		return (ray_copy(horiz, horiz_dist, ca));
 	if (vert.hit && !horiz.hit)
 		return (ray_copy(vert, vert_dist, ca));
-	if (horiz_dist < vert_dist)
-		return (ray_copy(horiz, horiz_dist, ca));
-	return (ray_copy(vert, vert_dist, ca));
+	if (horiz_dist > vert_dist)
+		return (ray_copy(vert, vert_dist, ca));
+	return (ray_copy(horiz, horiz_dist, ca));
 }
 
 double	fisheyes_fix(double ca)
