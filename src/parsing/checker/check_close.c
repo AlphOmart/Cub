@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 13:24:20 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/02/06 13:59:43 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/03/29 11:50:56 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static bool	close_right(char **cpy)
 	while (cpy[i])
 	{
 		j = ft_strlen(cpy[i]);
-		while (/*j >= 0 &&*/ cpy[i] && cpy[i][j] && cpy[i][j] != 1)
+		while (cpy[i] && cpy[i][j] && cpy[i][j] != 1)
 		{
 			if (cpy[i][j] == 'X')
 				return (false);

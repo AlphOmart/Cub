@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 14:59:43 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/02/06 13:58:22 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/03/29 11:47:58 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	parse_data(char ***file, t_data *data)
  * @param *str "The string that needs to be parsed into data."
  * @param *data "Structures that accommodate the parsed elements."
  * @return "The function stops once the given element has been parsed
- *		or when no corresponding match has been found, and the program continues."
+ *		or when no corresponding match has been found, and the program
+ *		continues."
  */
 void	get_info(char *str, t_data *data, char ***file, int n)
 {
