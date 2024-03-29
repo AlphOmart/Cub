@@ -160,5 +160,6 @@ void	color_pixels(t_mlx *mlx);
 void	raycast(t_player player, t_ray *selected);
 int		handle_key_press(int keycode, t_mlx *mlx);
 void	ft_free_data(t_data *data, int i);
-int	print_image(t_mlx *mlx);
+int		print_image(t_mlx *mlx);
+t_ray	select_ray(t_player player, t_ray vert, t_ray horiz, double ca);
 #endif
