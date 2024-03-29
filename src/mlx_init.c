@@ -6,14 +6,13 @@
 /*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 12:06:33 by edboutil          #+#    #+#             */
-/*   Updated: 2024/03/29 12:41:27 by edboutil         ###   ########lyon.fr   */
+/*   Updated: 2024/03/29 12:56:54 by edboutil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/cub3d.h"
 
 void	open_textures(t_mlx *mlx, t_data *data);
-
 
 void	init_mlx(t_mlx *mlx, t_data *data)
 {
@@ -26,35 +25,41 @@ void	init_mlx(t_mlx *mlx, t_data *data)
 	open_textures(mlx, data);
 }
 
-char	*reverse_textures(t_textures *tex)
+void	reverse(char *img_data, t_textures *tex, int c, int x_y[2])
 {
-	int		y;
-	int		x;
-	int		c;
-	char	*img_data;
 	char	temp;
 
-	y = 0;
+	temp = img_data[x_y[1] * tex->width + x_y[0] + c];
+	img_data[x_y[1] * tex->width + x_y[0] + c] = \
+					img_data[x_y[1] * tex->width + \
+					(tex->width - x_y[0] / 4 - 1) * 4 + c];
+	img_data[x_y[1] * tex->width + \
+					(tex->width - x_y[0] / 4 - 1) * 4 + c] = temp;
+}
+
+char	*reverse_textures(t_textures *tex)
+{
+	int		x_y[2];
+	int		c;
+	char	*img_data;
+
+	x_y[1] = 0;
 	img_data = (char *)mlx_get_data_addr(tex->img, &tex->bits_per_pixel, \
 		&tex->width, &tex->endian);
-	while (y < tex->height)
+	while (x_y[1] < tex->height)
 	{
-		x = 0;
-		while (x < tex->width / 2 * 4)
+		x_y[0] = 0;
+		while (x_y[0] < tex->width / 2 * 4)
 		{
 			c = 0;
 			while (c < 4)
 			{
-				temp = img_data[y * tex->width + x + c];
-				img_data[y * tex->width + x + c] = \
-					img_data[y * tex->width + (tex->width - x / 4 - 1) * 4 + c];
-				img_data[y * tex->width + \
-					(tex->width - x / 4 - 1) * 4 + c] = temp;
+				reverse(img_data, tex, c, x_y);
 				c++;
 			}
-			x += 4;
+			x_y[0] += 4;
 		}
-		++y;
+		x_y[1]++;
 	}
 	return (img_data);
 }

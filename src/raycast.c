@@ -4,7 +4,6 @@
 void	check_vertical(t_player player, t_ray *ray, double ray_angle);
 void	check_horizontal(t_player player, t_ray *ray, double ray_angle);
 t_ray	select_ray(t_player player, t_ray vert, t_ray horiz, double angle);
-void	draw_line(t_mlx *mlx, double xo, double yo, double angle);
 void	raycast(t_player player, t_ray *selected)
 {
 	t_ray	horiz;

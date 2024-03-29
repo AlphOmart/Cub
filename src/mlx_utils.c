@@ -6,14 +6,14 @@
 /*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 12:27:28 by edboutil          #+#    #+#             */
-/*   Updated: 2024/03/29 12:40:40 by edboutil         ###   ########lyon.fr   */
+/*   Updated: 2024/03/29 12:59:06 by edboutil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/cub3d.h"
 
 void	free_mlx(t_mlx *mlx, int n, int c);
-int	close_window(t_mlx *mlx);
+int		close_window(t_mlx *mlx);
 
 void	ft_exit(t_data *data, t_mlx *mlx, int n, int c)
 {

@@ -20,6 +20,7 @@ MLX_FLAGS	=	-lX11 -lXext
 MLX_EX		=	$(MLX) $(MLX_FLAGS)
 #---MINISHELL_VAR----------------------------------
 SRC			=	src/main.c \
+				src/draw.c \
 				src/raycast.c \
 				src/mlx_hook.c \
 				src/parsing/get_file.c \
@@ -33,6 +34,7 @@ SRC			=	src/main.c \
 				src/parsing/checker/map_cpy.c \
 				src/parsing/checker/expensions.c \
 				src/mlx_init.c \
+				src/mlx_utils.c \
 				src/font.c
 
 OBJS_DIR	=	.OBJS/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:36:49 by mwubneh           #+#    #+#             */
-/*   Updated: 2023/11/06 20:41:51 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/03/29 12:46:57 by edboutil         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,13 @@ void	map_cpy(char **map, char ***cpy);
 void	init_mlx(t_mlx *mlx, t_data *data);
 int		close_window(t_mlx *mlx);
 
+//-----------------------------mlx_utils.c-----------------------------------//
+void	ft_exit(t_data *data, t_mlx *mlx, int n, int c);
+int		close_window(t_mlx *mlx);
+
 void	color_pixels(t_mlx *mlx);
 void	raycast(t_player player, t_ray *selected);
-int	handle_key_press(int keycode, t_mlx *mlx);
+int		handle_key_press(int keycode, t_mlx *mlx);
+void	ft_free_data(t_data *data, int i);
+int	print_image(t_mlx *mlx);
 #endif
