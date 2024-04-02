@@ -43,7 +43,8 @@ void	check_data(char ***file, t_data *data)
 			i++;
 		}
 		free(*file);
-		free_map(data->map);
+		if (data->map)
+			free_map(data->map);
 		ft_error(RED ERROR YELLOW INV_ELEMENT NC, 22);
 	}
 }

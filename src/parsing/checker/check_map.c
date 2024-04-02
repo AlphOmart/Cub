@@ -22,6 +22,8 @@ void	check_map(t_data *data)
 	if (!data->map || !data->map[1])
 		return (data->map = NULL, errno = 4, (void) NULL);
 	map_cpy(&data->map[1], &cpy);
+	if (!cpy)
+		return (data->map = NULL, errno = 4, (void) NULL);
 	check_elements(data, cpy);
 	map_cpy(cpy, &(data->map));
 	if (!is_close(cpy))
