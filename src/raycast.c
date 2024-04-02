@@ -3,6 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+/*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/02 13:20:39 by mwubneh           #+#    #+#             */
+/*   Updated: 2024/04/02 14:03:10 by mwubneh          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
 /*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:00:54 by mwubneh           #+#    #+#             */
@@ -56,7 +68,7 @@ void	check_on_map(t_ray *ray, int *dof, t_player player, int mx_y[2])
 	}
 }
 
-void	final_check(t_player player, t_ray *ray, int dof)
+void	final_check(t_player player, t_ray *ray, int dof, int is_vert)
 {
 	int	mx_y[2];
 
@@ -64,7 +76,11 @@ void	final_check(t_player player, t_ray *ray, int dof)
 	while (dof < 42)
 	{
 		mx_y[0] = ((int)(ray->rx) >> 6);
+		if (is_vert == 1 && player.pos_x - ray->rx > 0)
+			mx_y[0] = ((int)(ray->rx) >> 6) - 1;
 		mx_y[1] = ((int)(ray->ry) >> 6);
+		if (is_vert != 1 && player.pos_y - ray->ry > 0)
+			mx_y[1] = ((int)(ray->ry) >> 6) - 1;
 		check_on_map(ray, &dof, player, mx_y);
 	}
 	if (!ray->hit)
@@ -83,7 +99,7 @@ void	check_horizontal(t_player player, t_ray *ray, double ray_angle)
 	dof = 0;
 	if (ray_angle > M_PI)
 	{
-		ray->ry = (((int)player.pos_y >> 6) << 6) - 0.01;
+		ray->ry = (((int)player.pos_y >> 6) << 6);
 		ray->rx = ((player.pos_y) - (ray->ry)) * a_tan + player.pos_x;
 		ray->yo = -CELL_SIZE;
 		ray->xo = -(ray->yo) * a_tan;
@@ -95,7 +111,7 @@ void	check_horizontal(t_player player, t_ray *ray, double ray_angle)
 		ray->yo = CELL_SIZE;
 		ray->xo = -(ray->yo) * a_tan;
 	}
-	final_check(player, ray, dof);
+	final_check(player, ray, dof, 0);
 }
 
 void	check_vertical(t_player player, t_ray *ray, double ray_angle)
@@ -107,7 +123,7 @@ void	check_vertical(t_player player, t_ray *ray, double ray_angle)
 	dof = 0;
 	if (ray_angle > M_PI / 2 && ray_angle < 3 * M_PI / 2)
 	{
-		ray->rx = (((int)player.pos_x >> 6) << 6) - 0.01;
+		ray->rx = (((int)player.pos_x >> 6) << 6);
 		ray->ry = ((player.pos_x) - ray->rx) * n_tan + player.pos_y;
 		ray->xo = -CELL_SIZE;
 		ray->yo = -(ray->xo) * n_tan;
@@ -119,5 +135,5 @@ void	check_vertical(t_player player, t_ray *ray, double ray_angle)
 		ray->xo = CELL_SIZE;
 		ray->yo = -(ray->xo) * n_tan;
 	}
-	final_check(player, ray, dof);
+	final_check(player, ray, dof, 1);
 }

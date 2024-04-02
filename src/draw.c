@@ -3,6 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+/*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/02 12:48:26 by mwubneh           #+#    #+#             */
+/*   Updated: 2024/04/02 14:39:48 by mwubneh          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
 /*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 12:13:57 by mwubneh           #+#    #+#             */
@@ -27,14 +39,14 @@ int	print_image(t_mlx *mlx)
 	raycast(mlx->player, rays);
 	while (i < WIN_WIDTH)
 	{
-		if (fmod(rays[i].ry, CELL_SIZE) + 0.01 == CELL_SIZE && \
+		if (fmod(rays[i].ry, CELL_SIZE) == 0 && \
 								mlx->player.pos_y - rays[i].ry > 0)
 			draw_wall(mlx, i, rays[i], mlx->no);
 		else if (fmod(rays[i].rx, CELL_SIZE) == 0 && \
 								mlx->player.pos_x - rays[i].rx < 0)
 			draw_wall(mlx, i, rays[i], mlx->ea);
 		else if (fmod(rays[i].ry, CELL_SIZE) == 0 && \
-								mlx->player.pos_y - rays[i].ry < 0)
+								rays[i].ry - mlx->player.pos_y > 0)
 			draw_wall(mlx, i, rays[i], mlx->so);
 		else
 			draw_wall(mlx, i, rays[i], mlx->we);
@@ -52,8 +64,6 @@ static void	draw_wall(t_mlx *mlx, int pos, t_ray r, t_textures tex)
 	int		src_x;
 
 	src_x = ((int) r.rx % CELL_SIZE) * tex.width / CELL_SIZE;
-printf("rx :%f\n", fmod(r.rx, CELL_SIZE));
-printf("ry :%f\n", fmod(r.ry, CELL_SIZE));
 	if (fmod(r.rx, CELL_SIZE) == 0 || \
 					(int)fmod(r.rx, CELL_SIZE) == CELL_SIZE - 1)
 		src_x = ((int) r.ry % CELL_SIZE) * tex.width / CELL_SIZE;
