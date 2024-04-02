@@ -1,7 +1,7 @@
 #---COMMON_VAR-----------------------------------
 NAME		=	cub3D
 CC			=	cc
-FLAGS		=	-Wall -Werror -Wextra -g3
+FLAGS		=	-Wall -Werror -Wextra -g3 -MMD -MP
 RM			=	rm -rf
 RED			=	\033[0;31m
 GREEN		=	\033[0;32m
@@ -18,6 +18,7 @@ MLX_SRC		=	libmlx.a
 MLX			=	$(addprefix $(MLX_PATH), $(MLX_SRC))
 MLX_FLAGS	=	-lX11 -lXext
 MLX_EX		=	$(MLX) $(MLX_FLAGS)
+DEP		=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.d))
 #---MINISHELL_VAR----------------------------------
 SRC			=	src/main.c \
 				src/init_player.c \
@@ -52,7 +53,7 @@ $(NAME):		$(OBJS) $(HEADER)
 				@echo "\033[0;33m\nCOMPILING cub3d...\n"
 				@$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(MLX_EX) -o $@ -lm
 				@echo "\033[1;32m./cub3d created\n"
-
+-include $(DEP)
 lib:
 				@echo "\033[0;33m\nCOMPILING $(LIBFT_PATH)\n"
 				@make -C $(LIBFT_PATH)
