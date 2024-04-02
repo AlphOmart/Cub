@@ -52,6 +52,8 @@ static void	draw_wall(t_mlx *mlx, int pos, t_ray r, t_textures tex)
 	int		src_x;
 
 	src_x = ((int) r.rx % CELL_SIZE) * tex.width / CELL_SIZE;
+printf("rx :%f\n", fmod(r.rx, CELL_SIZE));
+printf("ry :%f\n", fmod(r.ry, CELL_SIZE));
 	if (fmod(r.rx, CELL_SIZE) == 0 || \
 					(int)fmod(r.rx, CELL_SIZE) == CELL_SIZE - 1)
 		src_x = ((int) r.ry % CELL_SIZE) * tex.width / CELL_SIZE;
