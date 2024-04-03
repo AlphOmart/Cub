@@ -3,6 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+/*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/03 10:58:22 by mwubneh           #+#    #+#             */
+/*   Updated: 2024/04/03 10:59:53 by mwubneh          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
 /*   By: edboutil <edboutil@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:36:49 by mwubneh           #+#    #+#             */
@@ -19,7 +31,6 @@
 # include "../minilibx/mlx.h"
 # include "../minilibx/mlx_int.h"
 # include "../libft/headers/libft.h"
-# include <stdio.h>
 # include <errno.h>
 # include <stdbool.h>
 # include <math.h>
@@ -28,7 +39,6 @@
 //////////                         DEFINES                            //////////
 ////////////////////////////////////////////////////////////////////////////////
 # define RED	"\033[0;31m"
-# define GREEN	"\033[0;32m"
 # define YELLOW	"\033[0;33m"
 # define NC		"\033[0m"
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +88,6 @@ typedef struct s_textures
 typedef struct s_ray
 {
 	bool	hit;
-	double	angle;
 	double	yo;
 	double	xo;
 	double	rx;
@@ -103,9 +112,7 @@ typedef struct s_mlx
 {
 	void			*mlx_ptr;
 	void			*win;
-	void			*map_ptr;
 	void			*game_ptr;
-	int				*map_addr;
 	char			*game_addr;
 	int				line_length;
 	int				bits_per_pixel;
@@ -173,8 +180,6 @@ void	init_player(t_mlx *mlx, t_data *data);
 
 void	color_pixels(t_mlx *mlx);
 void	raycast(t_player player, t_ray *selected);
-int		handle_key_press(int keycode, t_mlx *mlx);
-void	ft_free_data(t_data *data, int i);
 int		print_image(t_mlx *mlx);
 t_ray	select_ray(t_player player, t_ray vert, t_ray horiz, double ca);
 

@@ -18,7 +18,7 @@ MLX_SRC		=	libmlx.a
 MLX			=	$(addprefix $(MLX_PATH), $(MLX_SRC))
 MLX_FLAGS	=	-lX11 -lXext
 MLX_EX		=	$(MLX) $(MLX_FLAGS)
-DEP		=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.d))
+DEP			=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.d))
 #---MINISHELL_VAR----------------------------------
 SRC			=	src/main.c \
 				src/init_player.c \
@@ -49,11 +49,12 @@ HEADER_FILE	=	headers/cub3d.h
 
 all:			lib mlx	$(NAME)
 
-$(NAME):		$(OBJS) $(HEADER)
+$(NAME):		$(OBJS) $(HEADER_FILE) $(LIBFT) $(MLX)
 				@echo "\033[0;33m\nCOMPILING cub3d...\n"
 				@$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(MLX_EX) -o $@ -lm
 				@echo "\033[1;32m./cub3d created\n"
 -include $(DEP)
+
 lib:
 				@echo "\033[0;33m\nCOMPILING $(LIBFT_PATH)\n"
 				@make -C $(LIBFT_PATH)
