@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:36:50 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/04/02 14:37:50 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/04/03 13:23:38 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,45 +37,6 @@ void	init_mlx(t_mlx *mlx, t_data *data)
 	open_textures(mlx, data);
 }
 
-void	reverse(char *img_data, t_textures *tex, int c, int x_y[2])
-{
-	char	temp;
-
-	temp = img_data[x_y[1] * tex->width + x_y[0] + c];
-	img_data[x_y[1] * tex->width + x_y[0] + c] = \
-					img_data[x_y[1] * tex->width + \
-					(tex->width - x_y[0] / 4 - 1) * 4 + c];
-	img_data[x_y[1] * tex->width + \
-					(tex->width - x_y[0] / 4 - 1) * 4 + c] = temp;
-}
-
-char	*reverse_textures(t_textures *tex)
-{
-	int		x_y[2];
-	int		c;
-	char	*img_data;
-
-	x_y[1] = 0;
-	img_data = (char *)mlx_get_data_addr(tex->img, &tex->bits_per_pixel, \
-		&tex->width, &tex->endian);
-	while (x_y[1] < tex->height)
-	{
-		x_y[0] = 0;
-		while (x_y[0] < tex->width / 2 * 4)
-		{
-			c = 0;
-			while (c < 4)
-			{
-				reverse(img_data, tex, c, x_y);
-				c++;
-			}
-			x_y[0] += 4;
-		}
-		x_y[1]++;
-	}
-	return (img_data);
-}
-
 void	open_reversed_textures(t_mlx *mlx, t_data *data)
 {
 	mlx->so.img = mlx_xpm_file_to_image(mlx->mlx_ptr,
@@ -85,8 +46,7 @@ void	open_reversed_textures(t_mlx *mlx, t_data *data)
 	mlx->so.addr = mlx_get_data_addr \
 					(mlx->so.img, \
 					&mlx->so.bits_per_pixel, \
-					&mlx->so.width, &mlx->so.endian);
-	reverse_textures(&mlx->so);
+					&mlx->so.size_line, &mlx->so.endian);
 	mlx->we.img = mlx_xpm_file_to_image(mlx->mlx_ptr, data->we,
 			&(mlx->we.width), &(mlx->we.height));
 	if (!mlx->we.img)
@@ -94,8 +54,7 @@ void	open_reversed_textures(t_mlx *mlx, t_data *data)
 	mlx->we.addr = mlx_get_data_addr \
 					(mlx->we.img, \
 					&mlx->we.bits_per_pixel, \
-					&mlx->we.width, &mlx->we.endian);
-	reverse_textures(&mlx->we);
+					&mlx->we.size_line, &mlx->we.endian);
 }
 
 void	open_textures(t_mlx *mlx, t_data *data)
@@ -107,7 +66,7 @@ void	open_textures(t_mlx *mlx, t_data *data)
 	mlx->no.addr = mlx_get_data_addr \
 				(mlx->no.img, \
 				&mlx->no.bits_per_pixel, \
-				&mlx->no.width, &mlx->no.endian);
+				&mlx->no.size_line, &mlx->no.endian);
 	mlx->ea.img = mlx_xpm_file_to_image(mlx->mlx_ptr,
 			data->ea, &(mlx->ea.width), &(mlx->ea.height));
 	if (!mlx->ea.img)
@@ -115,7 +74,7 @@ void	open_textures(t_mlx *mlx, t_data *data)
 	mlx->ea.addr = mlx_get_data_addr \
 					(mlx->ea.img, \
 					&mlx->ea.bits_per_pixel, \
-					&mlx->ea.width, &mlx->ea.endian);
+					&mlx->ea.size_line, &mlx->ea.endian);
 	open_reversed_textures(mlx, data);
 	ft_free_data(data, 0);
 }

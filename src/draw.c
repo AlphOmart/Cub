@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 12:48:26 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/04/02 14:39:48 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/04/03 13:22:57 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,27 @@ int	print_image(t_mlx *mlx)
 	return (0);
 }
 
+int	get_src_x(t_mlx *mlx, t_ray r, t_textures tex, int src_x)
+{
+	if (fmod(r.ry, CELL_SIZE) == 0 && mlx->player.pos_y - r.ry > 0) //north
+		src_x = ((int) r.rx % CELL_SIZE) * tex.size_line / CELL_SIZE;
+	else if (fmod(r.rx, CELL_SIZE) == 0 && mlx->player.pos_x - r.rx < 0) // east
+		src_x = ((int) r.ry % CELL_SIZE) * tex.size_line / CELL_SIZE;
+	else if (fmod(r.ry, CELL_SIZE) == 0 && r.ry - mlx->player.pos_y > 0) // south
+		src_x = tex.size_line  - (((int) r.rx % CELL_SIZE) * tex.size_line / CELL_SIZE);\
+	else
+		src_x = tex.size_line - (((int) r.ry % CELL_SIZE) * tex.size_line / CELL_SIZE);
+	return (src_x);
+}
+
 static void	draw_wall(t_mlx *mlx, int pos, t_ray r, t_textures tex)
 {
 	int		i;
 	double	src_pos;
 	int		slice_height;
-	int		src_x;
+	int		src_x = 0;
 
-	src_x = ((int) r.rx % CELL_SIZE) * tex.width / CELL_SIZE;
-	if (fmod(r.rx, CELL_SIZE) == 0 || \
-					(int)fmod(r.rx, CELL_SIZE) == CELL_SIZE - 1)
-		src_x = ((int) r.ry % CELL_SIZE) * tex.width / CELL_SIZE;
+	src_x = get_src_x(mlx, r, tex, src_x);
 	if (src_x < 0 || !r.hit)
 		return ;
 	slice_height = (int)(CELL_SIZE / r.dist * (WIN_HEIGHT));
@@ -95,12 +105,12 @@ static int	mlx_get_color(double src_pos, int src_x, t_textures tex)
 	char	*dst;
 	int		color;
 
-	dst = tex.addr + (int)src_pos * tex.width + src_x;
+	dst = tex.addr + (int)src_pos * tex.size_line + src_x;
 	color = *(unsigned int *)dst;
 	return (color);
 }
 
-static void	mlx_put_pixel(t_mlx*mlx, int i, int pos, int color)
+static void	mlx_put_pixel(t_mlx *mlx, int i, int pos, int color)
 {
 	char	*dst;
 

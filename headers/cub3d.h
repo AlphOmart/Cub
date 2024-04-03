@@ -6,7 +6,7 @@
 /*   By: mwubneh <mwubneh@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 10:58:22 by mwubneh           #+#    #+#             */
-/*   Updated: 2024/04/03 10:59:53 by mwubneh          ###   ########.fr       */
+/*   Updated: 2024/04/03 11:21:45 by mwubneh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_textures
 	int				endian;
 	int				height;
 	int				width;
+	int			size_line;
 }					t_textures;
 
 typedef struct s_ray

@@ -1,7 +1,7 @@
-NO textures/1.xpm
-EA textures/2.xpm
-SO textures/3.xpm
-WE textures/4.xpm
+NO textures/east.xpm
+EA textures/east.xpm
+SO textures/east.xpm
+WE textures/east.xpm
 
 C 35,19,73
 F 15,6,40

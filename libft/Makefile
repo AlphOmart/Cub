@@ -73,7 +73,6 @@ HEADER_FILE	=	headers/libft.h \
 #---RULES----------------------------------------
 
 all:			$(NAME)
-
 $(NAME):		$(OBJS)
 				ar rcs $(NAME) $(OBJS)
 
